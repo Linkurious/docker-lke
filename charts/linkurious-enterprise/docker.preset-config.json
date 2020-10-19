@@ -1,0 +1,199 @@
+<<<<<<< HEAD
+{
+  "dataSources": [
+    {
+    "readOnly": false,
+    "name": "$ENV:LKE_GRAPHDB_NAME",
+    "graphdb": {
+      "databaseName": "$ENV:LKE_GRAPHDB_DATABASE_NAME",
+      "vendor": "$ENV:LKE_GRAPHDB_VENDOR",
+      "url": "$ENV:LKE_GRAPHDB_URL",
+      "user": "$ENV:LKE_GRAPHDB_USER",
+      "password": "$ENV:LKE_GRAPHDB_PASSWORD"
+    },
+    "index": {
+      "vendor": "neo4jSearch"
+    }
+  }
+  ],
+  "advanced": {
+    "supernodeThreshold": 10000,
+    "dataSourceConnectionTimeout": 30,
+    "dataSourceAutoReconnectInterval": 300,
+    "pollInterval": 10,
+    "indexationChunkSize": 5000,
+    "expandThreshold": 50,
+    "rawQueryLimit": 500,
+    "searchAddAllThreshold": 500,
+    "minSearchQueryLength": 1,
+    "rawQueryTimeout": 60000,
+    "defaultFuzziness": 0.1,
+    "layoutWorkers": 2,
+    "edgesBetweenSupernodes": false,
+    "sampledItemsPerType": 500,
+    "sampledVisualizationItems": 10000,
+  "defaultTimezone": "Z",
+    "slowQueryThreshold": 500,
+    "searchPrefixExpansion": true,
+    "showBuiltinQueries": true,
+    "searchRetryMultiplier": 5
+  },
+  "db": {
+    "name": "linkurious",
+    "username": null,
+    "password": null
+  },
+  "server": {
+    "listenPort": 3000,
+    "listenPortHttps": 3443,
+    "clientFolder": "server/public",
+    "cookieHttpOnly": true,
+    "cookieSecret": null,
+    "allowOrigin": "$ENV:LKE_ALLOW_ORIGIN",
+    "allowFraming": false,
+    "domain": "$ENV:LKE_PUBLIC_DOMAIN",
+    "publicPortHttp": null,
+    "publicPortHttps": "$ENV-NUMBER:LKE_PUBLIC_PORT_HTTPS",
+    "useHttps": false,
+    "forceHttps": false,
+    "forcePublicHttps": "$ENV-JSON:LKE_FORCE_PUBLIC_HTTPS",
+    "certificateFile": null,
+    "certificateKeyFile": null,
+    "certificatePassphrase": null
+  },
+  "defaultPreferences": {
+    "pinOnDrag": false,
+    "locale": "en-US",
+    "incrementalLayout": false
+  },
+  "guestPreferences": {
+    "locale": "en-US",
+    "uiWorkspaceSearch": false,
+    "uiExport": false,
+    "uiLayout": "regular",
+    "uiDesign": false,
+    "uiEdgeGrouping": false,
+    "uiFilter": false
+  },
+  "alerts": {
+    "enabled": true,
+  "maxMatchTTL": 0,
+  "maxMatchesLimit": 5000,
+    "maxRuntimeLimit": 600000,
+    "maxConcurrency": 1
+  },
+  "auditTrail": {
+    "enabled": false,
+    "logFolder": "audit-trail",
+    "fileSizeLimit": 5242880,
+    "strictMode": false,
+    "mode": "rw",
+    "logPlugins": true,
+    "logFulltextSearch": false
+  },
+  "access": {
+    "authRequired": "$ENV:LKE_AUTH_REQUIRED",
+    "guestMode": false,
+    "floatingLicenses": null,
+    "defaultPage": "dashboard",
+    "defaultPageParams": {},
+    "dataEdition": true,
+    "widget": true,
+    "loginTimeout": null,
+    "oauth2": {
+      "enabled": "$ENV-JSON:LKE_OAUTH2_ENABLED",
+      "provider": "$ENV:LKE_OAUTH2_PROVIDER",
+      "authorizationURL": "$ENV:LKE_OAUTH2_AUTHORIZATION_URL",
+      "tokenURL": "$ENV:LKE_OAUTH2_TOKEN_URL",
+      "clientID": "$ENV:LKE_OAUTH2_CLIENT_ID",
+      "clientSecret": "$ENV:LKE_OAUTH2_CLIENT_SECRET",
+      "azure": {
+        "tenantID": "$ENV:LKE_OAUTH2_AZURE_TENANT_ID"
+      }
+    },
+    "externalUsersAllowedGroups": null,
+    "externalUsersGroupMapping": null,
+    "autoRefreshGroupMapping": "$ENV-JSON:LKE_OAUTH2_AUTO_REFRESH_GROUP_MAPPING"
+  },
+  "leaflet": [
+    {
+      "name": "OpenStreetMap",
+      "thumbnail": "/assets/img/OpenStreetMap.png",
+      "urlTemplate": "https://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      "attribution": "© <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors",
+      "subdomains": null,
+      "id": null,
+      "accessToken": null,
+      "minZoom": 2,
+      "maxZoom": 19
+    },
+    {
+      "name": "Esri World Gray Canvas",
+      "thumbnail": "/assets/img/Esri_WorldGrayCanvas.png",
+      "urlTemplate": "http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+      "attribution": "Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ",
+      "subdomains": null,
+      "id": null,
+      "accessToken": null,
+      "minZoom": 2,
+      "maxZoom": 16
+    },
+    {
+      "name": "CartoDB Positron",
+      "thumbnail": "/assets/img/CartoDB_Positron.png",
+      "urlTemplate": "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+      "attribution": "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a> &copy; <a href=\"http://cartodb.com/attributions\">CartoDB</a>",
+      "subdomains": "abcd",
+      "id": null,
+      "accessToken": null,
+      "minZoom": 2,
+      "maxZoom": 19
+    }
+  ],
+  "ogma": {
+    "renderer": "webgl",
+    "options": {
+      "styles": {
+        "node": {
+          "nodeRadius": 5,
+          "shape": "circle",
+          "text": {
+            "maxTextLength": 60,
+            "minVisibleSize": 12,
+            "maxLineLength": 30,
+            "backgroundColor": null,
+            "font": "'roboto', sans-serif",
+            "color": "#000",
+            "size": 14
+          }
+        },
+        "edge": {
+          "edgeWidth": 1,
+          "shape": "arrow",
+          "text": {
+            "maxTextLength": 60,
+            "minVisibleSize": 3,
+            "maxLineLength": 30,
+            "backgroundColor": null,
+            "font": "'roboto', sans-serif",
+            "color": "#000",
+            "size": 14
+          }
+        }
+      },
+      "interactions": {
+        "zoom": {
+          "modifier": 1.382
+        },
+        "pan": {
+        },
+        "rotation": {
+          "enabled": false
+        }
+      },
+      "backgroundColor": "rgba(240, 240, 240, 0)"
+    }
+  },
+  "plugins": {},
+  "version": "2.10.16"
+}

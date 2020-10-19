@@ -1,0 +1,42 @@
+---
+version: '3.9'
+# Not inteded for Infrastructure usage
+
+services:
+  lke-server:
+    image: ${REPOSITORY}linkurious/linkurious-enterprise-es:${LKE_VERSION}
+    init: true
+    restart: unless-stopped
+    user: "${LKE_USER:-2013}:${LKE_GROUP:-2013}"
+    ports:
+      - "3000:3000"
+      - "3443:4433"
+    security_opt:
+      - no-new-privileges:true
+    env_file: ".env.lke-server.${RUN_ENV}"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.00'
+          memory: 2000M
+        reservations:
+          # cpus: '1.00'
+          memory: 500M
+    networks:
+      - lke_network
+      - traefik_network
+    volumes:
+      - lke_data:/data
+    labels:
+      - "traefik.docker.network=traefik_network"
+      - "traefik.enable=true"
+      - "traefik.http.routers.lke${CHANNEL}-server-secure.entrypoints=https"
+      - "traefik.http.routers.lke${CHANNEL}-server-secure.rule=HOST(`lke${CHANNEL}.${TRAEFIK_HOST}`)"
+
+volumes:
+  lke_data:
+
+networks:
+  lke_network:
+  traefik_network:
+    external: true

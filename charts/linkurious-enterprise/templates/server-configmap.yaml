@@ -1,0 +1,21 @@
+{{- if or (.Values.configEnabled) (.Values.configOverlayEnabled) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "linkurious-enterprise.fullname" . }}-configmap
+  labels:
+    {{- include "linkurious-enterprise.labels" . | nindent 4 }}
+  {{- if .Values.configAnnotations }}
+  annotations:
+  {{- range $key, $value := .Values.configAnnotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
+  {{- end }}
+data:
+{{- if .Values.configOverlayEnabled }}
+  overlay.json: |-
+{{- else }}
+  docker.json: |-
+{{- end }}
+    {{- include "linkurious-enterprise.config" $  | fromYaml | mustToPrettyJson |  nindent 4}}
+{{- end }}

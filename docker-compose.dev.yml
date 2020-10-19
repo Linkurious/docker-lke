@@ -1,0 +1,34 @@
+---
+version: '3.9'
+
+services:
+  lke-server:
+    networks:
+      - lke_network
+      - traefik_network
+    volumes:
+      - ./customFiles/icons:/data/server/customFiles/icons:ro
+      - ./license.key:/data/license.key:ro
+    labels:
+      - "traefik.docker.network=traefik_network"
+      - "traefik.enable=true"
+      - "traefik.http.routers.lke${CHANNEL}-server-secure.entrypoints=https"
+      - "traefik.http.routers.lke${CHANNEL}-server-secure.rule=Host(`lke-api${CHANNEL}.${TRAEFIK_HOST}`) || (HOST(`lke${CHANNEL}.${TRAEFIK_HOST}`) && PathPrefix(`/api/`, `/icons/`, `/widget`, `/plugins/`))"
+        # - "traefik.http.routers.lke-server-secure.rule=Host(`lke-api${CHANNEL}.${TRAEFIK_HOST}`)"
+
+  lke-frontend:
+    networks:
+      - lke_network
+      - traefik_network
+    environment:
+      - REACT_APP_API_BASE_URL=https://lke${CHANNEL}.${TRAEFIK_HOST}/
+    labels:
+      - "traefik.docker.network=traefik_network"
+      - "traefik.enable=true"
+      - "traefik.http.routers.lke${CHANNEL}-frontend-secure.entrypoints=https"
+      - "traefik.http.routers.lke${CHANNEL}-frontend-secure.rule=Host(`lke${CHANNEL}.${TRAEFIK_HOST}`)"
+
+networks:
+  lke_network:
+  traefik_network:
+    external: true

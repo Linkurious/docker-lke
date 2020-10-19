@@ -1,0 +1,54 @@
+---
+version: '3.9'
+
+services:
+  lke-server:
+    image: ${REPOSITORY}linkurious/lke-server:${LKE_VERSION}
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - lke_network
+    ports:
+      - "3000:3000"
+      - "3443:4433"
+    volumes:
+      - lke_data:/data
+
+  neo4j:
+    image: neo4j:3.5.35-enterprise
+    # depends_on:
+    #  - plugins-neo4j
+    restart: always
+    ports:
+      - "7473:7473"  # https
+      - "7474:7474"  # http
+      - "7687:7687"  # bolt
+    volumes:
+      - lke_neo4j_data:/data
+      # - /opt/linkurious/data/airflow-jobs/neo4j/import:/var/lib/neo4j/import
+      # - /opt/linkurious/data/airflow-jobs/neo4j/export:/var/lib/neo4j/export
+      # - /opt/linkurious/data/airflow-jobs/neo4j/plugins:/plugins
+      # - /opt/linkurious/data/airflow-jobs/neo4j/query:/var/lib/neo4j/query
+    environment:
+      - NEO4J_dbms_security_procedures_unrestricted=\*.\*
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_apoc_export_file_enabled=true
+      - NEO4J_dbms_memory_heap_initial__size=2G
+      - NEO4J_dbms_memory_heap_max__size=4G
+      - NEO4J_dbms_memory_pagecache_size=2G
+      # used to be : NEO4J_dbms_allow__format__migration=true
+      - NEO4J_dbms_allow__upgrade=true
+      # force password, otherwise neo4j/neo4j and will request reset
+      - NEO4J_AUTH=neo4j/neo3j
+      - NEO4J_ACCEPT_LICENSE_AGREEMENT=yes
+    networks:
+      - lke_network
+
+volumes:
+  lke_data:
+  lke_neo4j_data:
+
+networks:
+  lke_network:

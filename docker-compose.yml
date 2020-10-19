@@ -1,0 +1,51 @@
+---
+version: '3.9'
+
+services:
+  lke-server:
+    image: ${REPOSITORY}linkurious/lke-server:${LKE_SERVER_VERSION}
+    init: true
+    restart: unless-stopped
+    user: "${LKE_USER:-2013}:${LKE_GROUP:-2013}"
+    security_opt:
+      - no-new-privileges:true
+    env_file: ".env.lke-server.${RUN_ENV}"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.00'
+          memory: 600M
+        reservations:
+          # cpus: '1.00'
+          memory: 200M
+    networks:
+      - lke_network
+    volumes:
+      - lke_data:/data
+
+  lke-frontend:
+    image: ${REPOSITORY}linkurious/lke-frontend:${LKE_FRONTEND_VERSION}
+    init: true
+    restart: unless-stopped
+    depends_on:
+      lke-server:
+        condition: service_started
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 50M
+        reservations:
+          # cpus: '0.25'
+          memory: 20M
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - lke_network
+
+
+volumes:
+  lke_data:
+
+networks:
+  lke_network:

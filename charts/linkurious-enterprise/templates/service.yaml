@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "linkurious-enterprise.fullname" . }}
+  labels:
+    {{- include "linkurious-enterprise.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    {{- if .Values.metrics.prometheus }}
+    - port: {{ .Values.service.metricsPort }}
+      targetPort: http-metrics
+      protocol: TCP
+      name: http-metrics
+    {{- end }}
+  selector:
+    {{- include "linkurious-enterprise.selectorLabels" . | nindent 4 }}

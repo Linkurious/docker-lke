@@ -1,0 +1,18 @@
+---
+version: '3.9'
+
+services:
+  lke-server:
+    image: ${REPOSITORY}linkurious/lke-server:${LKE_SERVER_VERSION}
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - lke_network
+    ports:
+      - "3000:3000"
+      - "3443:4433"
+
+networks:
+  lke_network:

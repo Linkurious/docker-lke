@@ -1,0 +1,11 @@
+{{- if .Values.backup.litestream.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "linkurious-enterprise.fullname" . }}-litestream
+  labels:
+    {{- include "linkurious-enterprise.labels" . | nindent 4 }}
+data:
+  litestream.yaml: |+
+   {{ tpl .Values.backup.litestream.config . | nindent 4 }}
+{{- end }}
