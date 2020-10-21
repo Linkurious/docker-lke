@@ -1,0 +1,29 @@
+---
+version: '3.7'
+
+services:
+  lke:
+    networks:
+      - lke_network
+      - traefik_network
+    labels:
+      - "traefik.docker.network=traefik_network"
+      - "traefik.enable=true"
+      - "traefik.http.routers.lke-frontend-secure.entrypoints=https"
+      - "traefik.http.routers.lke-frontend-secure.rule=Host(`lke.${TRAEFIK_HOST}`)"
+  neo4j:
+    networks:
+      - lke_network
+      - traefik_network
+    labels:
+      - "traefik.docker.network=traefik_network"
+      - "traefik.enable=true"
+      - "traefik.http.services.neo4j-secure.loadbalancer.server.port=7474"
+      - "traefik.http.routers.neo4j-secure.service=neo4j-secure"
+      - "traefik.http.routers.neo4j-secure.entrypoints=https"
+      - "traefik.http.routers.neo4j-secure.rule=Host(`neo4j.${TRAEFIK_HOST}`)"
+
+networks:
+  lke_network:
+  traefik_network:
+    external: true

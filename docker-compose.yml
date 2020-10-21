@@ -1,0 +1,22 @@
+---
+version: '3.7'
+
+services:
+  lke:
+    image: linkurious:${LKE_VERSION}
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - lke_network
+    volumes:
+      - lke_data:/data
+      - lke_elasticsearch_data:/elasticsearch
+
+volumes:
+  lke_data:
+  lke_elasticsearch_data:
+
+networks:
+  lke_network:

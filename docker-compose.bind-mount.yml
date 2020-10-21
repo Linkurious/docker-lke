@@ -1,0 +1,20 @@
+---
+version: '3.7'
+
+services:
+  lke:
+    image: linkurious:${LKE_VERSION}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - lke_network
+    ports:
+      - "3000:3000"
+      - "3443:4433"
+    volumes:
+      - ~/opt/linkurious/data/lke:/data
+      - ~/opt/linkurious/data/elasticsearch:/elasticsearch
+
+networks:
+  lke_network:
