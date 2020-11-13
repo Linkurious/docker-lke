@@ -2,8 +2,9 @@
 version: '3.7'
 
 services:
-  lke:
-    image: linkurious:${LKE_VERSION}
+  lke-server:
+    image: ${REPOSITORY}linkurious/lke-server:${LKE_VERSION}
+    init: true
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -14,7 +15,6 @@ services:
       - "3443:4433"
     volumes:
       - lke_data:/data
-      - lke_elasticsearch_data:/elasticsearch
 
   neo4j:
     image: neo4j:3.5.15-enterprise
@@ -48,7 +48,6 @@ services:
 
 volumes:
   lke_data:
-  lke_elasticsearch_data:
   lke_neo4j_data:
 
 networks:
