@@ -10,7 +10,18 @@ services:
       - "traefik.docker.network=traefik_network"
       - "traefik.enable=true"
       - "traefik.http.routers.lke-server-secure.entrypoints=https"
-      - "traefik.http.routers.lke-server-secure.rule=Host(`lke.${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.lke-server-secure.rule=Host(`lke-api.${TRAEFIK_HOST}`) || (HOST(`lke.${TRAEFIK_HOST}`) && PathPrefix(`/api/`))"
+        #- "traefik.http.routers.lke-server-secure.rule=Host(`lke-api.${TRAEFIK_HOST}`)"
+
+  lke-frontend:
+    networks:
+      - lke_network
+      - traefik_network
+    labels:
+      - "traefik.docker.network=traefik_network"
+      - "traefik.enable=true"
+      - "traefik.http.routers.lke-frontend-secure.entrypoints=https"
+      - "traefik.http.routers.lke-frontend-secure.rule=Host(`lke.${TRAEFIK_HOST}`)"
 
 networks:
   lke_network:

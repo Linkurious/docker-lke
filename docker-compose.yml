@@ -14,6 +14,16 @@ services:
     volumes:
       - lke_data:/data
 
+  lke-frontend:
+    image: ${REPOSITORY}linkurious/lke-frontend:${LKE_FRONTEND_VERSION}
+    init: true
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - lke_network
+
+
 volumes:
   lke_data:
 
