@@ -2,7 +2,7 @@
 version: '3.7'
 
 services:
-  lke:
+  lke-server:
     depends_on:
       - neo4j
     ports:
@@ -41,5 +41,4 @@ services:
 
 volumes:
   lke_data:
-  lke_elasticsearch_data:
   lke_neo4j_data:

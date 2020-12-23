@@ -2,8 +2,8 @@
 version: '3.7'
 
 services:
-  lke:
-    image: linkurious:${LKE_VERSION}
+  lke-server:
+    image: ${REPOSITORY}linkurious/lke-server:${LKE_VERSION}
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -14,7 +14,6 @@ services:
       - "3443:4433"
     volumes:
       - ~/opt/linkurious/data/lke:/data
-      - ~/opt/linkurious/data/elasticsearch:/elasticsearch
 
 networks:
   lke_network:

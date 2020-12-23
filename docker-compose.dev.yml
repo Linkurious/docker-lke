@@ -2,26 +2,28 @@
 version: '3.7'
 
 services:
-  lke:
+  lke-server:
     networks:
       - lke_network
       - traefik_network
     labels:
       - "traefik.docker.network=traefik_network"
       - "traefik.enable=true"
-      - "traefik.http.routers.lke-frontend-secure.entrypoints=https"
-      - "traefik.http.routers.lke-frontend-secure.rule=Host(`lke.${TRAEFIK_HOST}`)"
-  neo4j:
+      - "traefik.http.routers.lke${CHANNEL}-server-secure.entrypoints=https"
+      - "traefik.http.routers.lke${CHANNEL}-server-secure.rule=Host(`lke-api${CHANNEL}.${TRAEFIK_HOST}`) || (HOST(`lke${CHANNEL}.${TRAEFIK_HOST}`) && PathPrefix(`/api/`))"
+        #- "traefik.http.routers.lke-server-secure.rule=Host(`lke-api${CHANNEL}.${TRAEFIK_HOST}`)"
+
+  lke-frontend:
     networks:
       - lke_network
       - traefik_network
+    environment:
+      - REACT_APP_API_BASE_URL=https://lke${CHANNEL}.${TRAEFIK_HOST}/
     labels:
       - "traefik.docker.network=traefik_network"
       - "traefik.enable=true"
-      - "traefik.http.services.neo4j-secure.loadbalancer.server.port=7474"
-      - "traefik.http.routers.neo4j-secure.service=neo4j-secure"
-      - "traefik.http.routers.neo4j-secure.entrypoints=https"
-      - "traefik.http.routers.neo4j-secure.rule=Host(`neo4j.${TRAEFIK_HOST}`)"
+      - "traefik.http.routers.lke${CHANNEL}-frontend-secure.entrypoints=https"
+      - "traefik.http.routers.lke${CHANNEL}-frontend-secure.rule=Host(`lke${CHANNEL}.${TRAEFIK_HOST}`)"
 
 networks:
   lke_network:

@@ -3,7 +3,8 @@ version: '3.7'
 
 services:
   lke:
-    image: linkurious:${LKE_VERSION}
+    image: ${REPOSITORY}linkurious/lke-server:${LKE_VERSION}
+    init: true
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
