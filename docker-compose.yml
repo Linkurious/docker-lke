@@ -1,5 +1,5 @@
 ---
-version: '3.7'
+version: '3.9'
 
 services:
   lke-server:
@@ -9,6 +9,14 @@ services:
     security_opt:
       - no-new-privileges:true
     env_file: ".env.lke-server.${RUN_ENV}"
+    deploy:
+      resources:
+        limits:
+          cpus: 2.00
+          memory: 500M
+        reservations:
+          #cpus: 1.00
+          memory: 200M
     networks:
       - lke_network
     volumes:
@@ -18,6 +26,17 @@ services:
     image: ${REPOSITORY}linkurious/lke-frontend:${LKE_FRONTEND_VERSION}
     init: true
     restart: unless-stopped
+    depends_on:
+      lke-server:
+        condition: service_started
+    deploy:
+      resources:
+        limits:
+          cpus: 0.50
+          memory: 50M
+        reservations:
+          cpus: 0.25
+          memory: 20M
     security_opt:
       - no-new-privileges:true
     networks:
