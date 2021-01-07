@@ -6,6 +6,7 @@ services:
     networks:
       - lke_network
       - traefik_network
+      - elastic_network
     labels:
       - "traefik.docker.network=traefik_network"
       - "traefik.enable=true"
@@ -28,3 +29,6 @@ networks:
   lke_network:
   traefik_network:
     external: true
+  networks:
+    elastic_network:
+      name : elastic_network_lke.${RUN_ENV}
