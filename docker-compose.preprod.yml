@@ -29,6 +29,6 @@ networks:
   lke_network:
   traefik_network:
     external: true
-  networks:
-    elastic_network:
-      name : elastic_network_lke.${RUN_ENV}
+  elastic_network:
+    name : elastic_network_lke.${RUN_ENV}
+    external: true
