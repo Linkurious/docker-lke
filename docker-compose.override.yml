@@ -8,6 +8,11 @@ services:
     ports:
       - "3000:3000"
       - "3443:4433"
+  lke-frontend:
+    depends_on:
+      - lke-server
+    ports:
+      - "8080:80"
 
   neo4j:
     image: neo4j:3.5.15-enterprise
