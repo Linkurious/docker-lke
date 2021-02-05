@@ -6,6 +6,8 @@ services:
     networks:
       - lke_network
       - traefik_network
+    volumes:
+      - ./license.key:/data/license.key:ro
     labels:
       - "traefik.docker.network=traefik_network"
       - "traefik.enable=true"
