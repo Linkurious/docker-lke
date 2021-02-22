@@ -6,3 +6,6 @@ Dockerfile*
 docker-compose*
 .dockerignore
 node_modules
+
+#license file
+license.key

@@ -1,0 +1,20 @@
+---
+version: '3.7'
+
+services:
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.12
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+    ulimits:
+      memlock:
+        # https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_disable_swapping
+        soft: -1
+        hard: -1
+    networks:
+      - lke_network
+
+networks:
+  lke_network:
