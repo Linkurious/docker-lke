@@ -5,7 +5,7 @@ services:
   lke-server:
     networks:
       - lke_network
-      - elastic_network_lke.${RUN_ENV}
+      - elastic_network
       - traefik_network
     volumes:
       - ./license.key:/data/license.key:ro
