@@ -7,6 +7,7 @@ services:
       - lke_network
       - traefik_network
     volumes:
+      - ./customFiles/icons:/data/server/customFiles/icons:ro
       - ./license.key:/data/license.key:ro
     labels:
       - "traefik.docker.network=traefik_network"
