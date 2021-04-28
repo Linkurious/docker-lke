@@ -15,7 +15,13 @@ function usage
 
 function create_user
 {
-  local user_data, email, first_name, last_name, username, password, payload
+  local user_data
+  local email
+  local first_name
+  local last_name
+  local username
+  local password
+  local payload
   user_data="${1}"
   email=$(cut -d ',' -f 3 <<< "${user_data}")
   first_name=$(cut -d ',' -f 1 <<< "${user_data}")
@@ -24,6 +30,7 @@ function create_user
   password=$(openssl rand -base64 14)
   payload="{\"email\":\"${email}\",\"username\":\"${username}\",\"password\":\"${password}\",\"groups\":[2]}"
   curl -q -L $debug -H 'content-type: application/json' -H "cookie: linkurious.session=${lke_session_cookie}" "${lke_api_url}/admin/users" --data-raw "${payload}"
+  echo -e ""
   echo "${email},$password" >> "credentials_${user_file}"
 }
 
