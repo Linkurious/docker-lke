@@ -10,6 +10,8 @@ function usage
   echo "Usage:"
   echo "  -h help"
   echo "  -f file.csv"
+  echo "  -c session cookie"
+  echo "  -u api url"
   exit 0
 }
 
@@ -42,11 +44,12 @@ user_file=""
 lke_api_url="https://lke.app.dev.linkurious.net/api"
 # session cookie extracted from browser
 lke_session_cookie=""
-while getopts "c:f:dh" argument
+while getopts "c:u:f:dh" argument
 do
   case $argument in
     f) user_file=$OPTARG;;
     c) lke_session_cookie=$OPTARG;;
+    u) lke_api_url=$OPTARG;;
     d) debug='-vv';;
     h) usage;;
     *) usage;;
