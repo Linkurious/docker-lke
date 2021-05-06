@@ -15,6 +15,24 @@ Reasonable defaults are provided.
   docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.neo4jsa.yml -f docker-compose.es.yml up
   ```
 
+## How to launch a feature branch
+  - Clone this repo
+  - Change the created directory's name to avoid docker name collision with another LKE instance running
+  - Configure .env and .env.lke-server.XXXX to fit your needs - you can copy from files of another instance already configured
+  - Side note : build numbers are PR numbers and not Jira issue IDs !
+  - Create an fake empty licence file : 
+  ```
+  $ touch license.key
+  ```
+  - If you never did it, log yourself in nexus so docker can be pulled from it :
+  ```
+  $ docker login hub.docker.nexus3.linkurious.net
+  ```
+  - If the branch has run before, or if any doubt, remove existing volumes :
+  ```
+  $ docker-compose ... down -v
+  ```
+
 ## Bind mounts
 
 ### MacOsX
