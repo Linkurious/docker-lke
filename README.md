@@ -16,9 +16,11 @@ Reasonable defaults are provided.
   ```
 
 ## How to launch a feature branch
-  - Clone this repo
-  - Change the created directory's name to avoid docker name collision with another LKE instance running
-  - Configure .env and .env.lke-server.XXXX to fit your needs - you can copy from files of another instance already configured
+  - Clone this repo in a non existing directory, to avoid docker name collision with another LKE instance running :
+  ```
+  $ git clone git@github.com:Linkurious/docker-lke.git DIRECTORY_NAME
+  ```
+  - Configure .env and .env.lke-server.RUN_ENV to fit your needs - you can copy from files of another instance already configured. Note that the RUN_ENV variable in .env refers to the second env file: RUN_ENV=dev-lke-1234 will look for a .env.lke-server.dev-lke-1234 file
   - Side note : build numbers are PR numbers and not Jira issue IDs !
   - Create an fake empty licence file : 
   ```
@@ -28,7 +30,7 @@ Reasonable defaults are provided.
   ```
   $ docker login hub.docker.nexus3.linkurious.net
   ```
-  - If the branch has run before, or if any doubt, remove existing volumes :
+  - If needed, remove existing volumes, keeping in mind that THIS DELETES ALL EXISTING DATA OF THIS LKE INSTANCE :
   ```
   $ docker-compose ... down -v
   ```
