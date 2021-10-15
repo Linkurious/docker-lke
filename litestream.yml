@@ -1,0 +1,10 @@
+dbs:
+  - path: /data/server/database.sqlite
+    replicas:
+      - endpoint:  https://s3.fr-par.scw.cloud
+        type: s3
+        region: fr-par
+        bucket: lk-dev-backup-lke
+        force-path-style: true
+        path: test/
+

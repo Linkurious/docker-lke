@@ -1,0 +1,30 @@
+---
+version: '3.9'
+
+services:
+  lke-backup:
+    image: litestream/litestream:0.3.6
+    init: true
+    restart: unless-stopped
+    user: "${LKE_USER:-2013}:${LKE_GROUP:-2013}"
+    security_opt:
+      - no-new-privileges:true
+    env_file: ".env.backup.${RUN_ENV}"
+    #command: "restore -v -if-db-not-exists -if-replica-exists /data/server/database.sqlite"
+    command: "replicate"
+    deploy:
+      resources:
+        limits:
+          cpus: 2.00
+          memory: 100M
+        reservations:
+          #cpus: 1.00
+          memory: 50M
+    networks:
+      - lke_network
+    volumes:
+      - lke_data:/data
+      - ./litestream.yml:/etc/litestream.yml
+
+volumes:
+  lke_data:
