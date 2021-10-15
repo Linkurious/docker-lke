@@ -10,9 +10,18 @@ Reasonable defaults are provided.
     $ docker-compose up -d
     ```
     Using automatically the docker-compose.override.yml file this will start lke-server + lke-frontend + neo4j
+
   - to start a full environment, on a server:
   ```
   docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.neo4jsa.yml -f docker-compose.es.yml up
+  ```
+  - to start Linkurious Enterprise on local environment:
+  ```
+  docker-compose -f docker-compose.lke.yml up
+  ```
+  - to start Linkurious Enterprise on local environment, with Neo4j and ES:
+  ```
+  docker-compose -f docker-compose.lke.yml -f docker-compose.neo4jsa.yml -f docker-compose.es.yml up
   ```
 
 ## How to launch a feature branch
