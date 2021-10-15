@@ -3,6 +3,7 @@
 ## Configuration
 Configure variables in .env. See .env.example for template.
 Reasonable defaults are provided.
+You will most likely need to set your private repository host, if images are not available locally.
 
 ## Usage
   - Run with docker-compose
@@ -15,10 +16,12 @@ Reasonable defaults are provided.
   ```
   docker-compose -f docker-compose.yml -f docker-compose.dev.yml -f docker-compose.neo4jsa.yml -f docker-compose.es.yml up
   ```
+
   - to start Linkurious Enterprise on local environment:
   ```
   docker-compose -f docker-compose.lke.yml up
   ```
+
   - to start Linkurious Enterprise on local environment, with Neo4j and ES:
   ```
   docker-compose -f docker-compose.lke.yml -f docker-compose.neo4jsa.yml -f docker-compose.es.yml up
