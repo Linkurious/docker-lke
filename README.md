@@ -47,7 +47,7 @@ You will most likely need to set your private repository host, if images are not
   $ docker-compose ... down -v
   ```
 ## User datastore backups
-If you would like to have your sqlite user datastore backed up, you can configure (litestream)[https://litestream.io/] by provididing the appropriate .env.backup.${RUN_ENV} file, see [.env.backup.example] and adding:
+If you would like to have your sqlite user datastore backed up, you can configure [litestream](https://litestream.io/) by provididing the appropriate .env.backup.${RUN_ENV} file, see (.env.backup.example) and adding:
 ```
 -f docker-compose.backup.yml
 ```
