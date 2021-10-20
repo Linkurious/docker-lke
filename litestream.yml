@@ -1,3 +1,5 @@
+---
+# https://litestream.io/reference/config/
 dbs:
   - path: /data/server/database.sqlite
     replicas:
@@ -7,4 +9,6 @@ dbs:
         bucket: ${BACKUP_BUCKET}
         force-path-style: true
         path: backup${CHANNEL}
+        retention: 720h # 24h * 30
+        snapshot-interval: 24h
 
