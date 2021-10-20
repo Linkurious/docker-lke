@@ -1,7 +1,7 @@
 # Dockerized repository
 
 ## Configuration
-Configure variables in .env. See .env.example for template.
+Configure variables in .env. See [.env.example](.env.example) for template.
 Reasonable defaults are provided.
 You will most likely need to set your private repository host, if images are not available locally.
 
@@ -34,7 +34,7 @@ You will most likely need to set your private repository host, if images are not
   ```
   - Configure .env and .env.lke-server.RUN_ENV to fit your needs - you can copy from files of another instance already configured. Note that the RUN_ENV variable in .env refers to the second env file: RUN_ENV=dev-lke-1234 will look for a .env.lke-server.dev-lke-1234 file
   - Side note : build numbers are PR numbers and not Jira issue IDs !
-  - Create an fake empty licence file : 
+  - Create an fake empty licence file :
   ```
   $ touch license.key
   ```
@@ -47,11 +47,18 @@ You will most likely need to set your private repository host, if images are not
   $ docker-compose ... down -v
   ```
 
+## User datastore backups
+If you would like to have your sqlite user datastore backed up, you can configure [litestream](https://litestream.io/) by provididing the appropriate .env.backup.${RUN_ENV} file, see [.env.backup.example](.env.backup.example) and adding:
+```
+-f docker-compose.backup.yml
+```
+to your stack up command
+
 ## Bind mounts
 
 ### MacOsX
 
-You will need to configure shared paths : 
+You will need to configure shared paths :
 You can configure shared paths from Docker -> Preferences... -> File Sharing.
 See https://docs.docker.com/docker-for-mac/osxfs/#namespaces for more info.
 
