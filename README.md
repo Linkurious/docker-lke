@@ -47,6 +47,14 @@ You will most likely need to set your private repository host, if images are not
   docker-compose ... down -v
   ```
 
+## Standalone ES for dev
+In the case you need a standalone ES server for dev purposes, you can run:
+```
+docker-compose -f docker-compose.es.yml up -d
+```
+In the case your port 9200 is used, it will select one in the 92xx range.
+
+
 ## User datastore backups
 If you would like to have your sqlite user datastore backed up, you can configure [litestream](https://litestream.io/) by provididing the appropriate .env.backup.${RUN_ENV} file, see [.env.backup.example](.env.backup.example) and adding:
 ```

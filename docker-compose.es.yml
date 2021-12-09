@@ -1,10 +1,10 @@
 ---
-version: '3.7'
+version: '3.9'
 
 services:
   elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.8.12
-    #image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    # fixed to 7.10.2 due to elastic licencing
+    image: docker.elastic.co/elasticsearch/elasticsearch:${ES_VERSION:-7.10.2}
     restart: unless-stopped
     environment:
       - discovery.type=single-node
@@ -14,6 +14,8 @@ services:
         # https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#_disable_swapping
         soft: -1
         hard: -1
+    ports:
+      - "9200:9200-9299"
     networks:
       - lke_network
 
