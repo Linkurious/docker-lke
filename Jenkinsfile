@@ -4,7 +4,7 @@ dockerJob {
   // General
   projectName = "linkurious/docker-lke"
 
-  # helmReleaseBranch = "develop"
+  // helmReleaseBranch = "develop"
 
   githubRelease = true
 }
