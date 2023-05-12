@@ -30,4 +30,4 @@ home: https://linkurio.us
 maintainers:
   - name: enys
 sources:
-  - https://github.com/Linkurious/linkurious-enterprise
+  - https://github.com/Linkurious/docker-lke
