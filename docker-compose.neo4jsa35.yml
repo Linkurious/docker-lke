@@ -2,29 +2,11 @@
 version: '3.9'
 
 services:
-  lke-server:
-    image: ${REPOSITORY}linkurious/lke-server:${LKE_VERSION}
-    init: true
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    networks:
-      - lke_network
-    ports:
-      - "3000:3000"
-      - "3443:4433"
-    volumes:
-      - lke_data:/data
-
   neo4j:
     image: neo4j:3.5.35-enterprise
     # depends_on:
     #  - plugins-neo4j
     restart: always
-    ports:
-      - "7473:7473"  # https
-      - "7474:7474"  # http
-      - "7687:7687"  # bolt
     volumes:
       - lke_neo4j_data:/data
       # - /opt/linkurious/data/airflow-jobs/neo4j/import:/var/lib/neo4j/import
@@ -47,7 +29,6 @@ services:
       - lke_network
 
 volumes:
-  lke_data:
   lke_neo4j_data:
 
 networks:

@@ -6,16 +6,17 @@ services:
     image: ${REPOSITORY}linkurious/lke-server:${LKE_SERVER_VERSION}
     init: true
     restart: unless-stopped
+    user: "${LKE_USER:-2013}:${LKE_GROUP:-2013}"
     security_opt:
       - no-new-privileges:true
     env_file: ".env.lke-server.${RUN_ENV}"
     deploy:
       resources:
         limits:
-          cpus: 2.00
-          memory: 500M
+          cpus: '2.00'
+          memory: 600M
         reservations:
-          #cpus: 1.00
+          #cpus: '1.00'
           memory: 200M
     networks:
       - lke_network
@@ -32,10 +33,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: 0.50
+          cpus: '0.50'
           memory: 50M
         reservations:
-          #cpus: 0.25
+          #cpus: '0.25'
           memory: 20M
     security_opt:
       - no-new-privileges:true

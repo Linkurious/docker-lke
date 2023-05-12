@@ -1,9 +1,9 @@
 ---
-version: '3.7'
+version: '3.9'
 
 services:
-  lke:
-    image: ${REPOSITORY}linkurious/lke-server:${LKE_VERSION}
+  lke-server:
+    image: ${REPOSITORY}linkurious/lke-server:${LKE_SERVER_VERSION}
     init: true
     restart: unless-stopped
     security_opt:
