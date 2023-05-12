@@ -1,0 +1,208 @@
+{{- $defaultHostUrl := include "linkurious-enterprise.defaultHostUrl" . -}}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "linkurious-enterprise.fullname" . }}
+  labels:
+    {{- include "linkurious-enterprise.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  serviceName: {{ include "linkurious-enterprise.fullname" . }}
+  selector:
+    matchLabels:
+      {{- include "linkurious-enterprise.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "linkurious-enterprise.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.hostAliases }}
+      hostAliases:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "linkurious-enterprise.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+      {{- if .Values.backup.enabled }}
+      - name: init-litestream
+        image: litestream/litestream:0.3.9
+        args: ['restore', '-if-db-not-exists', '-if-replica-exists', '-v', '/data/server/database.sqlite']
+        securityContext:
+          {{- toYaml .Values.securityContext | nindent 12 }}
+        volumeMounts:
+        - mountPath: /data
+          name: lke-data
+        - name: litestream-config
+          mountPath: /etc/litestream.yml
+          subPath: litestream.yaml
+        env:
+        - name: LITESTREAM_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.backup.secretRef.name }}
+              key: LITESTREAM_ACCESS_KEY_ID
+        - name: LITESTREAM_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.backup.secretRef.name }}
+              key: LITESTREAM_SECRET_ACCESS_KEY
+      {{- end }}
+      {{- if .Values.initContainers }}
+        {{- toYaml .Values.initContainers | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if or .Values.env .Values.ingress.enabled }}
+          env:
+          {{- toYaml .Values.env | nindent 12 }}
+          {{- if and .Values.ingress.enabled .Values.ingress.hosts -}}
+          {{- end }}
+            - name: LKE_PUBLIC_PORT_HTTPS
+              value: "443"
+            - name: LKE_FORCE_PUBLIC_HTTPS
+              value: "true"
+            - name: LKE_PUBLIC_DOMAIN
+              value: {{ (first .Values.ingress.hosts).host | default $defaultHostUrl | replace (include "linkurious-enterprise.name" .) .Values.hostPrefixOverride | quote }}
+          {{- end }}
+          {{- with .Values.envFrom }}
+          envFrom: {{- tpl (toYaml .) $ | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /api/status/
+              port: http
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: /api/status
+              port: http
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /data
+              name: lke-data
+          {{- if .Values.licenseFromSecret}}
+            - mountPath: /data/license.key
+              subPath: license.key
+              name: lke-license
+              readOnly: true
+          {{- end }}
+          {{- if .Values.volumeMounts }}
+            {{- toYaml .Values.volumeMounts | nindent 12 }}
+          {{- end }}
+          {{- if .Values.configEnabled }}
+            - mountPath: /usr/src/linkurious/system/server/config/defaults/k8s/docker.json
+              subPath: docker.json
+              name: lke-server-config
+          {{- end }}
+        {{- if .Values.backup.enabled }}
+        - name: litestream
+          image: litestream/litestream:0.3.9
+          args: ['replicate']
+          volumeMounts:
+          - mountPath: /data
+            name: lke-data
+          - name: litestream-config
+            mountPath: /etc/litestream.yml
+            subPath: litestream.yaml
+          env:
+          - name: LITESTREAM_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.backup.secretRef.name }}
+                key: LITESTREAM_ACCESS_KEY_ID
+          - name: LITESTREAM_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.backup.secretRef.name }}
+                key: LITESTREAM_SECRET_ACCESS_KEY
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+      {{- if .Values.licenseFromSecret }}
+      - name: lke-license
+        secret:
+          secretName: {{ tpl .Values.licenseFromSecret . }}
+          items:
+            - key: license.key
+              path: license.key
+      {{- end }}
+      {{- if .Values.volumes }}
+        {{- toYaml .Values.volumes | nindent 8 }}
+      {{- end }}
+      {{- if .Values.configEnabled }}
+      - configMap:
+          name: {{ include "linkurious-enterprise.fullname" . }}-configmap
+        name: lke-server-config
+      {{- end }}
+      {{- if .Values.backup.enabled }}
+      - configMap:
+          name: {{ include "linkurious-enterprise.fullname" . }}-litestream
+        name: litestream-config
+      {{- end }}
+  {{- if .Values.persistentVolume.enabled }}
+  volumeClaimTemplates:
+  - metadata:
+      name: lke-data
+      annotations:
+      {{- range $key, $value := .Values.persistentVolume.annotations }}
+        {{ $key }}: {{ $value }}
+      {{- end }}
+    spec:
+      accessModes:
+      {{- range .Values.persistentVolume.accessModes }}
+        - {{ . | quote }}
+      {{- end }}
+      resources:
+        requests:
+          storage: {{ .Values.persistentVolume.size | quote }}
+      {{- if .Values.persistentVolume.storageClass }}
+        {{- if (eq "-" .Values.persistentVolume.storageClass) }}
+          storageClassName: ""
+        {{- else }}
+          storageClassName: "{{ .Values.persistentVolume.storageClass }}"
+        {{- end }}
+    {{- end }}
+  {{- else }}
+      - name: lke-data
+        emptyDir:
+  {{- end }}

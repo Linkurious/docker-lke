@@ -1,0 +1,187 @@
+# Default values for linkurious-enterprise.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: hub.docker.nexus3.linkurious.net/linkurious/linkurious-enterprise
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+## Optionally specify an array of imagePullSecrets.
+## Secrets must be manually created in the namespace.
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 2000
+  runAsNonRoot: true
+  runAsUser: 2013
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  # readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 2013
+
+## Readiness and liveness probes for default backend
+## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
+##
+readinessProbe:
+  failureThreshold: 3
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 1
+livenessProbe:
+  failureThreshold: 3
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  successThreshold: 1
+  timeoutSeconds: 1
+
+## Environment variables to pass to server
+##
+env: []
+  # - name: "LKE_AUTH_REQUIRED"
+  #   value: "true"
+
+## envFrom to pass to server
+##
+envFrom: []
+  # - configMapRef:
+  #     name: config-map-name
+  # - secretRef:
+  #     name: secret-name
+
+# Existing secret to use for license
+# licenseFromSecret: '{{ printf "%s-lke-license-secret" .Release.Name }}'
+
+service:
+  type: ClusterIP
+  port: 80
+
+## hostPostfix is used to generate hosts and urls using the target namespace.
+hostPostfix: example.domain
+hostPrefixOverride: linkurious-enterprise
+ingress:
+  enabled: false
+  className: ""
+  labels: {}
+    # kube-prometheus-stack-probe: enabled
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - paths:
+        - path: /
+          pathType: ImplementationSpecific
+   # - host: chart-example.local
+   #   paths:
+   #     - path: /
+   #       pathType: ImplementationSpecific
+  tls:
+    - secretName: wildcard-default-cert
+    # - secretName: wildcard-default-cert
+    #  hosts:
+    #    - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 1000m
+  #   memory: 600Mi
+  # requests:
+  #   cpu: 500m
+  #   memory: 300Mi
+
+## Create HorizontalPodAutoscaler object for deployment type
+# This is not recommended
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+## Use init containers to configure custom tooling
+## https://argoproj.github.io/argo-cd/operator-manual/custom_tools/
+## When using the volumes & volumeMounts section bellow, please comment out those above.
+#  volumes:
+#  - name: custom-tools
+#    emptyDir: {}
+#
+#  initContainers:
+#  - name: download-tools
+#    image: alpine:3.8
+#    command: [sh, -c]
+#    args:
+#      - wget -qO- https://get.helm.sh/helm-v2.16.1-linux-amd64.tar.gz | tar -xvzf - &&
+#        mv linux-amd64/helm /custom-tools/
+#    volumeMounts:
+#      - mountPath: /custom-tools
+#        name: custom-tools
+#  volumeMounts:
+#  - mountPath: /usr/local/bin/helm
+#    name: custom-tools
+#    subPath: helm
+
+# -- Manage LKE configmap (Declarative Setup)
+## Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion
+configEnabled: true
+config: {}
+  # LKE externally facing base URL (optional). Required when configuring SSO
+  # url: https://lke.example.com
+  # access:
+  #   authRequired: true
+  #   oauth2:
+  #     enabled: true
+
+# TODO remove, see helpers
+configs: {}
+persistentVolume:
+  enabled: false
+  ## redis-ha data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  ##   GKE, AWS & OpenStack)
+  ##
+  # storageClass: "-"
+  accessModes:
+    - ReadWriteOnce
+  size: 5Gi
+  annotations: {}
+backup:
+  ## will backup sqlite with litestream
+  enabled: false
+  secretRef:
+    name: "litestream-lke-secret"
+
+hostAliases: []
