@@ -154,7 +154,11 @@ affinity: {}
 # -- Manage LKE configmap (Declarative Setup)
 ## Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion
 configEnabled: true
-config: {}
+config:
+  db:
+    options:
+      dialect: 'sqlite'
+      storage: 'server/database.sqlite'
   # LKE externally facing base URL (optional). Required when configuring SSO
   # url: https://lke.example.com
   # access:
