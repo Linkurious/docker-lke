@@ -65,7 +65,7 @@ Create the name of the service account to use
 Default external url
 */}}
 {{- define "linkurious-enterprise.defaultHostUrl" -}}
-{{- print   (include "linkurious-enterprise.fullname" .) "."  .Release.Namespace "." .Values.hostPostfix | replace "jenkins" "features" | replace (include "linkurious-enterprise.name" .) .Values.hostPrefixOverride -}}
+{{- print   (include "linkurious-enterprise.fullname" .) "."  .Release.Namespace "." .Values.hostPostfix | replace "jenkins" "features" | replace (print "-" (include "linkurious-enterprise.name" .)) .Values.hostPrefixOverride -}}
 {{- end }}
 
 {{/*
