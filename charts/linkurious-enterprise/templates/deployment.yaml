@@ -83,7 +83,7 @@ spec:
             - name: LKE_FORCE_PUBLIC_HTTPS
               value: "true"
             - name: LKE_PUBLIC_DOMAIN
-              value: {{ (first .Values.ingress.hosts).host | default $defaultHostUrl | replace (include "linkurious-enterprise.name" .) .Values.hostPrefixOverride | quote }}
+              value: {{ (first .Values.ingress.hosts).host | default $defaultHostUrl | quote }}
           {{- end }}
           {{- with .Values.envFrom }}
           envFrom: {{- tpl (toYaml .) $ | nindent 12 }}
