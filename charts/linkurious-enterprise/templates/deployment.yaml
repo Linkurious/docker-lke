@@ -92,6 +92,9 @@ spec:
             - name: http
               containerPort: 3000
               protocol: TCP
+            - name: http-metrics
+              containerPort: 9400
+              protocol: TCP
           {{- if .Values.offlineMaintenanceModeEnabled }}
           # Deactivate probes in Maintenance mode
           {{- else }}
