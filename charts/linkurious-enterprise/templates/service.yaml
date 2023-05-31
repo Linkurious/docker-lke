@@ -11,9 +11,11 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+    {{- if .Values.metrics.prometheus }}
     - port: {{ .Values.service.metricsPort }}
       targetPort: http-metrics
       protocol: TCP
       name: http-metrics
+    {{- end }}
   selector:
     {{- include "linkurious-enterprise.selectorLabels" . | nindent 4 }}
