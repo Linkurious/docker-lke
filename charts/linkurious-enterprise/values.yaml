@@ -194,3 +194,17 @@ backup:
     name: "litestream-lke-secret"
 
 hostAliases: []
+
+metrics:
+## Prometheus is enabled by default.
+## It can be disabled by setting "prometheus: null"
+  prometheus:
+    ## Entry point used to expose metrics.
+    entryPoint: metrics
+    disableAPICheck: true
+    serviceMonitor:
+      additionalLabels:
+        release: kube-prometheus-stack
+      jobLabel: platypus
+      interval: 30s
+      honorLabels: true
