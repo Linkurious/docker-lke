@@ -67,6 +67,12 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.offlineMaintenanceModeEnabled }}
+          command:
+            - "bash"
+            - "-c"
+            - "while true; do echo 'Linkurious-enterprise is not running. Pod is in offline maintenance mode. Remove linkurious-enterprise.offlineMaintenanceModeEnabled setting and run `helm upgrade ...` to resume normal operation.'; sleep 60; done"
+          {{- end }}
           {{- if or .Values.env .Values.ingress.enabled }}
           env:
           {{- toYaml .Values.env | nindent 12 }}
@@ -86,6 +92,9 @@ spec:
             - name: http
               containerPort: 3000
               protocol: TCP
+          {{- if .Values.offlineMaintenanceModeEnabled }}
+          # Deactivate probes in Maintenance mode
+          {{- else }}
           livenessProbe:
             httpGet:
               path: /api/status/
@@ -104,6 +113,7 @@ spec:
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
             successThreshold: {{ .Values.readinessProbe.successThreshold }}
             failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

@@ -166,6 +166,11 @@ config:
   #   oauth2:
   #     enabled: true
 
+# set offlineMaintenanceModeEnabled: true to restart the StatefulSet without the linkurious-enterprise process running
+# this can be used to perform tasks that cannot be performed when Neo4j is running,
+# or in case the configuration is broken
+offlineMaintenanceModeEnabled: false
+
 # TODO remove, see helpers
 configs: {}
 persistentVolume:
