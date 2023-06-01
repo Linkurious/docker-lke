@@ -92,6 +92,11 @@ spec:
             - name: http
               containerPort: 3000
               protocol: TCP
+            {{- if .Values.metrics.prometheus }}
+            - name: http-metrics
+              containerPort: 9400
+              protocol: TCP
+            {{- end }}
           {{- if .Values.offlineMaintenanceModeEnabled }}
           # Deactivate probes in Maintenance mode
           {{- else }}
