@@ -156,6 +156,8 @@ affinity: {}
 ## Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion
 configEnabled: true
 config:
+  metrics:
+    enabled: true
   db:
     options:
       dialect: 'sqlite'
