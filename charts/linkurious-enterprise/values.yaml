@@ -157,6 +157,7 @@ affinity: {}
 configEnabled: false
 configOverlayEnabled: true
 config:
+  version: 2.10.18
   db:
     options:
       dialect: 'sqlite'

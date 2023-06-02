@@ -12,6 +12,10 @@ metadata:
   {{- end }}
   {{- end }}
 data:
+{{- if .Values.configOverlayEnabled }}
   docker.json: |-
+{{- else }}
+  overlay.json: |-
+{{- end }}
     {{- include "linkurious-enterprise.config" $  | fromYaml | mustToPrettyJson |  nindent 4}}
 {{- end }}
