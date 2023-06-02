@@ -1,4 +1,4 @@
-{{- if .Values.configEnabled }}
+{{- if or (.Values.configEnabled) (.Values.configOverlayEnabled) }}
 apiVersion: v1
 kind: ConfigMap
 metadata:

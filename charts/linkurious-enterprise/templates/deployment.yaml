@@ -137,6 +137,9 @@ spec:
             - mountPath: /usr/src/linkurious/system/server/config/defaults/k8s/docker.json
               subPath: docker.json
               name: lke-server-config
+          {{- else if .Values.configOverlayEnabled }}
+            - mountPath: /usr/src/linkurious/system/server/config/defaults/k8s/
+              name: lke-server-config-overlay
           {{- end }}
         {{- if .Values.backup.enabled }}
         - name: litestream
@@ -188,6 +191,11 @@ spec:
       - configMap:
           name: {{ include "linkurious-enterprise.fullname" . }}-configmap
         name: lke-server-config
+      {{- end }}
+      {{- if .Values.configOverlayEnabled }}
+      - configMap:
+          name: {{ include "linkurious-enterprise.fullname" . }}-configmap
+        name: lke-server-config-overlay
       {{- end }}
       {{- if .Values.backup.enabled }}
       - configMap:

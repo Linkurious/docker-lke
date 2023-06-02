@@ -154,7 +154,8 @@ affinity: {}
 
 # -- Manage LKE configmap (Declarative Setup)
 ## Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion
-configEnabled: true
+configEnabled: false
+configOverlayEnabled: true
 config:
   db:
     options:
