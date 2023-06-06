@@ -154,12 +154,35 @@ affinity: {}
 
 # -- Manage LKE configmap (Declarative Setup)
 ## Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion
-configEnabled: true
+configEnabled: false
+configOverlayEnabled: true
 config:
+  version: 2.10.18
   db:
     options:
       dialect: 'sqlite'
       storage: 'server/database.sqlite'
+  access:
+    authRequired: "$ENV:LKE_AUTH_REQUIRED"
+    oauth2:
+      enabled: "$ENV-JSON:LKE_OAUTH2_ENABLED"
+      provider: "$ENV:LKE_OAUTH2_PROVIDER"
+      authorizationURL: "$ENV:LKE_OAUTH2_AUTHORIZATION_URL"
+      tokenURL: "$ENV:LKE_OAUTH2_TOKEN_URL"
+      clientID: "$ENV:LKE_OAUTH2_CLIENT_ID"
+      clientSecret: "$ENV:LKE_OAUTH2_CLIENT_SECRET"
+      azure:
+        tenantID: "$ENV:LKE_OAUTH2_AZURE_TENANT_ID"
+    autoRefreshGroupMapping: "$ENV-JSON:LKE_OAUTH2_AUTO_REFRESH_GROUP_MAPPING"
+  server:
+    cookieHttpOnly: true
+    allowOrigin: "$ENV:LKE_ALLOW_ORIGIN"
+    allowFraming: false
+    domain: "$ENV:LKE_PUBLIC_DOMAIN"
+    publicPortHttps: "$ENV-NUMBER:LKE_PUBLIC_PORT_HTTPS"
+    useHttps: false
+    forceHttps: false
+    forcePublicHttps: "$ENV-JSON:LKE_FORCE_PUBLIC_HTTPS"
   # LKE externally facing base URL (optional). Required when configuring SSO
   # url: https://lke.example.com
   # access:
@@ -172,8 +195,6 @@ config:
 # or in case the configuration is broken
 offlineMaintenanceModeEnabled: false
 
-# TODO remove, see helpers
-configs: {}
 persistentVolume:
   enabled: false
   ## redis-ha data Persistent Volume Storage Class
