@@ -246,5 +246,5 @@ com_crashlytics_export_strings.xml
 #license file
 license.key
 
-#helm
+# Helm
 template.yaml
