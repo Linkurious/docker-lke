@@ -70,6 +70,7 @@ Default external url
 {{- else }}
 {{- print   (include "linkurious-enterprise.fullname" .) "."  .Release.Namespace "." .Values.hostPostfix | replace (print "-" (include "linkurious-enterprise.name" .)) .Values.hostPrefixOverride -}}
 {{- end }}
+{{- end }}
 
 {{/*
 LKE Configuration Preset Values (Incluenced by Values configuration)
