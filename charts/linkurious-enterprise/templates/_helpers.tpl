@@ -63,9 +63,14 @@ Create the name of the service account to use
 
 {{/*
 Default external url
+Condition on hostPrefixOverride fixing DLKE-17 bug
 */}}
 {{- define "linkurious-enterprise.defaultHostUrl" -}}
-{{- print   (include "linkurious-enterprise.fullname" .) "."  .Release.Namespace "." .Values.hostPostfix | replace "jenkins" "features" | replace (print "-" (include "linkurious-enterprise.name" .)) .Values.hostPrefixOverride -}}
+{{- if .Values.hostPrefixOverride }}
+{{- print   (include "linkurious-enterprise.fullname" .) "."  .Release.Namespace "." .Values.hostPostfix | replace (include "linkurious-enterprise.name" .) .Values.hostPrefixOverride -}}
+{{- else }}
+{{- print   (include "linkurious-enterprise.fullname" .) "."  .Release.Namespace "." .Values.hostPostfix | replace (print "-" (include "linkurious-enterprise.name" .)) .Values.hostPrefixOverride -}}
+{{- end }}
 {{- end }}
 
 {{/*
