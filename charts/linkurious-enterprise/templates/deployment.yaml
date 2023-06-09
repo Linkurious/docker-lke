@@ -218,13 +218,13 @@ spec:
       resources:
         requests:
           storage: {{ .Values.persistentVolume.size | quote }}
-      {{- if .Values.persistentVolume.storageClass }}
-        {{- if (eq "-" .Values.persistentVolume.storageClass) }}
-          storageClassName: ""
-        {{- else }}
-          storageClassName: "{{ .Values.persistentVolume.storageClass }}"
-        {{- end }}
-    {{- end }}
+    {{- if .Values.persistentVolume.storageClass }}
+      {{- if (eq "-" .Values.persistentVolume.storageClass) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: "{{ .Values.persistentVolume.storageClass }}"
+      {{- end }}
+  {{- end }}
   {{- else }}
       - name: lke-data
         emptyDir:
