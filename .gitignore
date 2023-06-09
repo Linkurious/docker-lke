@@ -245,3 +245,6 @@ com_crashlytics_export_strings.xml
 !.env.example
 #license file
 license.key
+
+# Helm
+template.yaml

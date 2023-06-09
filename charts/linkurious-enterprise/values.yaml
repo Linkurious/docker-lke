@@ -81,7 +81,7 @@ service:
 
 ## hostPostfix is used to generate hosts and urls using the target namespace.
 hostPostfix: example.domain
-hostPrefixOverride: -linkurious-enterprise
+hostPrefixOverride: linkurious-enterprise
 ingress:
   enabled: false
   className: ""
