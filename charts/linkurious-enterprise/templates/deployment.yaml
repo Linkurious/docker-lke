@@ -220,11 +220,11 @@ spec:
           storage: {{ .Values.persistentVolume.size | quote }}
     {{- if .Values.persistentVolume.storageClass }}
       {{- if (eq "-" .Values.persistentVolume.storageClass) }}
-        storageClassName: ""
+      storageClassName: ""
       {{- else }}
-        storageClassName: "{{ .Values.persistentVolume.storageClass }}"
+      storageClassName: "{{ .Values.persistentVolume.storageClass }}"
       {{- end }}
-  {{- end }}
+    {{- end }}
   {{- else }}
       - name: lke-data
         emptyDir:
