@@ -63,10 +63,10 @@ Create the name of the service account to use
 
 {{/*
 Default external url
-#fixing DLKE-17 bug
+Condition on hostPrefixOverride fixing DLKE-17 bug
 */}}
 {{- define "linkurious-enterprise.defaultHostUrl" -}}
-{{- if eq (include "linkurious-enterprise.fullname" .) .Release.Name }}
+{{- if .Values.hostPrefixOverride }}
 {{- print   (include "linkurious-enterprise.fullname" .) "."  .Release.Namespace "." .Values.hostPostfix | replace (include "linkurious-enterprise.name" .) .Values.hostPrefixOverride -}}
 {{- else }}
 {{- print   (include "linkurious-enterprise.fullname" .) "."  .Release.Namespace "." .Values.hostPostfix | replace (print "-" (include "linkurious-enterprise.name" .)) .Values.hostPrefixOverride -}}
