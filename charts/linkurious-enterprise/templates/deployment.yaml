@@ -75,7 +75,9 @@ spec:
           {{- end }}
           {{- if or .Values.env .Values.ingress.enabled }}
           env:
+          {{- if .Values.env }}
           {{- toYaml .Values.env | nindent 12 }}
+          {{- end }}
           {{- if and .Values.ingress.enabled .Values.ingress.hosts -}}
           {{- end }}
             - name: LKE_PUBLIC_PORT_HTTPS
