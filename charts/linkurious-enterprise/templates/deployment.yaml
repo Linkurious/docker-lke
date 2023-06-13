@@ -75,17 +75,17 @@ spec:
           {{- end }}
           {{- if or .Values.env .Values.ingress.enabled }}
           env:
-          {{- if .Values.env }}
-          {{- toYaml .Values.env | nindent 12 }}
-          {{- end }}
-          {{- if and .Values.ingress.enabled .Values.ingress.hosts -}}
-          {{- end }}
+            {{- if .Values.env }}
+            {{- toYaml .Values.env | nindent 12 }}
+            {{- end }}
+            {{- if and .Values.ingress.enabled .Values.ingress.hosts }}
             - name: LKE_PUBLIC_PORT_HTTPS
               value: "443"
             - name: LKE_FORCE_PUBLIC_HTTPS
               value: "true"
             - name: LKE_PUBLIC_DOMAIN
               value: {{ (first .Values.ingress.hosts).host | default $defaultHostUrl | quote }}
+            {{- end }}
           {{- end }}
           {{- with .Values.envFrom }}
           envFrom: {{- tpl (toYaml .) $ | nindent 12 }}
