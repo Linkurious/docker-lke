@@ -15,9 +15,12 @@ spec:
       {{- include "linkurious-enterprise.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
+      {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.backup.velero }}
+        backup.velero.io/backup-volumes: lke-data
       {{- end }}
       labels:
         {{- include "linkurious-enterprise.selectorLabels" . | nindent 8 }}

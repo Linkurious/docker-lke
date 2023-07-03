@@ -214,6 +214,7 @@ backup:
   enabled: false
   secretRef:
     name: "litestream-lke-secret"
+  velero: true
 
 hostAliases: []
 
