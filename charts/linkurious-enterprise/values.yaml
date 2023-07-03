@@ -210,10 +210,14 @@ persistentVolume:
   size: 5Gi
   annotations: {}
 backup:
-  ## will backup sqlite with litestream
-  enabled: false
-  secretRef:
-    name: "litestream-lke-secret"
+  litestream:
+    ## will backup sqlite with litestream
+    enabled: false
+    secretRef:
+      name: "litestream-lke-secret"
+  velero:
+    ## will backup lke-data mount volume with velero
+    enabled: false
 
 hostAliases: []
 
