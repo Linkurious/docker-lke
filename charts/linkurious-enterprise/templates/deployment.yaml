@@ -19,7 +19,7 @@ spec:
       {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.backup.velero }}
+      {{- if .Values.backup.velero.enabled }}
         backup.velero.io/backup-volumes: lke-data
       {{- end }}
       labels:
@@ -37,7 +37,7 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
-      {{- if .Values.backup.enabled }}
+      {{- if .Values.backup.litestream.enabled }}
       - name: init-litestream
         image: litestream/litestream:0.3.9
         args: ['restore', '-if-db-not-exists', '-if-replica-exists', '-v', '/data/server/database.sqlite']
@@ -53,12 +53,12 @@ spec:
         - name: LITESTREAM_ACCESS_KEY_ID
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.backup.secretRef.name }}
+              name: {{ .Values.backup.litestream.secretRef.name }}
               key: LITESTREAM_ACCESS_KEY_ID
         - name: LITESTREAM_SECRET_ACCESS_KEY
           valueFrom:
             secretKeyRef:
-              name: {{ .Values.backup.secretRef.name }}
+              name: {{ .Values.backup.litestream.secretRef.name }}
               key: LITESTREAM_SECRET_ACCESS_KEY
       {{- end }}
       {{- if .Values.initContainers }}
@@ -146,7 +146,7 @@ spec:
             - mountPath: /usr/src/linkurious/system/server/config/defaults/k8s/
               name: lke-server-config-overlay
           {{- end }}
-        {{- if .Values.backup.enabled }}
+        {{- if .Values.backup.litestream.enabled }}
         - name: litestream
           image: litestream/litestream:0.3.9
           args: ['replicate']
@@ -160,12 +160,12 @@ spec:
           - name: LITESTREAM_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.backup.secretRef.name }}
+                name: {{ .Values.backup.litestream.secretRef.name }}
                 key: LITESTREAM_ACCESS_KEY_ID
           - name: LITESTREAM_SECRET_ACCESS_KEY
             valueFrom:
               secretKeyRef:
-                name: {{ .Values.backup.secretRef.name }}
+                name: {{ .Values.backup.litestream.secretRef.name }}
                 key: LITESTREAM_SECRET_ACCESS_KEY
           {{- end }}
       {{- with .Values.nodeSelector }}
@@ -202,7 +202,7 @@ spec:
           name: {{ include "linkurious-enterprise.fullname" . }}-configmap
         name: lke-server-config-overlay
       {{- end }}
-      {{- if .Values.backup.enabled }}
+      {{- if .Values.backup.litestream.enabled }}
       - configMap:
           name: {{ include "linkurious-enterprise.fullname" . }}-litestream
         name: litestream-config
