@@ -1,4 +1,4 @@
-{{- if .Values.metrics.prometheus }}
+{{- if and .Values.metrics.prometheus .Values.metrics.prometheus.enabled }}
 {{- if .Values.metrics.prometheus.serviceMonitor }}
   {{- if (not (.Capabilities.APIVersions.Has "monitoring.coreos.com/v1")) }}
     {{- if (not (.Values.metrics.prometheus.disableAPICheck)) }}
