@@ -225,6 +225,7 @@ metrics:
 ## Prometheus is enabled by default.
 ## It can be disabled by setting "prometheus: null"
   prometheus:
+    enabled: true
     ## Entry point used to expose metrics.
     entryPoint: metrics
     disableAPICheck: true
