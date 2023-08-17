@@ -19,7 +19,7 @@ builder = "builder-" + k8s_namespace()
 enterprise_workload_name = 'linkurious-enterprise'
 enterprise_release_name = ctx.removesuffix('@k8s-dev') + '-tilt'
 enterprise_ingress_workload_name = ctx.removesuffix('@k8s-dev') + '-tilt'
-extra_values = ['--values=./internal-values.yaml']
+extra_values = ['--values=./internal-values.yaml'] # I recently tried to run tilt but internal values are not found for this repo, i forgot how to make it work (but that's not the scope of this ticket)
 helm_resource(
   name=enterprise_workload_name,
   release_name=enterprise_release_name,

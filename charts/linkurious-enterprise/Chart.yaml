@@ -28,6 +28,6 @@ keywords:
   - linkurious-enterprise
 home: https://linkurio.us
 maintainers:
-  - name: enys
+  - name: enys  #do we keep it like or do we put linkurious ?
 sources:
   - https://github.com/Linkurious/docker-lke
