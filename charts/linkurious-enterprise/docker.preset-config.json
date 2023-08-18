@@ -47,7 +47,7 @@
     "listenPortHttps": 3443,
     "clientFolder": "server/public",
     "cookieHttpOnly": true,
-    "cookieSecret": "zO6Yb7u5H907dfEcmjS8pXgWNEo3B9pNQF8mKjdzRR3I64o88GrGLWEjqNq1Yx5", # is this sensitive information ?
+    "cookieSecret": "",
     "allowOrigin": "$ENV:LKE_ALLOW_ORIGIN",
     "allowFraming": false,
     "domain": "$ENV:LKE_PUBLIC_DOMAIN",
