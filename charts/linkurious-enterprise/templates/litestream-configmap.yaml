@@ -12,7 +12,7 @@ data:
     dbs:
       - path: /data/server/database.sqlite
         replicas:
-          - endpoint:  https://s3.fr-par.scw.cloud #do we want this information on public repo ?
+          - endpoint:  https://s3.fr-par.scw.cloud
             type: s3
             region: fr-par
             bucket: lk-{{ .Release.Namespace }}-backup-lke
