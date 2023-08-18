@@ -41,7 +41,7 @@ function create_user
 ##########
 debug=""
 user_file=""
-lke_api_url="https://lke.app.dev.linkurious.net/api" # is this script still use or should it be deleted ?
+lke_api_url="https://lke.app.dev.linkurious.net/api" # is this script still used or should it be deleted ?
 # session cookie extracted from browser
 lke_session_cookie=""
 while getopts "c:u:f:dh" argument
