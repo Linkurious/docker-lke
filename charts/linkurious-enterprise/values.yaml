@@ -215,14 +215,9 @@ backup:
     enabled: false
   litestream:
     ## will backup sqlite with litestream
-    enabled: true
+    enabled: false
     secretRef:
       name: "litestream-lke-secret"
-    config:
-      url: https://s3.fr-par.scw.cloud
-      type: s3
-      region: fr-par
-      bucket: lk-{{ .Release.Namespace }}-backup-lke
 
 hostAliases: []
 
