@@ -210,15 +210,28 @@ persistentVolume:
   size: 5Gi
   annotations: {}
 backup:
-  litestream:
-    ## will backup sqlite with litestream
-    enabled: false
-    secretRef:
-      name: "litestream-lke-secret"
   velero:
     ## will backup lke-data mount volume with velero
     enabled: false
-
+  litestream:
+    ## will backup sqlite with litestream
+    enabled: true
+    secretRef:
+      name: "litestream-lke-secret"
+    config: |
+      ---
+      # https://litestream.io/reference/config/
+      dbs:
+        - path: /data/server/database.sqlite
+          replicas:
+            - endpoint:  https://s3.fr-par.scw.cloud
+              type: s3
+              region: fr-par
+              bucket: lk-{{ .Release.Namespace }}-backup-lke
+              force-path-style: true
+              path: backup/{{ include "linkurious-enterprise.fullname" . }}
+              retention: 720h # 24h * 30
+              snapshot-interval: 24h
 hostAliases: []
 
 metrics:
