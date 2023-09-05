@@ -6,7 +6,7 @@
 replicaCount: 1
 
 image:
-  repository: hub.docker.nexus3.linkurious.net/linkurious/linkurious-enterprise
+  repository:
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
