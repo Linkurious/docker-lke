@@ -47,7 +47,7 @@
     "listenPortHttps": 3443,
     "clientFolder": "server/public",
     "cookieHttpOnly": true,
-    "cookieSecret": "",
+    "cookieSecret": null,
     "allowOrigin": "$ENV:LKE_ALLOW_ORIGIN",
     "allowFraming": false,
     "domain": "$ENV:LKE_PUBLIC_DOMAIN",
