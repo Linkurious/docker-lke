@@ -214,7 +214,7 @@ backup:
 
   litestream:
     ## will backup sqlite with litestream
-    enabled: true
+    enabled: false
     secretRef:
       name: "litestream-lke-secret"
     config: |
