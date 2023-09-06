@@ -211,12 +211,24 @@ persistentVolume:
     - ReadWriteOnce
   size: 5Gi
   annotations: {}
+
 backup:
+
   litestream:
     ## will backup sqlite with litestream
     enabled: false
     secretRef:
       name: "litestream-lke-secret"
+    config: |
+      ---
+      # https://litestream.io/reference/config/
+      dbs:
+        - path: /data/server/database.sqlite
+          replicas:
+            - url: s3://BUCKETNAME/PATHNAME
+              retention: 720h
+              snapshot-interval: 24h
+
   velero:
     ## will backup lke-data mount volume with velero
     enabled: false
