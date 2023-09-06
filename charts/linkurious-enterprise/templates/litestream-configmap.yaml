@@ -7,18 +7,5 @@ metadata:
     {{- include "linkurious-enterprise.labels" . | nindent 4 }}
 data:
   litestream.yaml: |+
-    ---
-    # https://litestream.io/reference/config/
-    dbs:
-      - path: /data/server/database.sqlite
-        replicas:
-          - endpoint: {{ .Values.backup.litestream.config.url }}
-            type: {{ .Values.backup.litestream.config.type }}
-            region: {{ .Values.backup.litestream.config.region }}
-            bucket: {{ tpl .Values.backup.litestream.config.bucket . }}
-            force-path-style: true
-            path: backup/{{ include "linkurious-enterprise.fullname" . }}
-            retention: 720h # 24h * 30
-            snapshot-interval: 24h
-
+   {{ tpl .Values.backup.litestream.config . | nindent 4 }}
 {{- end }}
