@@ -41,7 +41,7 @@ function create_user
 ##########
 debug=""
 user_file=""
-lke_api_url="https://lke.app.dev.linkurious.net/api"
+lke_api_url=""
 # session cookie extracted from browser
 lke_session_cookie=""
 while getopts "c:u:f:dh" argument
