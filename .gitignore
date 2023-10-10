@@ -248,3 +248,4 @@ license.key
 
 # Helm
 template.yaml
+internal-values.yaml
