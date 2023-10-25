@@ -209,7 +209,9 @@ spec:
       {{- end }}
   {{- if .Values.persistentVolume.enabled }}
   volumeClaimTemplates:
-  - metadata:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
       name: lke-data
       annotations:
       {{- range $key, $value := .Values.persistentVolume.annotations }}
