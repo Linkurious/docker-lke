@@ -2,10 +2,11 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
 replicaCount: 1
 
 image:
-  repository: hub.docker.nexus3.linkurious.net/linkurious/linkurious-enterprise
+  repository:
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -118,6 +119,7 @@ resources: {}
 
 ## Create HorizontalPodAutoscaler object for deployment type
 # This is not recommended
+# https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 autoscaling:
   enabled: false
   minReplicas: 1
