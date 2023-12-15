@@ -14,7 +14,7 @@ services:
       # - /opt/linkurious/data/airflow-jobs/neo4j/plugins:/plugins
       # - /opt/linkurious/data/airflow-jobs/neo4j/query:/var/lib/neo4j/query
     environment:
-      #- NEO4J_dbms_security_procedures_unrestricted=\*.\*
+      # - NEO4J_dbms_security_procedures_unrestricted=\*.\*
       - NEO4J_dbms_security_procedures_unrestricted=apoc.\*
       - NEO4J_apoc_export_file_enabled=true
       - NEO4J_apoc_import_file_enabled=true
