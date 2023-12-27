@@ -16,7 +16,7 @@ services:
           cpus: '2.00'
           memory: 600M
         reservations:
-          #cpus: '1.00'
+          # cpus: '1.00'
           memory: 200M
     networks:
       - lke_network
@@ -36,7 +36,7 @@ services:
           cpus: '0.50'
           memory: 50M
         reservations:
-          #cpus: '0.25'
+          # cpus: '0.25'
           memory: 20M
     security_opt:
       - no-new-privileges:true

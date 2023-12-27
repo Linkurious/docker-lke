@@ -3,7 +3,7 @@
 dbs:
   - path: /data/server/database.sqlite
     replicas:
-      - endpoint:  https://s3.fr-par.scw.cloud
+      - endpoint: https://s3.fr-par.scw.cloud
         type: s3
         region: fr-par
         bucket: ${BACKUP_BUCKET}
@@ -11,4 +11,3 @@ dbs:
         path: backup${CHANNEL}
         retention: 720h # 24h * 30
         snapshot-interval: 24h
-
