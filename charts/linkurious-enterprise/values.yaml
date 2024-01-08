@@ -234,6 +234,13 @@ backup:
       initialDelaySeconds: 5
       periodSeconds: 10
       failureThreshold: 3
+    resources: {}
+      # limits:
+      #   cpu: 1500m
+      #   memory: 1000Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 100Mi
     secretRef:
       name: "litestream-lke-secret"
     config: |
