@@ -168,7 +168,7 @@ spec:
                 name: {{ .Values.backup.litestream.secretRef.name }}
                 key: LITESTREAM_SECRET_ACCESS_KEY
           livenessProbe:
-            initialDelaySeconds: {{ .Values..backup.litestreamlivenessProbe.initialDelaySeconds }}
+            initialDelaySeconds: {{ .Values.backup.litestream.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.backup.litestream.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.backup.litestream.livenessProbe.timeoutSeconds }}
             successThreshold: {{ .Values.backup.litestream.livenessProbe.successThreshold }}
