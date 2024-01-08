@@ -220,6 +220,20 @@ backup:
   litestream:
     ## will backup sqlite with litestream
     enabled: false
+    readinessProbe:
+      exec:
+        command:
+          - litestream
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      failureThreshold: 3
+    livenessProbe:
+      exec:
+        command:
+          - litestream
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      failureThreshold: 3
     secretRef:
       name: "litestream-lke-secret"
     config: |
