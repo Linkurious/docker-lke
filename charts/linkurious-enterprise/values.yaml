@@ -219,7 +219,7 @@ backup:
 
   litestream:
     ## will backup sqlite with litestream
-    enabled: true
+    enabled: false
     readinessProbe:
       exec:
         command:
