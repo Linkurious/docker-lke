@@ -167,6 +167,20 @@ spec:
               secretKeyRef:
                 name: {{ .Values.backup.litestream.secretRef.name }}
                 key: LITESTREAM_SECRET_ACCESS_KEY
+          livenessProbe:
+            initialDelaySeconds: {{ .Values..backup.litestreamlivenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.backup.litestream.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.backup.litestream.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.backup.litestream.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.backup.litestream.livenessProbe.failureThreshold }}
+          readinessProbe:
+            initialDelaySeconds: {{ .Values.backup.litestream.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.backup.litestream.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.backup.litestream.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.backup.litestream.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.backup.litestream.readinessProbe.failureThreshold }}
+          resources:
+            {{- toYaml .Values.backup.litestream.resources | nindent 12 }}
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
