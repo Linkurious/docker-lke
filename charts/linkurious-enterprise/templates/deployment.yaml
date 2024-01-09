@@ -167,6 +167,12 @@ spec:
               secretKeyRef:
                 name: {{ .Values.backup.litestream.secretRef.name }}
                 key: LITESTREAM_SECRET_ACCESS_KEY
+          livenessProbe:
+            {{- toYaml .Values.backup.litestream.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.backup.litestream.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.backup.litestream.resources | nindent 12 }}
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
