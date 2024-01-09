@@ -220,6 +220,31 @@ backup:
   litestream:
     ## will backup sqlite with litestream
     enabled: false
+    readinessProbe:
+      exec:
+        command:
+          - litestream
+          - snapshots
+          - /data/server/database.sqlite
+      initialDelaySeconds: 5
+      periodSeconds: 15
+      failureThreshold: 3
+    livenessProbe:
+      exec:
+        command:
+          - litestream
+          - snapshots
+          - /data/server/database.sqlite
+      initialDelaySeconds: 5
+      periodSeconds: 15
+      failureThreshold: 3
+    resources: {}
+      # limits:
+      #   cpu: 1500m
+      #   memory: 1000Mi
+      # requests:
+      #   cpu: 100m
+      #   memory: 100Mi
     secretRef:
       name: "litestream-lke-secret"
     config: |
