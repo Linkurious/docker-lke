@@ -15,7 +15,7 @@ services:
       - "8080:80"
 
   neo4j:
-    image: neo4j:3.5.35-enterprise
+    image: neo4j:5.16.0-enterprise
     # depends_on:
     #  - plugins-neo4j
     restart: always
