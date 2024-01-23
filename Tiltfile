@@ -4,7 +4,6 @@ version_settings(constraint='>=0.30.8')
 
 load('ext://kubectl_build', 'kubectl_build')
 load('ext://helm_resource', 'helm_resource', 'helm_repo')
-# default_registry('prepush.docker.nexus3.vpc.prod.scw-par1.linkurious.net')
 
 ctx = k8s_context()
 if ctx.endswith('k8s-dev'):

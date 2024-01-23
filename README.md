@@ -38,9 +38,9 @@ You will most likely need to set your private repository host, if images are not
   ```
   touch license.key
   ```
-  - If you never did it, log yourself in nexus so docker can pull the image:
+  - If you never did it, log yourself into your registry so docker can pull the image:
   ```
-  docker login hub.docker.nexus3.linkurious.net
+  docker REGISTRY
   ```
   - If needed, remove existing volumes, keeping in mind that THIS DELETES ALL EXISTING DATA OF THIS LKE INSTANCE :
   ```
