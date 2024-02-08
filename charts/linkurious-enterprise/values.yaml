@@ -238,6 +238,7 @@ backup:
       initialDelaySeconds: 5
       periodSeconds: 15
       failureThreshold: 3
+      timeoutSeconds: 5
     resources: {}
       # limits:
       #   cpu: 1500m
