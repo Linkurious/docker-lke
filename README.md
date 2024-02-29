@@ -16,7 +16,7 @@ This mode has limitations and will be dropped in the future.
 
 As an alternative, you may put a partial configuration file in your data folder: `data/config/production-overlay.json`.
 This file will be overlayed on top of your current production.json file. If no `production.json` file is provided, defaults will be generated.
-See (Configuring Linkurious Enterpise)[https://doc.linkurious.com/admin-manual/latest/configure/]
+See [Configuring Linkurious Enterpise](https://doc.linkurious.com/admin-manual/latest/configure/)
 
 ## Usage
   - Run with docker-compose
