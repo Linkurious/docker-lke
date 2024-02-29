@@ -20,7 +20,7 @@ This file will be overlaid on top of your current production.json file. If no `p
 Overlay file will take precedence on anything included in the main configuration file.
 Values present in the overlay are no longer modifiable via the UI. Overlay file values always takes precedence.
 
-As the final configuration is the result of the merge of two config files, you can possibly create an inconsistent configuration file, that will not pass validation, and thus prevent Linkurious Enterprise to start.
+As the final configuration is the result of merging two files (overlay & configuration), it is possible to create an inconsistent configuration that will not pass validation, thus preventing Linkurious Enterprise from starting.
 
 See [Configuring Linkurious Enterpise](https://doc.linkurious.com/admin-manual/latest/configure/)
 
