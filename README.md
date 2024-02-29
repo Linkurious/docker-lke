@@ -18,7 +18,7 @@ As an alternative, you may put a partial configuration file in your data folder:
 This file will be overlaid on top of your current production.json file. If no `production.json` file is provided, defaults will be generated.
 
 Overlay file will take precedence on anything included in the main configuration file.
-Values present in the overlay are no longer modifiable via the UI. Overlay file always takes precendenc.
+Values present in the overlay are no longer modifiable via the UI. Overlay file values always takes precedence.
 
 As the final configuration is the result of the merge of two config files, you can possibly create an inconsistent configuration file, that will not pass validation, and thus prevent Linkurious Enterprise to start.
 
