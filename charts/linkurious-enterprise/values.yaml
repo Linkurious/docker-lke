@@ -21,11 +21,11 @@ nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  # Specifies whether a service account should be created
+  # -- Specifies whether a service account should be created
   create: false
-  # Annotations to add to the service account
+  # -- Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
+  # -- The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
@@ -71,7 +71,7 @@ livenessProbe:
   successThreshold: 1
   timeoutSeconds: 1
 
-## Environment variables to pass to server
+## -- Environment variables to pass to server
 ##
 env: []
   # - name: "LKE_AUTH_REQUIRED"
@@ -85,7 +85,7 @@ envFrom: []
   # - secretRef:
   #     name: secret-name
 
-# Existing secret to use for license
+# -- Existing secret to use for license
 # licenseFromSecret: '{{ printf "%s-lke-license-secret" .Release.Name }}'
 
 service:
@@ -93,7 +93,7 @@ service:
   port: 80
   metricsPort: 9400
 
-## hostPostfix is used to generate hosts and urls using the target namespace.
+## -- hostPostfix is used to generate hosts and urls using the target namespace.
 hostPostfix: example.domain
 hostPrefixOverride: linkurious-enterprise
 ingress:
@@ -205,7 +205,7 @@ config:
   #   oauth2:
   #     enabled: true
 
-# set offlineMaintenanceModeEnabled: true to restart the StatefulSet without the linkurious-enterprise process running
+# -- set offlineMaintenanceModeEnabled: true to restart the StatefulSet without the linkurious-enterprise process running
 # this can be used to perform tasks that cannot be performed when Neo4j is running,
 # or in case the configuration is broken
 offlineMaintenanceModeEnabled: false
@@ -276,7 +276,7 @@ backup:
 hostAliases: []
 
 metrics:
-## Prometheus is enabled by default.
+## -- Prometheus is enabled by default.
 ## It can be disabled by setting "prometheus: null"
   prometheus:
     enabled: true
@@ -290,7 +290,7 @@ metrics:
       interval: 30s
       honorLabels: true
 
-## Allow only whitelisted ip or cidr
+## -- Allow only whitelisted ip or cidr
 ## https://doc.traefik.io/traefik/middlewares/http/ipwhitelist/
 ipWhiteList: {}
 # sourceRange:

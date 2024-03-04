@@ -108,7 +108,7 @@ $ helm upgrade --install my-release charts/linkurious-enterprise/
 | metrics.prometheus.serviceMonitor.jobLabel | string | `"linkurious-enterprise"` |  |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
-| offlineMaintenanceModeEnabled | bool | `false` |  |
+| offlineMaintenanceModeEnabled | bool | `false` | set offlineMaintenanceModeEnabled: true to restart the StatefulSet without the linkurious-enterprise process running this can be used to perform tasks that cannot be performed when Neo4j is running, or in case the configuration is broken |
 | persistentVolume.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | persistentVolume.annotations | object | `{}` |  |
 | persistentVolume.enabled | bool | `false` |  |
@@ -129,12 +129,10 @@ $ helm upgrade --install my-release charts/linkurious-enterprise/
 | securityContext.runAsNonRoot | bool | `true` |  |
 | securityContext.runAsUser | int | `2013` |  |
 | securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
-| service.metricsPort | int | `9400` |  |
-| service.port | int | `80` |  |
-| service.type | string | `"ClusterIP"` |  |
-| serviceAccount.annotations | object | `{}` |  |
-| serviceAccount.create | bool | `false` |  |
-| serviceAccount.name | string | `""` |  |
+| service | object | `{"metricsPort":9400,"port":80,"type":"ClusterIP"}` | Existing secret to use for license licenseFromSecret: '{{ printf "%s-lke-license-secret" .Release.Name }}' |
+| serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
+| serviceAccount.create | bool | `false` | Specifies whether a service account should be created |
+| serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | tolerations | list | `[]` |  |
 
 ----------------------------------------------
