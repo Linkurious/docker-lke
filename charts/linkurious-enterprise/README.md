@@ -83,7 +83,7 @@ $ helm upgrade --install my-release charts/linkurious-enterprise/
 | hostPostfix | string | `"example.domain"` |  |
 | hostPrefixOverride | string | `"linkurious-enterprise"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `nil` | Repository to use for the application You will need to retrieve the image from the Linkurious Customer Center and load it into your private repository |
+| image.repository | string | `""` | Repository to use for the application. You will need to retrieve the image from the Linkurious Customer Center and load it into your private repository |
 | image.tag | string | `""` |  |
 | imagePullSecrets | list | `[]` |  |
 | ingress.annotations | object | `{}` |  |

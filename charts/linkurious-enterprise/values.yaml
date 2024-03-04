@@ -6,9 +6,9 @@
 replicaCount: 1
 
 image:
-  # -- Repository to use for the application
+  # -- Repository to use for the application.
   # You will need to retrieve the image from the Linkurious Customer Center and load it into your private repository
-  repository:
+  repository: ""
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
