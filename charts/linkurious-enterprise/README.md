@@ -76,22 +76,22 @@ $ helm upgrade --install my-release charts/linkurious-enterprise/
 | config.version | string | `"2.10.18"` |  |
 | configEnabled | bool | `false` | Manage LKE configmap (Declarative Setup) # Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion |
 | configOverlayEnabled | bool | `true` |  |
-| env | list | `[]` |  |
-| envFrom | list | `[]` |  |
+| env | list | `[]` | Environment variables to pass to server |
+| envFrom | list | `[]` | envFrom to pass to server |
 | fullnameOverride | string | `""` |  |
 | hostAliases | list | `[]` |  |
 | hostPostfix | string | `"example.domain"` |  |
 | hostPrefixOverride | string | `"linkurious-enterprise"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `""` | Repository to use for the application. You will need to retrieve the image from the Linkurious Customer Center and load it into your private repository |
-| image.tag | string | `""` |  |
-| imagePullSecrets | list | `[]` |  |
-| ingress.annotations | object | `{}` |  |
-| ingress.className | string | `""` |  |
-| ingress.enabled | bool | `false` |  |
+| image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
+| imagePullSecrets | list | `[]` | Secrets with credentials to pull images from a private registry. Secrets must be manually created in the namespace. ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
+| ingress.annotations | object | `{}` | Additional ingress annotations |
+| ingress.className | string | `""` | Defines which ingress controller will implement the resource |
+| ingress.enabled | bool | `false` | Enable an ingress resource for the Linkurious Enterprise server |
 | ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
-| ingress.labels | object | `{}` |  |
+| ingress.labels | object | `{}` | Additional ingress labels |
 | ingress.tls[0].secretName | string | `"wildcard-default-cert"` |  |
 | ipWhiteList | object | `{}` |  |
 | livenessProbe.failureThreshold | int | `3` |  |
