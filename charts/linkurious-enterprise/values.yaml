@@ -49,12 +49,16 @@ securityContext:
 ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
 ##
 readinessProbe:
+  # -- Enable Kubernetes readiness probe for server
+  enabled: true
   failureThreshold: 3
   initialDelaySeconds: 10
   periodSeconds: 10
   successThreshold: 1
   timeoutSeconds: 1
 livenessProbe:
+  # -- Enable Kubernetes liveness probe for server
+  enabled: true
   failureThreshold: 3
   initialDelaySeconds: 10
   periodSeconds: 10
