@@ -51,6 +51,8 @@ securityContext:
 readinessProbe:
   # -- Enable Kubernetes readiness probe for server
   enabled: true
+  # -- Http path for the readiness probe (templated)
+  path: /api/status/
   failureThreshold: 3
   initialDelaySeconds: 10
   periodSeconds: 10
@@ -59,6 +61,8 @@ readinessProbe:
 livenessProbe:
   # -- Enable Kubernetes liveness probe for server
   enabled: true
+  # -- Http path for the liveness probe (templated)
+  path: /api/status/
   failureThreshold: 3
   initialDelaySeconds: 10
   periodSeconds: 10
