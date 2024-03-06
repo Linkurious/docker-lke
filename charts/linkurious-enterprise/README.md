@@ -1,6 +1,6 @@
 # linkurious-enterprise
 
-![Version: 0.2.26](https://img.shields.io/badge/Version-0.2.26-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.10.18](https://img.shields.io/badge/AppVersion-2.10.18-informational?style=flat-square)
+![Version: 0.2.27](https://img.shields.io/badge/Version-0.2.27-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.10.18](https://img.shields.io/badge/AppVersion-2.10.18-informational?style=flat-square)
 
 A Helm chart for Linkurious Enterprise
 
@@ -94,8 +94,10 @@ $ helm upgrade --install my-release charts/linkurious-enterprise/
 | ingress.labels | object | `{}` | Additional ingress labels |
 | ingress.tls[0].secretName | string | `"wildcard-default-cert"` |  |
 | ipWhiteList | object | `{}` |  |
+| livenessProbe.enabled | bool | `true` | Enable Kubernetes liveness probe for server |
 | livenessProbe.failureThreshold | int | `3` |  |
 | livenessProbe.initialDelaySeconds | int | `10` |  |
+| livenessProbe.path | string | `"/api/status/"` | Http path for the liveness probe (templated) |
 | livenessProbe.periodSeconds | int | `10` |  |
 | livenessProbe.successThreshold | int | `1` |  |
 | livenessProbe.timeoutSeconds | int | `1` |  |
@@ -117,8 +119,10 @@ $ helm upgrade --install my-release charts/linkurious-enterprise/
 | podSecurityContext.fsGroup | int | `2000` |  |
 | podSecurityContext.runAsNonRoot | bool | `true` |  |
 | podSecurityContext.runAsUser | int | `2013` |  |
+| readinessProbe.enabled | bool | `true` | Enable Kubernetes readiness probe for server |
 | readinessProbe.failureThreshold | int | `3` |  |
 | readinessProbe.initialDelaySeconds | int | `10` |  |
+| readinessProbe.path | string | `"/api/status/"` | Http path for the readiness probe (templated) |
 | readinessProbe.periodSeconds | int | `10` |  |
 | readinessProbe.successThreshold | int | `1` |  |
 | readinessProbe.timeoutSeconds | int | `1` |  |
