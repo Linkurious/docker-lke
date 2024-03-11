@@ -33,6 +33,10 @@ podSecurityContext:
   fsGroup: 2000
   runAsNonRoot: true
   runAsUser: 2013
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
 
 securityContext:
   capabilities:
