@@ -33,19 +33,13 @@ podSecurityContext:
   fsGroup: 2000
   runAsNonRoot: true
   runAsUser: 2013
-  allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-    - ALL
 
 securityContext:
+  # readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
   capabilities:
     drop:
     - ALL
-  # readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 2013
-  allowPrivilegeEscalation: false
   seccompProfile:
     type: RuntimeDefault
 
