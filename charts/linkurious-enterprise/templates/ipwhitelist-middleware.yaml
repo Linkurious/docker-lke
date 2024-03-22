@@ -1,0 +1,18 @@
+---
+{{ if .Capabilities.APIVersions.Has "traefik.containo.us/v1alpha1" -}}
+{{- if and .Values.ingress.enabled .Values.ipWhiteList -}}
+{{- $fullName := include "linkurious-enterprise.fullname" . -}}
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ $fullName }}-ipwhitelist
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "linkurious-enterprise.labels" . | nindent 4 }}
+spec:
+  ipWhiteList:
+  {{- with .Values.ipWhiteList }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{ end -}}
+{{ end -}}
