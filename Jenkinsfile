@@ -3,6 +3,7 @@
 dockerJob {
   // General
   projectName = "linkurious/docker-lke"
+  podTemplateNames = ['jnlp-agent']
 
   // helmReleaseBranch = "develop"
 
