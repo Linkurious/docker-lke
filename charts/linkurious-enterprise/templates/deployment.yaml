@@ -142,11 +142,7 @@ spec:
           {{- if .Values.volumeMounts }}
             {{- toYaml .Values.volumeMounts | nindent 12 }}
           {{- end }}
-          {{- if .Values.configEnabled }}
-            - mountPath: /usr/src/linkurious/system/server/config/defaults/k8s/docker.json
-              subPath: docker.json
-              name: lke-server-config
-          {{- else if .Values.configOverlayEnabled }}
+          {{- if .Values.configOverlayEnabled }}
             - mountPath: /usr/src/linkurious/system/server/config/defaults/k8s/
               name: lke-server-config-overlay
           {{- end }}
@@ -207,11 +203,6 @@ spec:
       {{- end }}
       {{- if .Values.volumes }}
         {{- toYaml .Values.volumes | nindent 8 }}
-      {{- end }}
-      {{- if .Values.configEnabled }}
-      - configMap:
-          name: {{ include "linkurious-enterprise.fullname" . }}-configmap
-        name: lke-server-config
       {{- end }}
       {{- if .Values.configOverlayEnabled }}
       - configMap:

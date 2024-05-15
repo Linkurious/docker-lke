@@ -84,7 +84,7 @@ LKE Configuration Preset Values (Incluenced by Values configuration)
 LKE Configuration Config Values
 */}}
 {{- define "linkurious-enterprise.config.values" -}}
-{{- if or (.Values.configEnabled) (.Values.configOverlayEnabled) -}}
+{{- if .Values.configOverlayEnabled -}}
   {{- with .Values.config }}
     {{- tpl (toYaml .) $ | nindent 2 }}
   {{- end }}
@@ -95,9 +95,7 @@ LKE Configuration Config Values
 Merge LKE Configuration Config Values with Preset Configuration
 */}}
 {{- define "linkurious-enterprise.config" -}}
-  {{- if .Values.configEnabled -}}
-{{- toYaml ( mustMergeOverwrite (default dict (fromJson (include "linkurious-enterprise.config.presets" $))) (fromYaml (include "linkurious-enterprise.config.values" $)) ) }}
-  {{- else if .Values.configOverlayEnabled }}
+  {{- if .Values.configOverlayEnabled }}
     {{- include "linkurious-enterprise.config.values" $ }}
   {{- end -}}
 {{- end -}}
