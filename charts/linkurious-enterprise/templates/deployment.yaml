@@ -39,7 +39,7 @@ spec:
       initContainers:
       {{- if .Values.backup.litestream.enabled }}
       - name: init-litestream
-        image: litestream/litestream:0.3.9
+        image: {{ .Values.backup.litestream.image }}
         args: ['restore', '-if-db-not-exists', '-if-replica-exists', '-v', '/data/server/database.sqlite']
         securityContext:
           {{- toYaml .Values.securityContext | nindent 12 }}
