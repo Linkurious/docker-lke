@@ -40,7 +40,7 @@ spec:
       {{- if .Values.backup.litestream.enabled }}
       - name: init-litestream
         image: {{ .Values.backup.litestream.image }}
-        args: ['restore', '-if-db-not-exists', '-if-replica-exists', '-v', '/data/server/database.sqlite']
+        args: ['restore', '-if-db-not-exists', '-if-replica-exists', '/data/server/database.sqlite']
         securityContext:
           {{- toYaml .Values.securityContext | nindent 12 }}
         volumeMounts:
