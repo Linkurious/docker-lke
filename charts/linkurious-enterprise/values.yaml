@@ -225,6 +225,7 @@ backup:
   litestream:
     ## will backup sqlite with litestream
     enabled: false
+    image: litestream/litestream:0.3.13
     readinessProbe:
       exec:
         command:
