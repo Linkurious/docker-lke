@@ -35,17 +35,15 @@ podSecurityContext:
   fsGroup: 2000
   runAsNonRoot: true
   runAsUser: 2013
+  seccompProfile:
+    type: RuntimeDefault
 
 securityContext:
+  # readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
   capabilities:
     drop:
     - ALL
-  # readOnlyRootFilesystem: true
-  runAsNonRoot: true
-  runAsUser: 2013
-  allowPrivilegeEscalation: false
-  seccompProfile:
-    type: RuntimeDefault
 
 ## Readiness and liveness probes for default backend
 ## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
@@ -173,7 +171,6 @@ affinity: {}
 
 # -- Manage LKE configmap (Declarative Setup)
 ## Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion
-configEnabled: false
 configOverlayEnabled: true
 config:
   version: 2.10.18
@@ -234,6 +231,7 @@ backup:
   litestream:
     ## will backup sqlite with litestream
     enabled: false
+    image: litestream/litestream:0.3.13
     readinessProbe:
       exec:
         command:

@@ -34,13 +34,14 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "linkurious-enterprise.serviceAccountName" . }}
+      automountServiceAccountToken: false
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
       {{- if .Values.backup.litestream.enabled }}
       - name: init-litestream
-        image: litestream/litestream:0.3.9
-        args: ['restore', '-if-db-not-exists', '-if-replica-exists', '-v', '/data/server/database.sqlite']
+        image: {{ .Values.backup.litestream.image }}
+        args: ['restore', '-if-db-not-exists', '-if-replica-exists', '/data/server/database.sqlite']
         securityContext:
           {{- toYaml .Values.securityContext | nindent 12 }}
         volumeMounts:
@@ -142,17 +143,15 @@ spec:
           {{- if .Values.volumeMounts }}
             {{- toYaml .Values.volumeMounts | nindent 12 }}
           {{- end }}
-          {{- if .Values.configEnabled }}
-            - mountPath: /usr/src/linkurious/system/server/config/defaults/k8s/docker.json
-              subPath: docker.json
-              name: lke-server-config
-          {{- else if .Values.configOverlayEnabled }}
+          {{- if .Values.configOverlayEnabled }}
             - mountPath: /usr/src/linkurious/system/server/config/defaults/k8s/
               name: lke-server-config-overlay
           {{- end }}
         {{- if .Values.backup.litestream.enabled }}
         - name: litestream
-          image: litestream/litestream:0.3.9
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: {{ .Values.backup.litestream.image }}
           args: ['replicate']
           volumeMounts:
           - mountPath: /data
@@ -205,11 +204,6 @@ spec:
       {{- end }}
       {{- if .Values.volumes }}
         {{- toYaml .Values.volumes | nindent 8 }}
-      {{- end }}
-      {{- if .Values.configEnabled }}
-      - configMap:
-          name: {{ include "linkurious-enterprise.fullname" . }}-configmap
-        name: lke-server-config
       {{- end }}
       {{- if .Values.configOverlayEnabled }}
       - configMap:
