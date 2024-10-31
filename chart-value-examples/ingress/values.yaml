@@ -1,0 +1,21 @@
+image:
+  # -- Repository to use for the application.
+  # You will need to retrieve the image from the Linkurious Customer Center and load it into your private repository
+  repository: ""
+
+## -- hostPostfix is used to generate hosts and urls using the target namespace.
+hostPostfix: example.domain
+ingress:
+  enabled: true
+  tls: []
+    # - secretName: wildcard-default-cert
+    #  hosts:
+    #    - chart-example.local
+
+configOverlayEnabled: true
+config:
+  forcePublicHttps: false
+
+metrics:
+  prometheus:
+    enabled: false
