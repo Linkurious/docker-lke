@@ -76,8 +76,8 @@ $ helm upgrade --install my-release charts/linkurious-enterprise/
 | config.server.useHttps | bool | `false` |  |
 | config.version | string | `"2.10.18"` |  |
 | configOverlayEnabled | bool | `true` | Manage LKE configmap (Declarative Setup) # Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion |
-| env | list | `[]` | Environment variables to pass to server |
-| envFrom | list | `[]` | envFrom to pass to server |
+| env | list | `[]` | Environment variables to pass to Linkurious server |
+| envFrom | list | `[]` | envFrom to pass to Linkurious server |
 | fullnameOverride | string | `""` |  |
 | hostAliases | list | `[]` |  |
 | hostPostfix | string | `"example.domain"` |  |

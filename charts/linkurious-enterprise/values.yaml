@@ -70,12 +70,12 @@ livenessProbe:
   successThreshold: 1
   timeoutSeconds: 1
 
-# -- Environment variables to pass to server
+# -- Environment variables to pass to Linkurious server
 env: []
   # - name: "LKE_AUTH_REQUIRED"
   #   value: "true"
 
-# -- envFrom to pass to server
+# -- envFrom to pass to Linkurious server
 envFrom: []
   # - configMapRef:
   #     name: config-map-name
