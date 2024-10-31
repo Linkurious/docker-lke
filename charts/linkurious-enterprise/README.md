@@ -29,6 +29,7 @@ helm package charts/linkurious-enterprise
 
 To install a very basic version of Linkurious enterprise, please set your private registry in <chart-value-examples/basic/values.yaml>
  and then run:
+
 ```console
 helm upgrade --install my-release linkurious-enterprise-0.2.35.tgz -f chart-value-examples/basic/values.yaml
 ```
