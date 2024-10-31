@@ -15,12 +15,18 @@
 
 To install the chart with the release name `my-release`:
 
-You will need to clone this repository.
+You will need to clone this repository and build the chart.
 
 ```console
-$ helm upgrade --install my-release charts/{{ template "chart.name" . }}/
+git clone https://github.com/Linkurious/docker-lke && cd docker-lke
+helm package charts/linkurious-enterprise 
 ```
 
+To install a very basic version of Linkurious enterprise, please set your private registry in <chart-value-examples/basic/values.yaml>
+ and then run:
+```console
+helm upgrade --install my-release {{ template "chart.name" . }}-{{ template "chart.version" . }}.tgz -f chart-value-examples/basic/values.yaml
+```
 {{ template "chart.requirementsSection" . }}
 
 {{ template "chart.valuesSection" . }}
