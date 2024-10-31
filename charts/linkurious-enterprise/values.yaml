@@ -9,6 +9,7 @@ image:
   # -- Repository to use for the application.
   # You will need to retrieve the image from the Linkurious Customer Center and load it into your private repository
   repository: ""
+  # -- Image pull policy for Linkurious server, can be one of Always, IfNotPresent, Never
   pullPolicy: IfNotPresent
   # -- Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -136,9 +137,13 @@ resources: {}
 # This is not currently recommended
 # https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 autoscaling:
+  # -- Enable Horizontal Pod Autoscaler ([HPA]) for Linkurious server (not recommended)
   enabled: false
+  # -- Minimum number of replicas for Linkurious server [HPA]
   minReplicas: 1
-  maxReplicas: 5
+  # -- Maximum number of replicas for Linkurious server [HPA]
+  maxReplicas: 2
+  # -- Average CPU utilization percentage for Linkurious server [HPA]
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
@@ -212,8 +217,9 @@ config:
 offlineMaintenanceModeEnabled: false
 
 persistentVolume:
+  # -- Enable persistent volume for Linkurious server
   enabled: false
-  ## redis-ha data Persistent Volume Storage Class
+  ## linkurious server data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
   ## If undefined (the default) or set to null, no storageClassName spec is
@@ -229,7 +235,7 @@ persistentVolume:
 backup:
 
   litestream:
-    ## will backup sqlite with litestream
+    ## -- Enable backup for Linkurious server running sqlite with litestream
     enabled: false
     image: litestream/litestream:0.3.13
     readinessProbe:
@@ -272,7 +278,7 @@ backup:
               snapshot-interval: 24h
 
   velero:
-    ## will backup lke-data mount volume with velero
+    ## -- Enable backup for Linkurious server lke-data volume with velero
     enabled: false
 
 hostAliases: []
@@ -281,8 +287,9 @@ metrics:
 ## -- Prometheus is enabled by default.
 ## It can be disabled by setting "prometheus: null"
   prometheus:
+    # -- Deploy metrics service and service monitor
     enabled: true
-    ## Entry point used to expose metrics.
+    # -- Entry point used to expose metrics.
     entryPoint: metrics
     disableAPICheck: true
     serviceMonitor:

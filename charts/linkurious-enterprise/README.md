@@ -1,6 +1,6 @@
 # linkurious-enterprise
 
-![Version: 0.2.27](https://img.shields.io/badge/Version-0.2.27-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.10.18](https://img.shields.io/badge/AppVersion-2.10.18-informational?style=flat-square)
+![Version: 0.2.35](https://img.shields.io/badge/Version-0.2.35-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.10.18](https://img.shields.io/badge/AppVersion-2.10.18-informational?style=flat-square)
 
 A Helm chart for Linkurious Enterprise
 
@@ -31,12 +31,13 @@ $ helm upgrade --install my-release charts/linkurious-enterprise/
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | affinity | object | `{}` |  |
-| autoscaling.enabled | bool | `false` |  |
-| autoscaling.maxReplicas | int | `5` |  |
-| autoscaling.minReplicas | int | `1` |  |
-| autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
+| autoscaling.enabled | bool | `false` | Enable Horizontal Pod Autoscaler ([HPA]) for Linkurious server (not recommended) |
+| autoscaling.maxReplicas | int | `2` | Maximum number of replicas for Linkurious server [HPA] |
+| autoscaling.minReplicas | int | `1` | Minimum number of replicas for Linkurious server [HPA] |
+| autoscaling.targetCPUUtilizationPercentage | int | `80` | Average CPU utilization percentage for Linkurious server [HPA] |
 | backup.litestream.config | string | `"---\n# https://litestream.io/reference/config/\ndbs:\n  - path: /data/server/database.sqlite\n    replicas:\n      - url: s3://BUCKETNAME/PATHNAME\n        retention: 720h\n        snapshot-interval: 24h\n"` |  |
 | backup.litestream.enabled | bool | `false` |  |
+| backup.litestream.image | string | `"litestream/litestream:0.3.13"` |  |
 | backup.litestream.livenessProbe.exec.command[0] | string | `"litestream"` |  |
 | backup.litestream.livenessProbe.exec.command[1] | string | `"snapshots"` |  |
 | backup.litestream.livenessProbe.exec.command[2] | string | `"/data/server/database.sqlite"` |  |
@@ -74,15 +75,14 @@ $ helm upgrade --install my-release charts/linkurious-enterprise/
 | config.server.publicPortHttps | string | `"$ENV-NUMBER:LKE_PUBLIC_PORT_HTTPS"` |  |
 | config.server.useHttps | bool | `false` |  |
 | config.version | string | `"2.10.18"` |  |
-| configEnabled | bool | `false` | Manage LKE configmap (Declarative Setup) # Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion |
-| configOverlayEnabled | bool | `true` |  |
+| configOverlayEnabled | bool | `true` | Manage LKE configmap (Declarative Setup) # Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion |
 | env | list | `[]` | Environment variables to pass to server |
 | envFrom | list | `[]` | envFrom to pass to server |
 | fullnameOverride | string | `""` |  |
 | hostAliases | list | `[]` |  |
 | hostPostfix | string | `"example.domain"` |  |
 | hostPrefixOverride | string | `"linkurious-enterprise"` |  |
-| image.pullPolicy | string | `"IfNotPresent"` |  |
+| image.pullPolicy | string | `"IfNotPresent"` | Image pull policy for Linkurious server, can be one of Always, IfNotPresent, Never |
 | image.repository | string | `""` | Repository to use for the application. You will need to retrieve the image from the Linkurious Customer Center and load it into your private repository |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | Secrets with credentials to pull images from a private registry. Secrets must be manually created in the namespace. ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/ |
@@ -102,8 +102,8 @@ $ helm upgrade --install my-release charts/linkurious-enterprise/
 | livenessProbe.successThreshold | int | `1` |  |
 | livenessProbe.timeoutSeconds | int | `1` |  |
 | metrics.prometheus.disableAPICheck | bool | `true` |  |
-| metrics.prometheus.enabled | bool | `true` |  |
-| metrics.prometheus.entryPoint | string | `"metrics"` |  |
+| metrics.prometheus.enabled | bool | `true` | Deploy metrics service and service monitor |
+| metrics.prometheus.entryPoint | string | `"metrics"` | Entry point used to expose metrics. |
 | metrics.prometheus.serviceMonitor.additionalLabels.release | string | `"kube-prometheus-stack"` |  |
 | metrics.prometheus.serviceMonitor.honorLabels | bool | `true` |  |
 | metrics.prometheus.serviceMonitor.interval | string | `"30s"` |  |
@@ -113,12 +113,13 @@ $ helm upgrade --install my-release charts/linkurious-enterprise/
 | offlineMaintenanceModeEnabled | bool | `false` | set offlineMaintenanceModeEnabled: true to restart the StatefulSet without the linkurious-enterprise process running this can be used to perform tasks that cannot be performed when Neo4j is running, or in case the configuration is broken |
 | persistentVolume.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | persistentVolume.annotations | object | `{}` |  |
-| persistentVolume.enabled | bool | `false` |  |
+| persistentVolume.enabled | bool | `false` | Enable persistent volume for Linkurious server |
 | persistentVolume.size | string | `"5Gi"` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext.fsGroup | int | `2000` |  |
 | podSecurityContext.runAsNonRoot | bool | `true` |  |
 | podSecurityContext.runAsUser | int | `2013` |  |
+| podSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | readinessProbe.enabled | bool | `true` | Enable Kubernetes readiness probe for server |
 | readinessProbe.failureThreshold | int | `3` |  |
 | readinessProbe.initialDelaySeconds | int | `10` |  |
@@ -130,9 +131,6 @@ $ helm upgrade --install my-release charts/linkurious-enterprise/
 | resources | object | `{}` |  |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
-| securityContext.runAsNonRoot | bool | `true` |  |
-| securityContext.runAsUser | int | `2013` |  |
-| securityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
 | service | object | `{"metricsPort":9400,"port":80,"type":"ClusterIP"}` | Existing secret to use for license licenseFromSecret: '{{ printf "%s-lke-license-secret" .Release.Name }}' |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.create | bool | `false` | Specifies whether a service account should be created |
