@@ -1,0 +1,10 @@
+linkurious-enterprise:
+  image:
+    # -- Repository to use for the application.
+    # You will need to retrieve the image from the Linkurious Customer Center and load it into your private repository
+    repository: ""
+
+  configOverlayEnabled: false
+  metrics:
+    prometheus:
+      enabled: false
