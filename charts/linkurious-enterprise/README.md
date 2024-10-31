@@ -64,7 +64,7 @@ $ helm upgrade --install my-release charts/linkurious-enterprise/
 | config.access.oauth2.enabled | string | `"$ENV-JSON:LKE_OAUTH2_ENABLED"` |  |
 | config.access.oauth2.provider | string | `"$ENV:LKE_OAUTH2_PROVIDER"` |  |
 | config.access.oauth2.tokenURL | string | `"$ENV:LKE_OAUTH2_TOKEN_URL"` |  |
-| config.db.options.dialect | string | `"sqlite"` |  |
+| config.db.options.dialect | string | `"sqlite"` | Run Linkurious Enterprise with SQLite |
 | config.db.options.storage | string | `"server/database.sqlite"` |  |
 | config.server.allowFraming | bool | `false` |  |
 | config.server.allowOrigin | string | `"$ENV:LKE_ALLOW_ORIGIN"` |  |
