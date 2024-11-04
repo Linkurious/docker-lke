@@ -6,24 +6,27 @@
 replicaCount: 1
 
 image:
-  repository:
+  # -- Repository to use for the application.
+  # You will need to retrieve the image from the Linkurious Customer Center and load it into your private repository
+  repository: ""
+  # -- Image pull policy for Linkurious server, can be one of Always, IfNotPresent, Never
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
+  # -- Overrides the image tag whose default is the chart appVersion.
   tag: ""
 
-## Optionally specify an array of imagePullSecrets.
-## Secrets must be manually created in the namespace.
-## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+# -- Secrets with credentials to pull images from a private registry.
+# Secrets must be manually created in the namespace.
+# ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  # Specifies whether a service account should be created
+  # -- Specifies whether a service account should be created
   create: false
-  # Annotations to add to the service account
+  # -- Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
+  # -- The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
@@ -67,21 +70,19 @@ livenessProbe:
   successThreshold: 1
   timeoutSeconds: 1
 
-## Environment variables to pass to server
-##
+# -- Environment variables to pass to Linkurious server
 env: []
   # - name: "LKE_AUTH_REQUIRED"
   #   value: "true"
 
-## envFrom to pass to server
-##
+# -- envFrom to pass to Linkurious server
 envFrom: []
   # - configMapRef:
   #     name: config-map-name
   # - secretRef:
   #     name: secret-name
 
-# Existing secret to use for license
+# -- Existing secret to use for license
 # licenseFromSecret: '{{ printf "%s-lke-license-secret" .Release.Name }}'
 
 service:
@@ -89,14 +90,20 @@ service:
   port: 80
   metricsPort: 9400
 
-## hostPostfix is used to generate hosts and urls using the target namespace.
+## -- hostPostfix is used to generate hosts and urls using the target namespace.
 hostPostfix: example.domain
 hostPrefixOverride: linkurious-enterprise
+
+# Linkurious Enterprise server ingress configuration
 ingress:
+  # -- Enable an ingress resource for the Linkurious Enterprise server
   enabled: false
+  # -- Defines which ingress controller will implement the resource
   className: ""
+  # -- Additional ingress labels
   labels: {}
     # kube-prometheus-stack-probe: enabled
+  # -- Additional ingress annotations
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
@@ -126,13 +133,17 @@ resources: {}
   #   cpu: 500m
   #   memory: 300Mi
 
-## Create HorizontalPodAutoscaler object for deployment type
-# This is not recommended
+## -- Create HorizontalPodAutoscaler object for deployment type
+# This is not currently recommended
 # https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 autoscaling:
+  # -- Enable Horizontal Pod Autoscaler ([HPA]) for Linkurious server (not recommended)
   enabled: false
+  # -- Minimum number of replicas for Linkurious server [HPA]
   minReplicas: 1
-  maxReplicas: 5
+  # -- Maximum number of replicas for Linkurious server [HPA]
+  maxReplicas: 2
+  # -- Average CPU utilization percentage for Linkurious server [HPA]
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
@@ -170,6 +181,7 @@ config:
   version: 2.10.18
   db:
     options:
+      # -- Run Linkurious Enterprise with SQLite
       dialect: 'sqlite'
       storage: 'server/database.sqlite'
   access:
@@ -200,14 +212,15 @@ config:
   #   oauth2:
   #     enabled: true
 
-# set offlineMaintenanceModeEnabled: true to restart the StatefulSet without the linkurious-enterprise process running
+# -- set offlineMaintenanceModeEnabled: true to restart the StatefulSet without the linkurious-enterprise process running
 # this can be used to perform tasks that cannot be performed when Neo4j is running,
 # or in case the configuration is broken
 offlineMaintenanceModeEnabled: false
 
 persistentVolume:
+  # -- Enable persistent volume for Linkurious server
   enabled: false
-  ## redis-ha data Persistent Volume Storage Class
+  ## linkurious server data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
   ## If undefined (the default) or set to null, no storageClassName spec is
@@ -223,7 +236,7 @@ persistentVolume:
 backup:
 
   litestream:
-    ## will backup sqlite with litestream
+    ## -- Enable backup for Linkurious server running sqlite with litestream
     enabled: false
     image: litestream/litestream:0.3.13
     readinessProbe:
@@ -266,17 +279,18 @@ backup:
               snapshot-interval: 24h
 
   velero:
-    ## will backup lke-data mount volume with velero
+    ## -- Enable backup for Linkurious server lke-data volume with velero
     enabled: false
 
 hostAliases: []
 
 metrics:
-## Prometheus is enabled by default.
+## -- Prometheus is enabled by default.
 ## It can be disabled by setting "prometheus: null"
   prometheus:
+    # -- Deploy metrics service and service monitor
     enabled: true
-    ## Entry point used to expose metrics.
+    # -- Entry point used to expose metrics.
     entryPoint: metrics
     disableAPICheck: true
     serviceMonitor:
@@ -286,7 +300,7 @@ metrics:
       interval: 30s
       honorLabels: true
 
-## Allow only whitelisted ip or cidr
+## -- Allow only whitelisted ip or cidr
 ## https://doc.traefik.io/traefik/middlewares/http/ipwhitelist/
 ipWhiteList: {}
 # sourceRange:
