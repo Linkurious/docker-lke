@@ -35,3 +35,18 @@ helm upgrade --install my-release {{ template "chart.name" . }}-{{ template "cha
 
 {{ template "helm-docs.versionFooter" . }}
 
+## Contributing
+
+### Documentation
+
+The documentation for each chart is generated with [helm-docs](https://github.com/norwoodj/helm-docs). This way we can ensure that values are consistent with the chart documentation.
+
+### Chart Versioning
+
+Currently we require a chart version bump for every change to a chart, including updating information for older versions.  This may change in the future.
+
+### Testing Charts
+
+As part of the Continuous Integration system we run Helm's [Chart Testing](https://github.com/helm/chart-testing) tool.
+
+The checks for Chart Testing are stricter than the standard Helm requirements. For example, fields normally considered optional like `maintainer` are required in the standard spec and must be valid GitHub usernames.
