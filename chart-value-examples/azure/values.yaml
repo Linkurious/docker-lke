@@ -9,15 +9,16 @@ metrics:
 
 persistentVolume:
   enabled: true
-  ## redis-ha data Persistent Volume Storage Class
-  ## If defined, storageClassName: <storageClass>
-  ## If set to "-", storageClassName: "", which disables dynamic provisioning
-  ## If undefined (the default) or set to null, no storageClassName spec is
-  ##   set, choosing the default provisioner.
-  ## * managed-csi-premium provisions premium SSD disks (recommended)
-  ## * managed-csi provisions standard SSD-backed disks
-  ## Do not use azurefile based storage classes, they are not compatible.
-  storageClass: "managed-csi-premium" # ok
+  ## Linkurious Enterprise data Persistent Volume Storage Class
+  ## If defined here, sets storageClassName: <storageClass> in the generated PersistentVolumeClaim
+  ## If set to "-" here, sets storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, then, no storageClassName spec is
+  ##   set, thus choosing the default provisioner.
+  ## Possible values:
+  ## * "managed-csi-premium" provisions premium SSD disks (recommended)
+  ## * "managed-csi" provisions standard SSD-backed disks
+  ## Do not use azurefile-based storage classes, they are not compatible.
+  storageClass: "managed-csi-premium"
   accessModes:
     - ReadWriteOnce
   size: 5Gi
