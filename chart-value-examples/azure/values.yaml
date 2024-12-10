@@ -1,0 +1,24 @@
+image:
+  repository: hub.docker.nexus3.linkurious.net/linkurious/linkurious-enterprise
+  tag: 4.1.8
+
+configOverlayEnabled: false
+metrics:
+  prometheus:
+    enabled: false
+
+persistentVolume:
+  enabled: true
+  ## redis-ha data Persistent Volume Storage Class
+  ## If defined, storageClassName: <storageClass>
+  ## If set to "-", storageClassName: "", which disables dynamic provisioning
+  ## If undefined (the default) or set to null, no storageClassName spec is
+  ##   set, choosing the default provisioner.
+  ## * managed-csi-premium provisions premium SSD disks (recommended)
+  ## * managed-csi provisions standard SSD-backed disks
+  ## Do not use azurefile based storage classes, they are not compatible.
+  storageClass: "managed-csi-premium" # ok
+  accessModes:
+    - ReadWriteOnce
+  size: 5Gi
+  annotations: {}
