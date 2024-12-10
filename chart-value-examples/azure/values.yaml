@@ -1,5 +1,7 @@
 image:
-  repository: hub.docker.nexus3.linkurious.net/linkurious/linkurious-enterprise
+  # -- Repository to use for the application.
+  # You will need to retrieve the image from the Linkurious Customer Center and load it into your private repository
+  repository: ""
   tag: 4.1.8
 
 configOverlayEnabled: false
