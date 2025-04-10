@@ -89,6 +89,7 @@ service:
   type: ClusterIP
   port: 80
   metricsPort: 9400
+  annotations: {}
 
 ## -- hostPostfix is used to generate hosts and urls using the target namespace.
 hostPostfix: example.domain
