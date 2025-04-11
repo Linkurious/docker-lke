@@ -23,8 +23,8 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   annotations:
-  {{- if .Values.ipWhiteList }}
-    traefik.ingress.kubernetes.io/router.middlewares: {{ $.Release.Namespace }}-{{ $fullName }}-ipwhitelist@kubernetescrd
+  {{- if .Values.ipAllowList }}
+    traefik.ingress.kubernetes.io/router.middlewares: {{ $.Release.Namespace }}-{{ $fullName }}-ipAllowList@kubernetescrd
   {{- end }}
   {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
