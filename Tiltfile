@@ -6,7 +6,7 @@ load('ext://kubectl_build', 'kubectl_build')
 load('ext://helm_resource', 'helm_resource', 'helm_repo')
 
 ctx = k8s_context()
-if ctx.endswith('k8s-dev'):
+if ctx.endswith('k8s-preprod'):
   allow_k8s_contexts(ctx)
 
 if not k8s_namespace().endswith("dev"):
@@ -15,8 +15,8 @@ builder = "builder-" + k8s_namespace()
 
 
 enterprise_workload_name = 'linkurious-enterprise'
-enterprise_release_name = ctx.removesuffix('@k8s-dev') + '-tilt'
-enterprise_ingress_workload_name = ctx.removesuffix('@k8s-dev') + '-tilt'
+enterprise_release_name = ctx.removesuffix('@k8s-preprod') + '-tilt'
+enterprise_ingress_workload_name = ctx.removesuffix('@k8s-preprod') + '-tilt'
 deps=['charts/linkurious-enterprise']
 extra_values=[]
 internal_values_filename = 'internal-values.yaml'
@@ -32,6 +32,6 @@ helm_resource(
   )
 k8s_resource(workload=enterprise_workload_name,
   links=[
-      enterprise_ingress_workload_name + '.' + k8s_namespace() + '.k8s.dev.linkurious.net/api/',
+      enterprise_ingress_workload_name + '.' + k8s_namespace() + '.k8s.preprod.linkurious.net/api/',
   ]
 )
