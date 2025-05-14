@@ -92,7 +92,7 @@ spec:
             - name: POD_INDEX
               valueFrom:
                 fieldRef:
-                  fieldPath: metadata.labels['apps.kubernetes.io/pod-index']
+                  fieldPath: "metadata.labels['apps.kubernetes.io/pod-index']"
             {{- end }}
           {{- end }}
           {{- with .Values.envFrom }}
