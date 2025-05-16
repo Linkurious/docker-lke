@@ -1,17 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "linkurious-enterprise.fullname" . }}
+  name: {{ include "linkurious-enterprise.fullname" . }}-primary
   labels:
     {{- include "linkurious-enterprise.labels" . | nindent 4 }}
   annotations:
-    {{- if gt (int .Values.replicaCount) 1 }}
-    traefik.ingress.kubernetes.io/service.sticky.cookie: "true"
-    traefik.ingress.kubernetes.io/service.sticky.cookie.name: lke-sticky-cookie
-    traefik.ingress.kubernetes.io/service.sticky.cookie.secure: "true"
-    traefik.ingress.kubernetes.io/service.sticky.cookie.httponly: "true"
-    traefik.ingress.kubernetes.io/service.sticky.cookie.samesite: "strict"
-    {{- end }}
     {{- if .Values.service.annotations }}
     {{- toYaml .Values.service.annotations | nindent 4 }}
     {{- end }}
@@ -30,3 +23,4 @@ spec:
     {{- end }}
   selector:
     {{- include "linkurious-enterprise.selectorLabels" . | nindent 4 }}
+    apps.kubernetes.io/pod-index: "0"

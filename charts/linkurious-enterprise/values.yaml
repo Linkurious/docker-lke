@@ -89,6 +89,7 @@ service:
   type: ClusterIP
   port: 80
   metricsPort: 9400
+  annotations: {}
 
 ## -- hostPostfix is used to generate hosts and urls using the target namespace.
 hostPostfix: example.domain
@@ -302,7 +303,7 @@ metrics:
 
 ## -- Allow only whitelisted ip or cidr
 ## https://doc.traefik.io/traefik/middlewares/http/ipwhitelist/
-ipWhiteList: {}
+ipAllowList: {}
 # sourceRange:
 #   - 127.0.0.1/32
 #   - 192.168.1.7
