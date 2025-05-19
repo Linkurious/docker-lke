@@ -1,0 +1,52 @@
+{{ template "chart.header" . }}
+{{ template "chart.deprecationWarning" . }}
+
+{{ template "chart.badgesSection" . }}
+
+{{ template "chart.description" . }}
+
+{{ template "chart.homepageLine" . }}
+
+{{ template "chart.maintainersSection" . }}
+
+{{ template "chart.sourcesSection" . }}
+
+## Installing the Chart
+
+To install the chart with the release name `my-release`:
+
+You will need to clone this repository and build the chart.
+
+```console
+git clone https://github.com/Linkurious/docker-lke && cd docker-lke
+helm package charts/linkurious-enterprise 
+```
+
+To install a very basic version of Linkurious enterprise, please set your private registry in the [chart-value-examples/basic/values.yaml](../../chart-value-examples/basic/values.yaml)
+ and then run:
+
+```console
+helm upgrade --install my-release {{ template "chart.name" . }}-{{ template "chart.version" . }}.tgz -f chart-value-examples/basic/values.yaml
+```
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSection" . }}
+
+{{ template "helm-docs.versionFooter" . }}
+
+## Contributing
+
+### Documentation
+
+The documentation for each chart is generated with [helm-docs](https://github.com/norwoodj/helm-docs). This way we can ensure that values are consistent with the chart documentation.
+
+### Chart Versioning
+
+Currently we require a chart version bump for every change to a chart, including updating information for older versions.  This may change in the future.
+
+### Testing Charts
+
+As part of the Continuous Integration system we run Helm's [Chart Testing](https://github.com/helm/chart-testing) tool.
+
+The checks for Chart Testing are stricter than the standard Helm requirements. For example, fields normally considered optional like `maintainer` are required in the standard spec and must be valid GitHub usernames.

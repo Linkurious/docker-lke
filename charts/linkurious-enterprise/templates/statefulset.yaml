@@ -89,6 +89,10 @@ spec:
               value: "true"
             - name: LKE_PUBLIC_DOMAIN
               value: {{ (first .Values.ingress.hosts).host | default $defaultHostUrl | quote }}
+            - name: POD_INDEX
+              valueFrom:
+                fieldRef:
+                  fieldPath: "metadata.labels['apps.kubernetes.io/pod-index']"
             {{- end }}
           {{- end }}
           {{- with .Values.envFrom }}
