@@ -17,8 +17,11 @@ data:
 {{- else }}
   docker.json: |-
 {{- end }}
+  {{- $configData := include "linkurious-enterprise.config" $| fromYaml }}
+  {{- if semverCompare ">=4.2.0" .Values.image.tag   }}
   {{- $clusterConfig := dict "enabled" (gt (int .Values.replicaCount) 1) "mode" "$ENV:LKE_CLUSTER_ROLE" }}
-  {{- $configData := dict "cluster" $clusterConfig }}
+  {{- $configData = dict "cluster" $clusterConfig }}
   {{- $configData = mergeOverwrite $configData (include "linkurious-enterprise.config" $| fromYaml) }}
+  {{- end }}
   {{- $configData | mustToPrettyJson |  nindent 4 }}
 {{- end }}
