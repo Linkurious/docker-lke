@@ -61,6 +61,8 @@ spec:
             secretKeyRef:
               name: {{ .Values.backup.litestream.secretRef.name }}
               key: LITESTREAM_SECRET_ACCESS_KEY
+        resources:
+          {{- toYaml .Values.backup.litestream.resources | nindent 12 }}
       {{- end }}
       {{- if .Values.initContainers }}
         {{- toYaml .Values.initContainers | nindent 8 }}

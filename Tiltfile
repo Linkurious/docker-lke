@@ -32,6 +32,6 @@ helm_resource(
   )
 k8s_resource(workload=enterprise_workload_name,
   links=[
-      enterprise_ingress_workload_name + '.' + k8s_namespace() + '.k8s.preprod.linkurious.net/api/',
+      enterprise_ingress_workload_name + '-' +enterprise_workload_name + '.' + k8s_namespace() + '.k8s.preprod.linkurious.net/',
   ]
 )
