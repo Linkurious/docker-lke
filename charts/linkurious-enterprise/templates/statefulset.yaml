@@ -79,7 +79,7 @@ spec:
             - "-c"
             - "while true; do echo 'Linkurious-enterprise is not running. Pod is in offline maintenance mode. Remove linkurious-enterprise.offlineMaintenanceModeEnabled setting and run `helm upgrade ...` to resume normal operation.'; sleep 60; done"
           {{- end }}
-          {{- if or .Values.env .Values.ingress.enabled }}
+          {{- if or .Values.env .Values.ingress.enabled (not .Values.plugins.enabled) }}
           env:
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 }}
@@ -95,6 +95,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: "metadata.labels['apps.kubernetes.io/pod-index']"
+            {{- end }}
+            {{- if not .Values.plugins.enabled }}
+            - name: LKE_PLUGINS
+              value: "[]"
             {{- end }}
           {{- end }}
           {{- with .Values.envFrom }}
