@@ -252,7 +252,7 @@ backup:
       initialDelaySeconds: 5
       periodSeconds: 15
       failureThreshold: 3
-      timeoutSeconds: 5
+      timeoutSeconds: 10
     livenessProbe:
       exec:
         command:
@@ -262,7 +262,7 @@ backup:
       initialDelaySeconds: 5
       periodSeconds: 15
       failureThreshold: 3
-      timeoutSeconds: 5
+      timeoutSeconds: 10
     resources:
       limits:
         cpu: 1500m
