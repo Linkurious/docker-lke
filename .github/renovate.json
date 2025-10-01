@@ -5,7 +5,7 @@
     "local>Linkurious/renovate-config:meta",
     "customManagers:dockerfileVersions"
   ],
-  "baseBranches": [
+  "baseBranchPatterns": [
     "develop"
   ]
 }
