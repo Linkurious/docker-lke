@@ -186,7 +186,7 @@ config:
       dialect: 'sqlite'
       storage: 'server/database.sqlite'
   access:
-    authRequired: "$ENV:LKE_AUTH_REQUIRED"
+    authRequired: "$ENV-JSON:LKE_AUTH_REQUIRED"
     oauth2:
       enabled: "$ENV-JSON:LKE_OAUTH2_ENABLED"
       provider: "$ENV:LKE_OAUTH2_PROVIDER"

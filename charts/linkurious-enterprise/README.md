@@ -63,7 +63,7 @@ helm upgrade --install my-release linkurious-enterprise-0.2.36.tgz -f chart-valu
 | backup.litestream.resources | object | `{}` |  |
 | backup.litestream.secretRef.name | string | `"litestream-lke-secret"` |  |
 | backup.velero.enabled | bool | `false` |  |
-| config.access.authRequired | string | `"$ENV:LKE_AUTH_REQUIRED"` |  |
+| config.access.authRequired | string | `"$ENV-JSON:LKE_AUTH_REQUIRED"` |  |
 | config.access.autoRefreshGroupMapping | string | `"$ENV-JSON:LKE_OAUTH2_AUTO_REFRESH_GROUP_MAPPING"` |  |
 | config.access.oauth2.authorizationURL | string | `"$ENV:LKE_OAUTH2_AUTHORIZATION_URL"` |  |
 | config.access.oauth2.azure.tenantID | string | `"$ENV:LKE_OAUTH2_AZURE_TENANT_ID"` |  |
