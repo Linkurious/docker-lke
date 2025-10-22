@@ -145,8 +145,7 @@ spec:
             - mountPath: /data
               name: lke-data
           {{- if .Values.licenseFromSecret}}
-            - mountPath: /data/license.key
-              subPath: license.key
+            - mountPath: /usr/src/linkurious/system/server/config/secrets/license
               name: lke-license
               readOnly: true
           {{- end }}
