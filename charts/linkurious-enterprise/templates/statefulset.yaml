@@ -144,6 +144,12 @@ spec:
           volumeMounts:
             - mountPath: /data
               name: lke-data
+          {{- if .Values.oldLicenseFromSecret}}
+            - mountPath: /data/license.key
+              subPath: license.key
+              name: lke-license
+              readOnly: true
+          {{- end }}
           {{- if .Values.licenseFromSecret}}
             - mountPath: /usr/src/linkurious/system/server/config/secrets/license
               name: lke-license
