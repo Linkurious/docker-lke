@@ -144,12 +144,6 @@ spec:
           volumeMounts:
             - mountPath: /data
               name: lke-data
-          {{- if .Values.oldLicenseFromSecret}}
-            - mountPath: /data/license.key
-              subPath: license.key
-              name: lke-license
-              readOnly: true
-          {{- end }}
           {{- if and .Values.licenseFromSecret (semverCompare ">=4.2.6" (.Values.image.tag | default .Chart.AppVersion))}}
             - mountPath: /usr/src/linkurious/system/server/config/secrets/license
               name: lke-license
