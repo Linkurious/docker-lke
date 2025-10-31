@@ -17,7 +17,7 @@ services:
       - lke_data:/data
 
   neo4j:
-    image: neo4j:3.5.35-enterprise
+    image: neo4j:2025.10.1-enterprise
     # depends_on:
     #  - plugins-neo4j
     restart: always
