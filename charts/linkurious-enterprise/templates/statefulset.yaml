@@ -144,7 +144,8 @@ spec:
           volumeMounts:
             - mountPath: /data
               name: lke-data
-          {{- if and .Values.licenseFromSecret (semverCompare ">=4.2.6" (.Values.image.tag | default .Chart.AppVersion))}}
+          {{- $imageVersion := .Values.image.tag | default .Chart.AppVersion }}
+          {{- if and .Values.licenseFromSecret (regexMatch "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)" $imageVersion) (semverCompare ">=4.2.6" $imageVersion)}}
             - mountPath: /usr/src/linkurious/system/server/config/secrets/license
               name: lke-license
               readOnly: true
