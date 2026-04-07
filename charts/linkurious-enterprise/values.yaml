@@ -284,7 +284,7 @@ backup:
 
   velero:
     ## -- Enable backup for Linkurious server lke-data volume with velero
-    enabled: true
+    enabled: false
     name: velero
     instance: velero-preprod
     veleroNamespace: backup
