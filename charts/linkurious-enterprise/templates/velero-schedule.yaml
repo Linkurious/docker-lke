@@ -26,7 +26,7 @@ spec:
   schedule: {{ .Values.backup.velero.schedule }}
   skipImmediately: {{ .Values.backup.velero.skipImmediately }}
   template:
-    defaultVolumesToFsBackup: {{ .Values.backup.velero.defaultVolumeToFsBackup }}
+    defaultVolumesToFsBackup: {{ .Values.backup.velero.defaultVolumesToFsBackup }}
 {{- if .Values.backup.velero.includedResources }}
     includedNamespaces:
        - {{ $.Release.Namespace }}
