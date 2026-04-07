@@ -5,7 +5,7 @@
 apiVersion: velero.io/v1
 kind: Schedule
 metadata:
-  name: {{ $.Release.Namespace }}
+  name: {{ printf "velero-schedule-%s" $.Release.Namespace }}
   namespace: {{ .Values.backup.velero.veleroNamespace }}
   {{- if .Values.backup.velero.annotations }}
   annotations:
