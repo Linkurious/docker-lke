@@ -1,0 +1,45 @@
+{{- if .Values.backup.velero.enabled }}
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: {{ $.Release.Namespace }}
+  namespace: {{ .Values.backup.velero.veleroNamespace }}
+  {{- if .Values.backup.velero.annotations }}
+  annotations:
+    {{- toYaml .Values.backup.velero.annotations | nindent 4 }}
+  {{- end }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.backup.velero.name }}
+    app.kubernetes.io/instance: {{ .Values.backup.velero.instance }}
+    app.kubernetes.io/managed-by: {{ $.Release.Service }}
+   {{- if .Values.backup.velero.labels }}
+      {{- toYaml .Values.backup.velero.labels | nindent 4 }}
+    {{- end }}
+
+spec:
+{{- if .Values.backup.velero.paused }}
+  paused: {{ .Values.backup.velero.paused }}
+{{- end }}
+{{- if .Values.backup.velero.useOwnerReferencesInBackup }}
+  useOwnerReferencesInBackup: {{ .Values.backup.velero.useOwnerReferencesInBackup }}
+{{- end }}
+  schedule: {{ .Values.backup.velero.schedule }}
+  skipImmediately: {{ .Values.backup.velero.skipImmediately }}
+  template:
+    defaultVolumesToFsBackup: {{ .Values.backup.velero.defaulVolumeToFsBackup }}
+    includedResources:
+    {{- range .Values.backup.velero.includedResources }}
+      - {{ . }}
+    {{- end }}
+    excludedResources:
+    {{- range .Values.backup.velero.excludedResources }}
+      - {{ . }}
+    {{- end }}
+    labelSelector:
+      matchLabels:
+      {{- if .Values.backup.velero.labels }}
+        {{- toYaml .Values.backup.velero.labelsSelector | nindent 8 }}
+      {{- end }}
+    snapshotVolumes: {{ .Values.backup.velero.snapshotVolume }}
+    ttl: {{ .Values.backup.velero.ttl }}
+{{- end }}
