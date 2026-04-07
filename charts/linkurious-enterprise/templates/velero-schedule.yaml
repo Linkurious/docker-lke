@@ -30,9 +30,9 @@ spec:
   skipImmediately: {{ .Values.backup.velero.skipImmediately }}
   template:
     defaultVolumesToFsBackup: {{ .Values.backup.velero.defaultVolumesToFsBackup }}
-{{- if .Values.backup.velero.includedResources }}
     includedNamespaces:
        - {{ $.Release.Namespace }}
+{{- if .Values.backup.velero.includedResources }}
     includedResources:
     {{- range .Values.backup.velero.includedResources }}
       - {{ . }}
