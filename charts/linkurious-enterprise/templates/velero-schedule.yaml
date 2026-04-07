@@ -26,15 +26,21 @@ spec:
   schedule: {{ .Values.backup.velero.schedule }}
   skipImmediately: {{ .Values.backup.velero.skipImmediately }}
   template:
-    defaultVolumesToFsBackup: {{ .Values.backup.velero.defaulVolumeToFsBackup }}
+    defaultVolumesToFsBackup: {{ .Values.backup.velero.defaultVolumeToFsBackup }}
+{{- if .Values.backup.velero.includedResources }}
+    includedNamespaces:
+       - {{ $.Release.Namespace }}
     includedResources:
     {{- range .Values.backup.velero.includedResources }}
       - {{ . }}
     {{- end }}
+{{- end }}
+{{- if .Values.backup.velero.excludedResources }}
     excludedResources:
     {{- range .Values.backup.velero.excludedResources }}
       - {{ . }}
     {{- end }}
+{{- end }}
     labelSelector:
       matchLabels:
       {{- if .Values.backup.velero.labels }}
