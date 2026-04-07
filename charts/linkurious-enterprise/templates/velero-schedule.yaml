@@ -1,4 +1,7 @@
 {{- if .Values.backup.velero.enabled }}
+{{- if (not (.Capabilities.APIVersions.Has "velero.io/v1")) }}
+    {{- fail "ERROR: You have to deploy velero.io/v1 first or disable velero backup" }}
+{{- end }}
 apiVersion: velero.io/v1
 kind: Schedule
 metadata:
@@ -41,11 +44,11 @@ spec:
       - {{ . }}
     {{- end }}
 {{- end }}
+{{- if .Values.backup.velero.labelsSelector }}
     labelSelector:
       matchLabels:
-      {{- if .Values.backup.velero.labels }}
         {{- toYaml .Values.backup.velero.labelsSelector | nindent 8 }}
-      {{- end }}
+{{- end }}
     snapshotVolumes: {{ .Values.backup.velero.snapshotVolume }}
     ttl: {{ .Values.backup.velero.ttl }}
 {{- end }}
