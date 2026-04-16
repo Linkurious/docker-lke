@@ -197,6 +197,8 @@ config:
       azure:
         tenantID: "$ENV:LKE_OAUTH2_AZURE_TENANT_ID"
     autoRefreshGroupMapping: "$ENV-JSON:LKE_OAUTH2_AUTO_REFRESH_GROUP_MAPPING"
+  metrics:
+      enabled: true
   server:
     cookieHttpOnly: true
     allowOrigin: "$ENV:LKE_ALLOW_ORIGIN"
