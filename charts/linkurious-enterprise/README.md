@@ -1,6 +1,6 @@
 # linkurious-enterprise
 
-![Version: 0.2.36](https://img.shields.io/badge/Version-0.2.36-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.10.18](https://img.shields.io/badge/AppVersion-2.10.18-informational?style=flat-square)
+![Version: 0.2.43](https://img.shields.io/badge/Version-0.2.43-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.10.18](https://img.shields.io/badge/AppVersion-2.10.18-informational?style=flat-square)
 
 A Helm chart for Linkurious Enterprise
 
@@ -31,7 +31,7 @@ To install a very basic version of Linkurious enterprise, please set your privat
  and then run:
 
 ```console
-helm upgrade --install my-release linkurious-enterprise-0.2.36.tgz -f chart-value-examples/basic/values.yaml
+helm upgrade --install my-release linkurious-enterprise-0.2.43.tgz -f chart-value-examples/basic/values.yaml
 ```
 
 ## Values
@@ -52,17 +52,32 @@ helm upgrade --install my-release linkurious-enterprise-0.2.36.tgz -f chart-valu
 | backup.litestream.livenessProbe.failureThreshold | int | `3` |  |
 | backup.litestream.livenessProbe.initialDelaySeconds | int | `5` |  |
 | backup.litestream.livenessProbe.periodSeconds | int | `15` |  |
-| backup.litestream.livenessProbe.timeoutSeconds | int | `5` |  |
+| backup.litestream.livenessProbe.timeoutSeconds | int | `10` |  |
 | backup.litestream.readinessProbe.exec.command[0] | string | `"litestream"` |  |
 | backup.litestream.readinessProbe.exec.command[1] | string | `"snapshots"` |  |
 | backup.litestream.readinessProbe.exec.command[2] | string | `"/data/server/database.sqlite"` |  |
 | backup.litestream.readinessProbe.failureThreshold | int | `3` |  |
 | backup.litestream.readinessProbe.initialDelaySeconds | int | `5` |  |
 | backup.litestream.readinessProbe.periodSeconds | int | `15` |  |
-| backup.litestream.readinessProbe.timeoutSeconds | int | `5` |  |
-| backup.litestream.resources | object | `{}` |  |
+| backup.litestream.readinessProbe.timeoutSeconds | int | `10` |  |
+| backup.litestream.resources.limits.cpu | string | `"1500m"` |  |
+| backup.litestream.resources.limits.memory | string | `"1000Mi"` |  |
+| backup.litestream.resources.requests.cpu | string | `"100m"` |  |
+| backup.litestream.resources.requests.memory | string | `"100Mi"` |  |
 | backup.litestream.secretRef.name | string | `"litestream-lke-secret"` |  |
+| backup.velero.defaultVolumesToFsBackup | bool | `false` |  |
 | backup.velero.enabled | bool | `false` |  |
+| backup.velero.includedResources[0] | string | `"pvc"` |  |
+| backup.velero.includedResources[1] | string | `"pv"` |  |
+| backup.velero.instance | string | `"velero-preprod"` |  |
+| backup.velero.labels."app.kubernetes.io/name" | string | `"linkurious-enterprise"` |  |
+| backup.velero.labelsSelector."app.kubernetes.io/name" | string | `"linkurious-enterprise"` |  |
+| backup.velero.name | string | `"velero"` |  |
+| backup.velero.schedule | string | `"55 3 */2 * *"` |  |
+| backup.velero.skipImmediately | bool | `false` |  |
+| backup.velero.snapshotVolume | bool | `true` |  |
+| backup.velero.ttl | string | `"168h"` |  |
+| backup.velero.veleroNamespace | string | `"backup"` |  |
 | config.access.authRequired | string | `"$ENV:LKE_AUTH_REQUIRED"` |  |
 | config.access.autoRefreshGroupMapping | string | `"$ENV-JSON:LKE_OAUTH2_AUTO_REFRESH_GROUP_MAPPING"` |  |
 | config.access.oauth2.authorizationURL | string | `"$ENV:LKE_OAUTH2_AUTHORIZATION_URL"` |  |
@@ -101,7 +116,7 @@ helm upgrade --install my-release linkurious-enterprise-0.2.36.tgz -f chart-valu
 | ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
 | ingress.labels | object | `{}` | Additional ingress labels |
 | ingress.tls[0].secretName | string | `"wildcard-default-cert"` |  |
-| ipWhiteList | object | `{}` |  |
+| ipAllowList | object | `{}` |  |
 | livenessProbe.enabled | bool | `true` | Enable Kubernetes liveness probe for server |
 | livenessProbe.failureThreshold | int | `3` |  |
 | livenessProbe.initialDelaySeconds | int | `10` |  |
@@ -123,6 +138,7 @@ helm upgrade --install my-release linkurious-enterprise-0.2.36.tgz -f chart-valu
 | persistentVolume.annotations | object | `{}` |  |
 | persistentVolume.enabled | bool | `false` | Enable persistent volume for Linkurious server |
 | persistentVolume.size | string | `"5Gi"` |  |
+| plugins.enabled | bool | `true` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext.fsGroup | int | `2000` |  |
 | podSecurityContext.runAsNonRoot | bool | `true` |  |
@@ -139,7 +155,7 @@ helm upgrade --install my-release linkurious-enterprise-0.2.36.tgz -f chart-valu
 | resources | object | `{}` |  |
 | securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
-| service | object | `{"metricsPort":9400,"port":80,"type":"ClusterIP"}` | Existing secret to use for license licenseFromSecret: '{{ printf "%s-lke-license-secret" .Release.Name }}' |
+| service | object | `{"annotations":{},"metricsPort":9400,"port":80,"type":"ClusterIP"}` | Existing secret to use for license licenseFromSecret: '{{ printf "%s-lke-license-secret" .Release.Name }}' |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.create | bool | `false` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
