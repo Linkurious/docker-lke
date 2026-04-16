@@ -183,7 +183,7 @@ configOverlayEnabled: true
 # Supports $ENV:VAR_NAME (string) and $ENV-JSON:VAR_NAME (JSON boolean) variable expansion at runtime.
 # Ref: https://doc.linkurio.us/admin-manual/latest/configure/
 config:
-  version: 2.10.18
+  version: '{{ .Chart.AppVersion }}'
   server:
     cookieHttpOnly: true
     allowFraming: false
