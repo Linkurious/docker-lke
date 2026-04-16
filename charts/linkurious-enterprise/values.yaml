@@ -178,6 +178,10 @@ affinity: {}
 # -- Manage LKE configmap (Declarative Setup)
 ## Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion
 configOverlayEnabled: true
+# -- Linkurious Enterprise configuration overlay.
+# Values here are rendered into a ConfigMap mounted as overlay.json.
+# Supports $ENV:VAR_NAME (string) and $ENV-JSON:VAR_NAME (JSON boolean) variable expansion at runtime.
+# Ref: https://doc.linkurio.us/admin-manual/latest/configure/
 config:
   version: 2.10.18
   db:
@@ -185,33 +189,31 @@ config:
       # -- Run Linkurious Enterprise with SQLite
       dialect: 'sqlite'
       storage: 'server/database.sqlite'
-  access:
-    authRequired: "$ENV:LKE_AUTH_REQUIRED"
-    oauth2:
-      enabled: "$ENV-JSON:LKE_OAUTH2_ENABLED"
-      provider: "$ENV:LKE_OAUTH2_PROVIDER"
-      authorizationURL: "$ENV:LKE_OAUTH2_AUTHORIZATION_URL"
-      tokenURL: "$ENV:LKE_OAUTH2_TOKEN_URL"
-      clientID: "$ENV:LKE_OAUTH2_CLIENT_ID"
-      clientSecret: "$ENV:LKE_OAUTH2_CLIENT_SECRET"
-      azure:
-        tenantID: "$ENV:LKE_OAUTH2_AZURE_TENANT_ID"
-    autoRefreshGroupMapping: "$ENV-JSON:LKE_OAUTH2_AUTO_REFRESH_GROUP_MAPPING"
   server:
     cookieHttpOnly: true
-    allowOrigin: "$ENV:LKE_ALLOW_ORIGIN"
     allowFraming: false
-    domain: "$ENV:LKE_PUBLIC_DOMAIN"
-    publicPortHttps: "$ENV-NUMBER:LKE_PUBLIC_PORT_HTTPS"
     useHttps: false
     forceHttps: false
-    forcePublicHttps: "$ENV-JSON:LKE_FORCE_PUBLIC_HTTPS"
-  # LKE externally facing base URL (optional). Required when configuring SSO
-  # url: https://lke.example.com
+  ## -- Uncomment and configure for SSO / OAuth2:
   # access:
   #   authRequired: true
   #   oauth2:
   #     enabled: true
+  #     provider: "azure"
+  #     authorizationURL: "https://login.microsoftonline.com/<tenant>/oauth2/v2.0/authorize"
+  #     tokenURL: "https://login.microsoftonline.com/<tenant>/oauth2/v2.0/token"
+  #     clientID: "<your-client-id>"
+  #     clientSecret: "<your-client-secret>"
+  #     azure:
+  #       tenantID: "<your-tenant-id>"
+  ## -- Uncomment and configure server domain/origin (required behind ingress):
+  # server:
+  #   domain: "lke.example.com"
+  #   publicPortHttps: 443
+  #   forcePublicHttps: true
+  #   allowOrigin: "https://lke.example.com"
+  ## -- Uncomment to set the externally facing base URL (required for SSO):
+  # url: https://lke.example.com
 
 plugins:
   enabled: true

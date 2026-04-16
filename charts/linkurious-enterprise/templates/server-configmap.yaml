@@ -1,4 +1,4 @@
-{{- if or (.Values.configEnabled) (.Values.configOverlayEnabled) }}
+{{- if .Values.configOverlayEnabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -12,11 +12,7 @@ metadata:
   {{- end }}
   {{- end }}
 data:
-{{- if .Values.configOverlayEnabled }}
   overlay.json: |-
-{{- else }}
-  docker.json: |-
-{{- end }}
   {{- $configData := include "linkurious-enterprise.config" $| fromYaml }}
   {{- $isClusterEnabled := gt (int .Values.replicaCount) 1 }}
   {{- if and $isClusterEnabled (semverCompare ">=4.2.0" (.Values.image.tag | default .Chart.AppVersion)) }}

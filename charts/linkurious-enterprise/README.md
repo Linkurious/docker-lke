@@ -78,26 +78,8 @@ helm upgrade --install my-release linkurious-enterprise-0.2.43.tgz -f chart-valu
 | backup.velero.snapshotVolume | bool | `true` |  |
 | backup.velero.ttl | string | `"168h"` |  |
 | backup.velero.veleroNamespace | string | `"backup"` |  |
-| config.access.authRequired | string | `"$ENV:LKE_AUTH_REQUIRED"` |  |
-| config.access.autoRefreshGroupMapping | string | `"$ENV-JSON:LKE_OAUTH2_AUTO_REFRESH_GROUP_MAPPING"` |  |
-| config.access.oauth2.authorizationURL | string | `"$ENV:LKE_OAUTH2_AUTHORIZATION_URL"` |  |
-| config.access.oauth2.azure.tenantID | string | `"$ENV:LKE_OAUTH2_AZURE_TENANT_ID"` |  |
-| config.access.oauth2.clientID | string | `"$ENV:LKE_OAUTH2_CLIENT_ID"` |  |
-| config.access.oauth2.clientSecret | string | `"$ENV:LKE_OAUTH2_CLIENT_SECRET"` |  |
-| config.access.oauth2.enabled | string | `"$ENV-JSON:LKE_OAUTH2_ENABLED"` |  |
-| config.access.oauth2.provider | string | `"$ENV:LKE_OAUTH2_PROVIDER"` |  |
-| config.access.oauth2.tokenURL | string | `"$ENV:LKE_OAUTH2_TOKEN_URL"` |  |
+| config | object | `{"db":{"options":{"dialect":"sqlite","storage":"server/database.sqlite"}},"server":{"allowFraming":false,"cookieHttpOnly":true,"forceHttps":false,"useHttps":false},"version":"2.10.18"}` | Linkurious Enterprise configuration overlay. Values here are rendered into a ConfigMap mounted as overlay.json. Supports $ENV:VAR_NAME (string) and $ENV-JSON:VAR_NAME (JSON boolean) variable expansion at runtime. Ref: https://doc.linkurio.us/admin-manual/latest/configure/ |
 | config.db.options.dialect | string | `"sqlite"` | Run Linkurious Enterprise with SQLite |
-| config.db.options.storage | string | `"server/database.sqlite"` |  |
-| config.server.allowFraming | bool | `false` |  |
-| config.server.allowOrigin | string | `"$ENV:LKE_ALLOW_ORIGIN"` |  |
-| config.server.cookieHttpOnly | bool | `true` |  |
-| config.server.domain | string | `"$ENV:LKE_PUBLIC_DOMAIN"` |  |
-| config.server.forceHttps | bool | `false` |  |
-| config.server.forcePublicHttps | string | `"$ENV-JSON:LKE_FORCE_PUBLIC_HTTPS"` |  |
-| config.server.publicPortHttps | string | `"$ENV-NUMBER:LKE_PUBLIC_PORT_HTTPS"` |  |
-| config.server.useHttps | bool | `false` |  |
-| config.version | string | `"2.10.18"` |  |
 | configOverlayEnabled | bool | `true` | Manage LKE configmap (Declarative Setup) # Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion |
 | env | list | `[]` | Environment variables to pass to Linkurious server |
 | envFrom | list | `[]` | envFrom to pass to Linkurious server |
