@@ -1,6 +1,6 @@
 # linkurious-enterprise
 
-![Version: 0.2.43](https://img.shields.io/badge/Version-0.2.43-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.10.18](https://img.shields.io/badge/AppVersion-2.10.18-informational?style=flat-square)
+![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.10.18](https://img.shields.io/badge/AppVersion-2.10.18-informational?style=flat-square)
 
 A Helm chart for Linkurious Enterprise
 
@@ -31,7 +31,7 @@ To install a very basic version of Linkurious enterprise, please set your privat
  and then run:
 
 ```console
-helm upgrade --install my-release linkurious-enterprise-0.2.43.tgz -f chart-value-examples/basic/values.yaml
+helm upgrade --install my-release linkurious-enterprise-0.3.0.tgz -f chart-value-examples/basic/values.yaml
 ```
 
 ## Values
@@ -78,8 +78,7 @@ helm upgrade --install my-release linkurious-enterprise-0.2.43.tgz -f chart-valu
 | backup.velero.snapshotVolume | bool | `true` |  |
 | backup.velero.ttl | string | `"168h"` |  |
 | backup.velero.veleroNamespace | string | `"backup"` |  |
-| config | object | `{"db":{"options":{"dialect":"sqlite","storage":"server/database.sqlite"}},"server":{"allowFraming":false,"cookieHttpOnly":true,"forceHttps":false,"useHttps":false},"version":"2.10.18"}` | Linkurious Enterprise configuration overlay. Values here are rendered into a ConfigMap mounted as overlay.json. Supports $ENV:VAR_NAME (string) and $ENV-JSON:VAR_NAME (JSON boolean) variable expansion at runtime. Ref: https://doc.linkurio.us/admin-manual/latest/configure/ |
-| config.db.options.dialect | string | `"sqlite"` | Run Linkurious Enterprise with SQLite |
+| config | object | `{"server":{"allowFraming":false,"cookieHttpOnly":true,"forceHttps":false,"useHttps":false},"version":"{{ .Chart.AppVersion }}"}` | Linkurious Enterprise configuration overlay. Values here are rendered into a ConfigMap mounted as overlay.json. Supports $ENV:VAR_NAME (string) and $ENV-JSON:VAR_NAME (JSON boolean) variable expansion at runtime. Ref: https://doc.linkurio.us/admin-manual/latest/configure/ |
 | configOverlayEnabled | bool | `true` | Manage LKE configmap (Declarative Setup) # Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion |
 | env | list | `[]` | Environment variables to pass to Linkurious server |
 | envFrom | list | `[]` | envFrom to pass to Linkurious server |
