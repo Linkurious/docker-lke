@@ -74,13 +74,6 @@ Condition on hostPrefixOverride fixing DLKE-17 bug
 {{- end }}
 
 {{/*
-LKE Configuration Preset Values (Incluenced by Values configuration)
-*/}}
-{{- define "linkurious-enterprise.config.presets" -}}
-  {{- .Files.Get "docker.preset-config.json" }}
-{{- end -}}
-
-{{/*
 LKE Configuration Config Values
 */}}
 {{- define "linkurious-enterprise.config.values" -}}
