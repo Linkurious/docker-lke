@@ -239,7 +239,7 @@ backup:
   litestream:
     ## -- Enable backup for Linkurious server running sqlite with litestream
     enabled: false
-    image: litestream/litestream:0.3.13
+    image: litestream/litestream:0.5.11
     readinessProbe:
       exec:
         command:
