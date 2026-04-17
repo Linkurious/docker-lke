@@ -6,6 +6,14 @@
     "customManagers:dockerfileVersions",
     "customManagers:helmChartYamlAppVersions"
   ],
+  "hostRules": [
+    {
+      "hostType": "docker",
+      "matchHost": "https://public-pull.nexus3.linkurious.net",
+      "token": "{{ secrets.mend_nexus_public_pull }}",
+      "authType": "Basic"
+    }
+  ],
   "baseBranchPatterns": [
     "develop"
   ]
