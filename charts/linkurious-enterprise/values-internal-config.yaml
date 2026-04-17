@@ -1,0 +1,27 @@
+# Internal config overlay values — uses $ENV: variable expansion.
+# Use with: helm install ... -f values-internal-config.yaml
+# Requires matching environment variables or envFrom secrets to be provided.
+# Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion
+
+config:
+  access:
+    authRequired: "$ENV:LKE_AUTH_REQUIRED"
+    oauth2:
+      enabled: "$ENV-JSON:LKE_OAUTH2_ENABLED"
+      provider: "$ENV:LKE_OAUTH2_PROVIDER"
+      authorizationURL: "$ENV:LKE_OAUTH2_AUTHORIZATION_URL"
+      tokenURL: "$ENV:LKE_OAUTH2_TOKEN_URL"
+      clientID: "$ENV:LKE_OAUTH2_CLIENT_ID"
+      clientSecret: "$ENV:LKE_OAUTH2_CLIENT_SECRET"
+      azure:
+        tenantID: "$ENV:LKE_OAUTH2_AZURE_TENANT_ID"
+    autoRefreshGroupMapping: "$ENV-JSON:LKE_OAUTH2_AUTO_REFRESH_GROUP_MAPPING"
+  server:
+    cookieHttpOnly: true
+    allowOrigin: "$ENV:LKE_ALLOW_ORIGIN"
+    allowFraming: false
+    domain: "$ENV:LKE_PUBLIC_DOMAIN"
+    publicPortHttps: "$ENV-NUMBER:LKE_PUBLIC_PORT_HTTPS"
+    useHttps: false
+    forceHttps: false
+    forcePublicHttps: "$ENV-JSON:LKE_FORCE_PUBLIC_HTTPS"

@@ -1,6 +1,6 @@
 # linkurious-enterprise
 
-![Version: 0.2.43](https://img.shields.io/badge/Version-0.2.43-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.10.18](https://img.shields.io/badge/AppVersion-2.10.18-informational?style=flat-square)
+![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.10.18](https://img.shields.io/badge/AppVersion-2.10.18-informational?style=flat-square)
 
 A Helm chart for Linkurious Enterprise
 
@@ -31,7 +31,7 @@ To install a very basic version of Linkurious enterprise, please set your privat
  and then run:
 
 ```console
-helm upgrade --install my-release linkurious-enterprise-0.2.43.tgz -f chart-value-examples/basic/values.yaml
+helm upgrade --install my-release linkurious-enterprise-0.3.0.tgz -f chart-value-examples/basic/values.yaml
 ```
 
 ## Values
@@ -78,26 +78,7 @@ helm upgrade --install my-release linkurious-enterprise-0.2.43.tgz -f chart-valu
 | backup.velero.snapshotVolume | bool | `true` |  |
 | backup.velero.ttl | string | `"168h"` |  |
 | backup.velero.veleroNamespace | string | `"backup"` |  |
-| config.access.authRequired | string | `"$ENV:LKE_AUTH_REQUIRED"` |  |
-| config.access.autoRefreshGroupMapping | string | `"$ENV-JSON:LKE_OAUTH2_AUTO_REFRESH_GROUP_MAPPING"` |  |
-| config.access.oauth2.authorizationURL | string | `"$ENV:LKE_OAUTH2_AUTHORIZATION_URL"` |  |
-| config.access.oauth2.azure.tenantID | string | `"$ENV:LKE_OAUTH2_AZURE_TENANT_ID"` |  |
-| config.access.oauth2.clientID | string | `"$ENV:LKE_OAUTH2_CLIENT_ID"` |  |
-| config.access.oauth2.clientSecret | string | `"$ENV:LKE_OAUTH2_CLIENT_SECRET"` |  |
-| config.access.oauth2.enabled | string | `"$ENV-JSON:LKE_OAUTH2_ENABLED"` |  |
-| config.access.oauth2.provider | string | `"$ENV:LKE_OAUTH2_PROVIDER"` |  |
-| config.access.oauth2.tokenURL | string | `"$ENV:LKE_OAUTH2_TOKEN_URL"` |  |
-| config.db.options.dialect | string | `"sqlite"` | Run Linkurious Enterprise with SQLite |
-| config.db.options.storage | string | `"server/database.sqlite"` |  |
-| config.server.allowFraming | bool | `false` |  |
-| config.server.allowOrigin | string | `"$ENV:LKE_ALLOW_ORIGIN"` |  |
-| config.server.cookieHttpOnly | bool | `true` |  |
-| config.server.domain | string | `"$ENV:LKE_PUBLIC_DOMAIN"` |  |
-| config.server.forceHttps | bool | `false` |  |
-| config.server.forcePublicHttps | string | `"$ENV-JSON:LKE_FORCE_PUBLIC_HTTPS"` |  |
-| config.server.publicPortHttps | string | `"$ENV-NUMBER:LKE_PUBLIC_PORT_HTTPS"` |  |
-| config.server.useHttps | bool | `false` |  |
-| config.version | string | `"2.10.18"` |  |
+| config | object | `{"server":{"allowFraming":false,"cookieHttpOnly":true,"forceHttps":false,"useHttps":false},"version":"{{ .Chart.AppVersion }}"}` | Linkurious Enterprise configuration overlay. Values here are rendered into a ConfigMap mounted as overlay.json. Supports $ENV:VAR_NAME (string) and $ENV-JSON:VAR_NAME (JSON boolean) variable expansion at runtime. Ref: https://doc.linkurio.us/admin-manual/latest/configure/ |
 | configOverlayEnabled | bool | `true` | Manage LKE configmap (Declarative Setup) # Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion |
 | env | list | `[]` | Environment variables to pass to Linkurious server |
 | envFrom | list | `[]` | envFrom to pass to Linkurious server |
