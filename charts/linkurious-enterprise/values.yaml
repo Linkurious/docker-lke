@@ -285,7 +285,8 @@ backup:
     name: velero
     instance: velero-preprod
     veleroNamespace: backup
-    ttl: "168h"
+    # retention 30 days
+    ttl: "720h"
     includedResources:
       - pvc
       - pv
