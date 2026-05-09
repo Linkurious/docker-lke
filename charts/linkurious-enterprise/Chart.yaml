@@ -22,7 +22,7 @@ version: 0.3.1
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 # renovate: image=public-pull.nexus3.linkurious.net/linkurious/linkurious-enterprise
-appVersion: "4.3.4"
+appVersion: "4.3.5"
 
 keywords:
   - Linkurious
