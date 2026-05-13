@@ -1,11 +1,11 @@
-{{- if .Values.backup.velero.primaryBackup.enabled }}
+{{- if .Values.backup.velero.secondaryBackup.enabled }}
 {{- if (not (.Capabilities.APIVersions.Has "velero.io/v1")) }}
     {{- fail "ERROR: You have to deploy velero.io/v1 first or disable velero backup" }}
 {{- end }}
 apiVersion: velero.io/v1
 kind: Schedule
 metadata:
-  name: {{ printf "velero-schedule-%s" $.Release.Namespace }}
+  name: {{ printf "velero-secondary-schedule-%s" $.Release.Namespace }}
   namespace: {{ .Values.backup.velero.veleroNamespace }}
   {{- if .Values.backup.velero.annotations }}
   annotations:
@@ -26,10 +26,10 @@ spec:
 {{- if .Values.backup.velero.useOwnerReferencesInBackup }}
   useOwnerReferencesInBackup: {{ .Values.backup.velero.useOwnerReferencesInBackup }}
 {{- end }}
-  schedule: {{ .Values.backup.velero.primaryBackup.schedule }}
+  schedule: {{ .Values.backup.velero.secondaryBackup.schedule }}
   skipImmediately: {{ .Values.backup.velero.skipImmediately }}
   template:
-    defaultVolumesToFsBackup: {{ .Values.backup.velero.primaryBackup.defaultVolumesToFsBackup }}
+    defaultVolumesToFsBackup: {{ .Values.backup.velero.secondaryBackup.defaultVolumesToFsBackup }}
     includedNamespaces:
        - {{ $.Release.Namespace }}
 {{- if .Values.backup.velero.includedResources }}
@@ -52,9 +52,9 @@ spec:
 {{- if .Values.backup.velero.secondaryBackup.snapshotMoveData }}
     snapshotMoveData: {{ .Values.backup.velero.secondaryBackup.snapshotMoveData }}
 {{- end }}
-    snapshotVolumes: {{ .Values.backup.velero.primaryBackup.snapshotVolume }}
+    snapshotVolumes: {{ .Values.backup.velero.secondaryBackup.snapshotVolume }}
 {{- if .Values.backup.velero.secondaryBackup.storageLocation }}
     storageLocation: {{ .Values.backup.velero.secondaryBackup.storageLocation }}
 {{- end }}
-    ttl: {{ .Values.backup.velero.primaryBackup.ttl }}
+    ttl: {{ .Values.backup.velero.secondaryBackup.ttl }}
 {{- end }}
