@@ -298,6 +298,7 @@ backup:
     primaryBackup:
       enabled: false
       snapshotVolume: true
+      snapshotMoveData: false
       defaultVolumesToFsBackup: false
       schedule: "55 3 * * *"
       ttl: "168h"

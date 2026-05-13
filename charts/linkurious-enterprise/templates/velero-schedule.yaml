@@ -49,12 +49,12 @@ spec:
       matchLabels:
         {{- toYaml .Values.backup.velero.labelsSelector | nindent 8 }}
 {{- end }}
-{{- if .Values.backup.velero.secondaryBackup.snapshotMoveData }}
-    snapshotMoveData: {{ .Values.backup.velero.secondaryBackup.snapshotMoveData }}
+{{- if .Values.backup.velero.primaryBackup.snapshotMoveData }}
+    snapshotMoveData: {{ .Values.backup.velero.primaryBackup.snapshotMoveData }}
 {{- end }}
     snapshotVolumes: {{ .Values.backup.velero.primaryBackup.snapshotVolume }}
-{{- if .Values.backup.velero.secondaryBackup.storageLocation }}
-    storageLocation: {{ .Values.backup.velero.secondaryBackup.storageLocation }}
+{{- if .Values.backup.velero.primaryBackup.storageLocation }}
+    storageLocation: {{ .Values.backup.velero.primaryBackup.storageLocation }}
 {{- end }}
     ttl: {{ .Values.backup.velero.primaryBackup.ttl }}
 {{- end }}
