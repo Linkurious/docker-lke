@@ -12,12 +12,8 @@ metadata:
     {{- toYaml .Values.backup.velero.annotations | nindent 4 }}
   {{- end }}
   labels:
-    app.kubernetes.io/name: {{ .Values.backup.velero.name }}
-    app.kubernetes.io/instance: {{ .Values.backup.velero.instance }}
-    app.kubernetes.io/managed-by: {{ $.Release.Service }}
-   {{- if .Values.backup.velero.labels }}
-      {{- toYaml .Values.backup.velero.labels | nindent 4 }}
-    {{- end }}
+    {{- $defaultLabels := dict "app.kubernetes.io/name" .Values.backup.velero.name "app.kubernetes.io/instance" .Values.backup.velero.instance "app.kubernetes.io/managed-by" $.Release.Service }}
+    {{- toYaml (mergeOverwrite $defaultLabels (.Values.backup.velero.labels | default dict)) | nindent 4 }}
 
 spec:
 {{- if .Values.backup.velero.paused }}
