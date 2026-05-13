@@ -281,25 +281,35 @@ backup:
 
   velero:
     ## -- Enable backup for Linkurious server lke-data volume with velero
-    enabled: false
     name: velero
     instance: velero-preprod
     veleroNamespace: backup
-    ttl: "168h"
     includedResources:
       - pvc
       - pv
     #excludedResources:
     #  - secrets
-    snapshotVolume: true
-    defaultVolumesToFsBackup: false
     labels:
       app.kubernetes.io/name: linkurious-enterprise
-    schedule: "55 3 */2 * *"
     skipImmediately: false
     labelsSelector:
       # backup.velero.io/backup-volumes: lke-data
       app.kubernetes.io/name: linkurious-enterprise
+    primaryBackup:
+      enabled: false
+      snapshotVolume: true
+      snapshotMoveData: false
+      defaultVolumesToFsBackup: false
+      schedule: "55 3 * * *"
+      ttl: "168h"
+    secondaryBackup:
+      enabled: false
+      schedule: "55 12 * * *"
+      snapshotVolume: true
+      snapshotMoveData: true
+      defaultVolumesToFsBackup: true
+      storageLocation: velero-k8s-nl-ams-backup-storage
+      ttl: "168h"
 
 hostAliases: []
 

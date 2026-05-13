@@ -1,6 +1,6 @@
 # linkurious-enterprise
 
-![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.10.18](https://img.shields.io/badge/AppVersion-2.10.18-informational?style=flat-square)
+![Version: 0.3.1](https://img.shields.io/badge/Version-0.3.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.3.4](https://img.shields.io/badge/AppVersion-4.3.4-informational?style=flat-square)
 
 A Helm chart for Linkurious Enterprise
 
@@ -31,7 +31,7 @@ To install a very basic version of Linkurious enterprise, please set your privat
  and then run:
 
 ```console
-helm upgrade --install my-release linkurious-enterprise-0.3.0.tgz -f chart-value-examples/basic/values.yaml
+helm upgrade --install my-release linkurious-enterprise-0.3.1.tgz -f chart-value-examples/basic/values.yaml
 ```
 
 ## Values
@@ -65,18 +65,25 @@ helm upgrade --install my-release linkurious-enterprise-0.3.0.tgz -f chart-value
 | backup.litestream.resources.requests.cpu | string | `"100m"` |  |
 | backup.litestream.resources.requests.memory | string | `"100Mi"` |  |
 | backup.litestream.secretRef.name | string | `"litestream-lke-secret"` |  |
-| backup.velero.defaultVolumesToFsBackup | bool | `false` |  |
-| backup.velero.enabled | bool | `false` |  |
 | backup.velero.includedResources[0] | string | `"pvc"` |  |
 | backup.velero.includedResources[1] | string | `"pv"` |  |
 | backup.velero.instance | string | `"velero-preprod"` |  |
 | backup.velero.labels."app.kubernetes.io/name" | string | `"linkurious-enterprise"` |  |
 | backup.velero.labelsSelector."app.kubernetes.io/name" | string | `"linkurious-enterprise"` |  |
 | backup.velero.name | string | `"velero"` |  |
-| backup.velero.schedule | string | `"55 3 */2 * *"` |  |
+| backup.velero.primaryBackup.defaultVolumesToFsBackup | bool | `false` |  |
+| backup.velero.primaryBackup.enabled | bool | `false` |  |
+| backup.velero.primaryBackup.schedule | string | `"55 3 * * *"` |  |
+| backup.velero.primaryBackup.snapshotVolume | bool | `true` |  |
+| backup.velero.primaryBackup.ttl | string | `"168h"` |  |
+| backup.velero.secondaryBackup.defaultVolumesToFsBackup | bool | `true` |  |
+| backup.velero.secondaryBackup.enabled | bool | `false` |  |
+| backup.velero.secondaryBackup.schedule | string | `"55 12 * * *"` |  |
+| backup.velero.secondaryBackup.snapshotMoveData | bool | `true` |  |
+| backup.velero.secondaryBackup.snapshotVolume | bool | `true` |  |
+| backup.velero.secondaryBackup.storageLocation | string | `"nl-ams-backup-storage"` |  |
+| backup.velero.secondaryBackup.ttl | string | `"168h"` |  |
 | backup.velero.skipImmediately | bool | `false` |  |
-| backup.velero.snapshotVolume | bool | `true` |  |
-| backup.velero.ttl | string | `"168h"` |  |
 | backup.velero.veleroNamespace | string | `"backup"` |  |
 | config | object | `{"server":{"allowFraming":false,"cookieHttpOnly":true,"forceHttps":false,"useHttps":false},"version":"{{ .Chart.AppVersion }}"}` | Linkurious Enterprise configuration overlay. Values here are rendered into a ConfigMap mounted as overlay.json. Supports $ENV:VAR_NAME (string) and $ENV-JSON:VAR_NAME (JSON boolean) variable expansion at runtime. Ref: https://doc.linkurio.us/admin-manual/latest/configure/ |
 | configOverlayEnabled | bool | `true` | Manage LKE configmap (Declarative Setup) # Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion |
