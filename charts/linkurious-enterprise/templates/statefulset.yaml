@@ -19,7 +19,7 @@ spec:
       {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.backup.velero.primaryBackup.enabled }}
+      {{- if or (eq .Values.backup.velero.backup.enabled true) (eq .Values.backup.velero.secondaryBackup.enabled true) }}
         backup.velero.io/backup-volumes: lke-data
       {{- end }}
       labels:

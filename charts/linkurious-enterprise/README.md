@@ -65,6 +65,7 @@ helm upgrade --install my-release linkurious-enterprise-0.3.1.tgz -f chart-value
 | backup.litestream.resources.requests.cpu | string | `"100m"` |  |
 | backup.litestream.resources.requests.memory | string | `"100Mi"` |  |
 | backup.litestream.secretRef.name | string | `"litestream-lke-secret"` |  |
+| backup.velero.enabled | bool | `false` |  |
 | backup.velero.includedResources[0] | string | `"pvc"` |  |
 | backup.velero.includedResources[1] | string | `"pv"` |  |
 | backup.velero.instance | string | `"velero-preprod"` |  |
@@ -72,8 +73,8 @@ helm upgrade --install my-release linkurious-enterprise-0.3.1.tgz -f chart-value
 | backup.velero.labelsSelector."app.kubernetes.io/name" | string | `"linkurious-enterprise"` |  |
 | backup.velero.name | string | `"velero"` |  |
 | backup.velero.primaryBackup.defaultVolumesToFsBackup | bool | `false` |  |
-| backup.velero.primaryBackup.enabled | bool | `false` |  |
 | backup.velero.primaryBackup.schedule | string | `"55 3 * * *"` |  |
+| backup.velero.primaryBackup.snapshotMoveData | bool | `false` |  |
 | backup.velero.primaryBackup.snapshotVolume | bool | `true` |  |
 | backup.velero.primaryBackup.ttl | string | `"168h"` |  |
 | backup.velero.secondaryBackup.defaultVolumesToFsBackup | bool | `true` |  |
@@ -81,7 +82,7 @@ helm upgrade --install my-release linkurious-enterprise-0.3.1.tgz -f chart-value
 | backup.velero.secondaryBackup.schedule | string | `"55 12 * * *"` |  |
 | backup.velero.secondaryBackup.snapshotMoveData | bool | `true` |  |
 | backup.velero.secondaryBackup.snapshotVolume | bool | `true` |  |
-| backup.velero.secondaryBackup.storageLocation | string | `"nl-ams-backup-storage"` |  |
+| backup.velero.secondaryBackup.storageLocation | string | `"velero-k8s-nl-ams-backup-storage"` |  |
 | backup.velero.secondaryBackup.ttl | string | `"168h"` |  |
 | backup.velero.skipImmediately | bool | `false` |  |
 | backup.velero.veleroNamespace | string | `"backup"` |  |
