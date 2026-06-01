@@ -1,4 +1,4 @@
-{{- if .Values.backup.velero.Backup.enabled }}
+{{- if .Values.backup.velero.enabled }}
 {{- if (not (.Capabilities.APIVersions.Has "velero.io/v1")) }}
     {{- fail "ERROR: You have to deploy velero.io/v1 first or disable velero backup" }}
 {{- end }}
