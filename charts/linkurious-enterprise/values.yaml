@@ -308,7 +308,7 @@ backup:
       snapshotVolume: true
       snapshotMoveData: true
       defaultVolumesToFsBackup: true
-      storageLocation: velero-k8s-nl-ams-backup-storage
+      storageLocation: velero-k8s-nl-ams-standard-storage
       ttl: "168h"
 
 hostAliases: []
