@@ -1,6 +1,6 @@
 # linkurious-enterprise
 
-![Version: 0.3.1](https://img.shields.io/badge/Version-0.3.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.3.4](https://img.shields.io/badge/AppVersion-4.3.4-informational?style=flat-square)
+![Version: 0.3.1](https://img.shields.io/badge/Version-0.3.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.3.5](https://img.shields.io/badge/AppVersion-4.3.5-informational?style=flat-square)
 
 A Helm chart for Linkurious Enterprise
 
@@ -82,7 +82,7 @@ helm upgrade --install my-release linkurious-enterprise-0.3.1.tgz -f chart-value
 | backup.velero.secondaryBackup.schedule | string | `"55 12 * * *"` |  |
 | backup.velero.secondaryBackup.snapshotMoveData | bool | `true` |  |
 | backup.velero.secondaryBackup.snapshotVolume | bool | `true` |  |
-| backup.velero.secondaryBackup.storageLocation | string | `"velero-k8s-nl-ams-backup-storage"` |  |
+| backup.velero.secondaryBackup.storageLocation | string | `"velero-k8s-nl-ams-standard-storage"` |  |
 | backup.velero.secondaryBackup.ttl | string | `"168h"` |  |
 | backup.velero.skipImmediately | bool | `false` |  |
 | backup.velero.veleroNamespace | string | `"backup"` |  |
