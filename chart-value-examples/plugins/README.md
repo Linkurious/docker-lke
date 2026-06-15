@@ -27,7 +27,7 @@ release tag — avoid `latest` so deployments are reproducible.
 - The plugin `.lke` files are persisted on the `lke-data` PVC. Re-running the
   init container on pod restart is idempotent (curl overwrites the file with
   the same content).
-- The init container inherits the chart's default non-root `podSecurityContext`
-  (`2013:2013`); `curlimages/curl` supports running as an arbitrary UID.
+- The init container inherits the chart's pod-level `podSecurityContext`
+  (`runAsUser: 2013`, `fsGroup: 2000`, `seccompProfile: RuntimeDefault`); `curlimages/curl` supports running as an arbitrary UID.
 - If your cluster has no outbound internet access, pre-stage the plugin
   artifacts in an internal registry / object store and adjust the URL.
