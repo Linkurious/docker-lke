@@ -1,8 +1,8 @@
 # Installing Linkurious Enterprise plugins via an init container
 
 The sibling [values.yaml](values.yaml) file provides an example of installing
-Linkurious Enterprise plugins by downloading their release archives into
-`/data/plugins` using a `curl`-based init container.
+Linkurious Enterprise plugins by downloading their release assets (the `.lke`
+files) into `/data/plugins` using a `curl`-based init container.
 
 This example downloads the [`lke-plugin-third-party-data`](https://github.com/Linkurious/lke-plugin-third-party-data)
 plugin release from GitHub.
