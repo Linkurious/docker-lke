@@ -1,0 +1,57 @@
+image:
+  # -- Repository to use for the application.
+  # You will need to retrieve the image from the Linkurious Customer Center and load it into your private repository
+  repository: ""
+
+configOverlayEnabled: false
+metrics:
+  prometheus:
+    enabled: false
+
+plugins:
+  enabled: true
+
+## -- Download Linkurious plugins into /data/plugins using an init container.
+## The lke-data volume is shared with the main container, so plugins dropped
+## into /data/plugins by the init container are picked up at startup.
+##
+## This example downloads the lke-plugin-third-party-data plugin release
+## from GitHub: https://github.com/Linkurious/lke-plugin-third-party-data
+##
+## To add more plugins, append additional curl commands to the args block
+## (one -o per plugin, all writing under /data/plugins).
+initContainers:
+  - name: download-plugins
+    image: curlimages/curl:8.10.1
+    # Inherit the chart's default podSecurityContext (runAsUser: 2013, fsGroup: 2000, seccompProfile: RuntimeDefault).
+    # Mirror the chart's default container securityContext so cluster
+    # admission policies (e.g. Kyverno restricted baseline) accept the pod.
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+    command: ['sh', '-c']
+    args:
+      - |
+        set -eu
+        mkdir -p /data/plugins
+        echo "Downloading lke-plugin-third-party-data ${PLUGIN_THIRD_PARTY_DATA_VERSION}..."
+        curl --fail --location --retry 3 --retry-delay 5 \
+          -o "/data/plugins/lke-plugin-third-party-data-${PLUGIN_THIRD_PARTY_DATA_VERSION}.lke" \
+          "https://github.com/Linkurious/lke-plugin-third-party-data/releases/download/${PLUGIN_THIRD_PARTY_DATA_VERSION}/lke-plugin-third-party-data-${PLUGIN_THIRD_PARTY_DATA_VERSION}.lke"
+        echo "Plugins available in /data/plugins:"
+        ls -l /data/plugins
+    env:
+      - name: PLUGIN_THIRD_PARTY_DATA_VERSION
+        value: v1.0.7
+    volumeMounts:
+      - mountPath: /data
+        name: lke-data
+
+## -- Persistent storage is strongly recommended so downloaded plugins survive pod restarts.
+persistentVolume:
+  enabled: true
+  accessModes:
+    - ReadWriteOnce
+  size: 5Gi
