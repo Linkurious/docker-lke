@@ -23,10 +23,18 @@
       ],
       "additionalBranchPrefix": "{{packageFileDir}}-",
       "commitMessageSuffix": "{{packageFileDir}}-",
-      "bumpVersion": "patch",
       "matchPackageNames": [
         "/.*/"
-      ]
+      ],
+      "postUpgradeTasks": {
+        "commands": [
+          "bash -c 'f=charts/linkurious-enterprise/Chart.yaml; awk \"/^version:/ {split(\\$2,a,\\\".\\\"); a[3]+=1; printf \\\"version: %s.%s.%s\\\\n\\\", a[1],a[2],a[3]; next} 1\" \"$f\" > \"$f.tmp\" && mv \"$f.tmp\" \"$f\"'"
+        ],
+        "fileFilters": [
+          "charts/linkurious-enterprise/Chart.yaml"
+        ],
+        "executionMode": "branch"
+      }
     }
   ],
   "baseBranchPatterns": [
