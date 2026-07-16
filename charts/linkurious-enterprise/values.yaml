@@ -328,7 +328,6 @@ metrics:
       jobLabel: linkurious-enterprise
       interval: 30s
       honorLabels: true
-
 # -- OpenTelemetry configuration.
 # OpenTelemetry is configured through environment variables since LKE 4.3.8+.
 # When enabled, chart also disables legacy prom-client metrics in the overlay config
@@ -336,14 +335,16 @@ metrics:
 openTelemetry:
   # -- Enable OpenTelemetry SDK bootstrap.
   enabled: false
-  # -- Metrics exporter used by OpenTelemetry.
-  metricsExporter: prometheus
-  # -- Port exposed by OpenTelemetry Prometheus exporter.
-  prometheusPort: 9400
-  # -- Traces sampler strategy.
-  tracesSampler: parentbased_traceidratio
-  # -- Sampler argument (ratio for parentbased_traceidratio).
-  tracesSamplerArg: "0.1"
+  metrics:
+    # -- Metrics exporter used by OpenTelemetry.
+    exporter: prometheus
+    # -- Port exposed by OpenTelemetry Prometheus exporter.
+    prometheusPort: 9400
+  traces:
+    # -- Traces sampler strategy.
+    sampler: parentbased_traceidratio
+    # -- Sampler argument (ratio for parentbased_traceidratio).
+    samplerArg: "0.1"
 
 ## -- Allow only whitelisted ip or cidr
 ## https://doc.traefik.io/traefik/middlewares/http/ipwhitelist/

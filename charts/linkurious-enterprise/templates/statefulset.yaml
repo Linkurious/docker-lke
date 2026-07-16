@@ -88,13 +88,13 @@ spec:
             - name: LKE_OTEL_ENABLED
               value: "true"
             - name: OTEL_METRICS_EXPORTER
-              value: {{ .Values.openTelemetry.metricsExporter | quote }}
+              value: {{ .Values.openTelemetry.metrics.exporter | quote }}
             - name: OTEL_EXPORTER_PROMETHEUS_PORT
-              value: {{ .Values.openTelemetry.prometheusPort | quote }}
+              value: {{ .Values.openTelemetry.metrics.prometheusPort | quote }}
             - name: OTEL_TRACES_SAMPLER
-              value: {{ .Values.openTelemetry.tracesSampler | quote }}
+              value: {{ .Values.openTelemetry.traces.sampler | quote }}
             - name: OTEL_TRACES_SAMPLER_ARG
-              value: {{ .Values.openTelemetry.tracesSamplerArg | quote }}
+              value: {{ .Values.openTelemetry.traces.samplerArg | quote }}
             {{- end }}
             {{- if and .Values.ingress.enabled .Values.ingress.hosts }}
             - name: LKE_PUBLIC_PORT_HTTPS
