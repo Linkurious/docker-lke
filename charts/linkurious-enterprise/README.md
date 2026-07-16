@@ -90,6 +90,11 @@ helm upgrade --install my-release linkurious-enterprise-0.3.1.tgz -f chart-value
 | configOverlayEnabled | bool | `true` | Manage LKE configmap (Declarative Setup) # Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion |
 | env | list | `[]` | Environment variables to pass to Linkurious server |
 | envFrom | list | `[]` | envFrom to pass to Linkurious server |
+| openTelemetry.enabled | bool | `false` | Enable OpenTelemetry SDK bootstrap |
+| openTelemetry.metricsExporter | string | `"prometheus"` | Metrics exporter used by OpenTelemetry |
+| openTelemetry.prometheusPort | int | `9400` | Port exposed by OpenTelemetry Prometheus exporter |
+| openTelemetry.tracesSampler | string | `"parentbased_traceidratio"` | Traces sampler strategy |
+| openTelemetry.tracesSamplerArg | string | `"0.1"` | Sampler argument (ratio for parentbased_traceidratio) |
 | fullnameOverride | string | `""` |  |
 | hostAliases | list | `[]` |  |
 | hostPostfix | string | `"example.domain"` |  |
