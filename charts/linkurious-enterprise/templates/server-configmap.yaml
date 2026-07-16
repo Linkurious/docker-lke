@@ -14,6 +14,10 @@ metadata:
 data:
   overlay.json: |-
   {{- $configData := include "linkurious-enterprise.config" $| fromYaml }}
+  {{- if .Values.openTelemetry.enabled }}
+  {{- $otelConfig := dict "metrics" (dict "enabled" false) }}
+  {{- $configData = mergeOverwrite $configData $otelConfig }}
+  {{- end }}
   {{- $isClusterEnabled := gt (int .Values.replicaCount) 1 }}
   {{- if and $isClusterEnabled (semverCompare ">=4.2.0" (.Values.image.tag | default .Chart.AppVersion)) }}
   {{- $clusterConfig := dict "enabled" $isClusterEnabled "mode" "$ENV:LKE_CLUSTER_ROLE" }}
