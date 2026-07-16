@@ -79,10 +79,22 @@ spec:
             - "-c"
             - "while true; do echo 'Linkurious-enterprise is not running. Pod is in offline maintenance mode. Remove linkurious-enterprise.offlineMaintenanceModeEnabled setting and run `helm upgrade ...` to resume normal operation.'; sleep 60; done"
           {{- end }}
-          {{- if or .Values.env .Values.ingress.enabled (not .Values.plugins.enabled) }}
+          {{- if or .Values.env .Values.ingress.enabled (not .Values.plugins.enabled) .Values.openTelemetry.enabled }}
           env:
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 }}
+            {{- end }}
+            {{- if .Values.openTelemetry.enabled }}
+            - name: LKE_OTEL_ENABLED
+              value: "true"
+            - name: OTEL_METRICS_EXPORTER
+              value: {{ .Values.openTelemetry.metrics.exporter | quote }}
+            - name: OTEL_EXPORTER_PROMETHEUS_PORT
+              value: {{ .Values.openTelemetry.metrics.prometheusPort | quote }}
+            - name: OTEL_TRACES_SAMPLER
+              value: {{ .Values.openTelemetry.traces.sampler | quote }}
+            - name: OTEL_TRACES_SAMPLER_ARG
+              value: {{ .Values.openTelemetry.traces.samplerArg | quote }}
             {{- end }}
             {{- if and .Values.ingress.enabled .Values.ingress.hosts }}
             - name: LKE_PUBLIC_PORT_HTTPS
@@ -108,9 +120,11 @@ spec:
             - name: http
               containerPort: 3000
               protocol: TCP
-            {{- if .Values.metrics.prometheus.enabled }}
+            {{- $otelMetricsEnabled := and .Values.openTelemetry.enabled .Values.openTelemetry.metrics.enabled }}
+            {{- $legacyMetricsEnabled := and .Values.metrics.prometheus .Values.metrics.prometheus.enabled }}
+            {{- if or $otelMetricsEnabled $legacyMetricsEnabled }}
             - name: http-metrics
-              containerPort: 9400
+              containerPort: {{ .Values.openTelemetry.metrics.prometheusPort }}
               protocol: TCP
             {{- end }}
           {{- if .Values.offlineMaintenanceModeEnabled }}

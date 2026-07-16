@@ -5,8 +5,8 @@ image:
   tag: 4.1.8
 
 configOverlayEnabled: false
-metrics:
-  prometheus:
+openTelemetry:
+  metrics:
     enabled: false
 
 persistentVolume:

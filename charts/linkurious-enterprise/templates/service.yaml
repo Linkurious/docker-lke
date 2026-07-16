@@ -22,8 +22,11 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
-    {{- if .Values.metrics.prometheus.enabled }}
-    - port: {{ .Values.service.metricsPort }}
+    {{- $otelMetricsEnabled := and .Values.openTelemetry.enabled .Values.openTelemetry.metrics.enabled }}
+    {{- $legacyMetricsEnabled := and .Values.metrics.prometheus .Values.metrics.prometheus.enabled }}
+    {{- if or $otelMetricsEnabled $legacyMetricsEnabled }}
+    {{- $metricsPort := ternary .Values.openTelemetry.metrics.prometheusPort .Values.service.metricsPort $otelMetricsEnabled }}
+    - port: {{ $metricsPort }}
       targetPort: http-metrics
       protocol: TCP
       name: http-metrics

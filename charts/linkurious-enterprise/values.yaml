@@ -314,11 +314,11 @@ backup:
 hostAliases: []
 
 metrics:
-## -- Prometheus is enabled by default.
-## It can be disabled by setting "prometheus: null"
+## -- Legacy metrics configuration (prom-client based, deprecated).
+## Kept for retro-compatibility with existing values files.
   prometheus:
-    # -- Deploy metrics service and service monitor
-    enabled: true
+    # -- Deploy legacy prom-client metrics service and service monitor.
+    enabled: false
     # -- Entry point used to expose metrics.
     entryPoint: metrics
     disableAPICheck: true
@@ -328,6 +328,34 @@ metrics:
       jobLabel: linkurious-enterprise
       interval: 30s
       honorLabels: true
+# -- OpenTelemetry configuration.
+# OpenTelemetry is configured through environment variables since LKE 4.3.8+.
+# When enabled, chart also disables legacy prom-client metrics in the overlay config
+# to avoid startup conflicts (`metrics.enabled` vs `LKE_OTEL_ENABLED=true`).
+openTelemetry:
+  # -- Enable OpenTelemetry SDK bootstrap.
+  enabled: true
+  metrics:
+    # -- Enable OpenTelemetry metrics exposure and related K8s objects.
+    enabled: true
+    # -- Metrics exporter used by OpenTelemetry.
+    exporter: prometheus
+    # -- Port exposed by OpenTelemetry Prometheus exporter.
+    prometheusPort: 9400
+    # -- Entry point used to expose metrics.
+    entryPoint: metrics
+    disableAPICheck: true
+    serviceMonitor:
+      additionalLabels:
+        release: kube-prometheus-stack
+      jobLabel: linkurious-enterprise
+      interval: 30s
+      honorLabels: true
+  traces:
+    # -- Traces sampler strategy.
+    sampler: parentbased_traceidratio
+    # -- Sampler argument (ratio for parentbased_traceidratio).
+    samplerArg: "0.1"
 
 ## -- Allow only whitelisted ip or cidr
 ## https://doc.traefik.io/traefik/middlewares/http/ipwhitelist/
