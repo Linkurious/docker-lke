@@ -22,7 +22,7 @@ plugins:
 ## (one -o per plugin, all writing under /data/plugins).
 initContainers:
   - name: download-plugins
-    image: curlimages/curl:8.10.1
+    image: curlimages/curl:8.21.0
     # Inherit the chart's default podSecurityContext (runAsUser: 2013, fsGroup: 2000, seccompProfile: RuntimeDefault).
     # Mirror the chart's default container securityContext so cluster
     # admission policies (e.g. Kyverno restricted baseline) accept the pod.
