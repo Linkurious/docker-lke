@@ -95,6 +95,8 @@ spec:
               value: {{ .Values.openTelemetry.traces.sampler | quote }}
             - name: OTEL_TRACES_SAMPLER_ARG
               value: {{ .Values.openTelemetry.traces.samplerArg | quote }}
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: "http/protobuf"
             {{- end }}
             {{- if and .Values.ingress.enabled .Values.ingress.hosts }}
             - name: LKE_PUBLIC_PORT_HTTPS
