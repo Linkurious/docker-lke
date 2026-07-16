@@ -4,8 +4,8 @@ image:
   repository: ""
 
 configOverlayEnabled: false
-metrics:
-  prometheus:
+openTelemetry:
+  metrics:
     enabled: false
 
 plugins:

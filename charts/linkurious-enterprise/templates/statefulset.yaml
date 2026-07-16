@@ -120,9 +120,11 @@ spec:
             - name: http
               containerPort: 3000
               protocol: TCP
-            {{- if .Values.metrics.prometheus.enabled }}
+            {{- $otelMetricsEnabled := and .Values.openTelemetry.enabled .Values.openTelemetry.metrics.enabled }}
+            {{- $legacyMetricsEnabled := and .Values.metrics.prometheus .Values.metrics.prometheus.enabled }}
+            {{- if or $otelMetricsEnabled $legacyMetricsEnabled }}
             - name: http-metrics
-              containerPort: 9400
+              containerPort: {{ .Values.openTelemetry.metrics.prometheusPort }}
               protocol: TCP
             {{- end }}
           {{- if .Values.offlineMaintenanceModeEnabled }}

@@ -90,9 +90,16 @@ helm upgrade --install my-release linkurious-enterprise-0.3.1.tgz -f chart-value
 | configOverlayEnabled | bool | `true` | Manage LKE configmap (Declarative Setup) # Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion |
 | env | list | `[]` | Environment variables to pass to Linkurious server |
 | envFrom | list | `[]` | envFrom to pass to Linkurious server |
-| openTelemetry.enabled | bool | `false` | Enable OpenTelemetry SDK bootstrap |
+| openTelemetry.enabled | bool | `true` | Enable OpenTelemetry SDK bootstrap |
+| openTelemetry.metrics.disableAPICheck | bool | `true` |  |
+| openTelemetry.metrics.enabled | bool | `true` | Enable OpenTelemetry metrics exposure and related K8s objects |
+| openTelemetry.metrics.entryPoint | string | `"metrics"` | Entry point used to expose metrics |
 | openTelemetry.metrics.exporter | string | `"prometheus"` | Metrics exporter used by OpenTelemetry |
 | openTelemetry.metrics.prometheusPort | int | `9400` | Port exposed by OpenTelemetry Prometheus exporter |
+| openTelemetry.metrics.serviceMonitor.additionalLabels.release | string | `"kube-prometheus-stack"` |  |
+| openTelemetry.metrics.serviceMonitor.honorLabels | bool | `true` |  |
+| openTelemetry.metrics.serviceMonitor.interval | string | `"30s"` |  |
+| openTelemetry.metrics.serviceMonitor.jobLabel | string | `"linkurious-enterprise"` |  |
 | openTelemetry.traces.sampler | string | `"parentbased_traceidratio"` | Traces sampler strategy |
 | openTelemetry.traces.samplerArg | string | `"0.1"` | Sampler argument (ratio for parentbased_traceidratio) |
 | fullnameOverride | string | `""` |  |
@@ -119,7 +126,7 @@ helm upgrade --install my-release linkurious-enterprise-0.3.1.tgz -f chart-value
 | livenessProbe.successThreshold | int | `1` |  |
 | livenessProbe.timeoutSeconds | int | `1` |  |
 | metrics.prometheus.disableAPICheck | bool | `true` |  |
-| metrics.prometheus.enabled | bool | `true` | Deploy metrics service and service monitor |
+| metrics.prometheus.enabled | bool | `false` | Deploy legacy prom-client metrics service and service monitor (deprecated) |
 | metrics.prometheus.entryPoint | string | `"metrics"` | Entry point used to expose metrics. |
 | metrics.prometheus.serviceMonitor.additionalLabels.release | string | `"kube-prometheus-stack"` |  |
 | metrics.prometheus.serviceMonitor.honorLabels | bool | `true` |  |

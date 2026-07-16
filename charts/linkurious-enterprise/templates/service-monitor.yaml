@@ -1,7 +1,12 @@
-{{- if and .Values.metrics.prometheus .Values.metrics.prometheus.enabled }}
-{{- if .Values.metrics.prometheus.serviceMonitor }}
+{{- $otelMetricsEnabled := and .Values.openTelemetry.enabled .Values.openTelemetry.metrics.enabled }}
+{{- $legacyMetricsEnabled := and .Values.metrics.prometheus .Values.metrics.prometheus.enabled }}
+{{- $metricsEnabled := or $otelMetricsEnabled $legacyMetricsEnabled }}
+{{- $serviceMonitor := ternary .Values.openTelemetry.metrics.serviceMonitor .Values.metrics.prometheus.serviceMonitor $otelMetricsEnabled }}
+{{- $disableAPICheck := ternary .Values.openTelemetry.metrics.disableAPICheck .Values.metrics.prometheus.disableAPICheck $otelMetricsEnabled }}
+{{- $entryPoint := ternary .Values.openTelemetry.metrics.entryPoint .Values.metrics.prometheus.entryPoint $otelMetricsEnabled }}
+{{- if and $metricsEnabled $serviceMonitor }}
   {{- if (not (.Capabilities.APIVersions.Has "monitoring.coreos.com/v1")) }}
-    {{- if (not (.Values.metrics.prometheus.disableAPICheck)) }}
+    {{- if (not ($disableAPICheck)) }}
       {{- fail "ERROR: You have to deploy monitoring.coreos.com/v1 first or disable prometheus" }}
     {{- end }}
   {{- end }}
@@ -9,48 +14,48 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ template "linkurious-enterprise.fullname" . }}
-  {{- with .Values.metrics.prometheus.serviceMonitor.namespace }}
+  {{- with $serviceMonitor.namespace }}
   namespace: {{ . }}
   {{- end }}
   labels:
     {{- include "linkurious-enterprise.labels" . | nindent 4 }}
-    {{- with .Values.metrics.prometheus.serviceMonitor.additionalLabels }}
+    {{- with $serviceMonitor.additionalLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  jobLabel: {{ .Values.metrics.prometheus.serviceMonitor.jobLabel | default .Release.Name }}
+  jobLabel: {{ $serviceMonitor.jobLabel | default .Release.Name }}
   endpoints:
     - port: http-metrics
-      path: /{{ .Values.metrics.prometheus.entryPoint }}
-      {{- with .Values.metrics.prometheus.serviceMonitor.honorLabels }}
+      path: /{{ $entryPoint }}
+      {{- with $serviceMonitor.honorLabels }}
       honorLabels: {{ . }}
       {{- end }}
-      {{- with .Values.metrics.prometheus.serviceMonitor.honorTimestamps }}
+      {{- with $serviceMonitor.honorTimestamps }}
       honorTimestamps: {{ . }}
       {{- end }}
-      {{- with .Values.metrics.prometheus.serviceMonitor.enableHttp2 }}
+      {{- with $serviceMonitor.enableHttp2 }}
       enableHttp2: {{ . }}
       {{- end }}
-      {{- with .Values.metrics.prometheus.serviceMonitor.followRedirects }}
+      {{- with $serviceMonitor.followRedirects }}
       followRedirects: {{ . }}
       {{- end }}
-      {{- with .Values.metrics.prometheus.serviceMonitor.interval }}
+      {{- with $serviceMonitor.interval }}
       interval: {{ . }}
       {{- end }}
-      {{- with .Values.metrics.prometheus.serviceMonitor.scrapeTimeout }}
+      {{- with $serviceMonitor.scrapeTimeout }}
       scrapeTimeout: {{ . }}
       {{- end }}
-{{- if .Values.metrics.prometheus.serviceMonitor.metricRelabelings }}
+{{- if $serviceMonitor.metricRelabelings }}
       metricRelabelings:
-{{ tpl (toYaml .Values.metrics.prometheus.serviceMonitor.metricRelabelings | indent 6) . }}
+{{ tpl (toYaml $serviceMonitor.metricRelabelings | indent 6) . }}
 {{- end }}
-{{- if .Values.metrics.prometheus.serviceMonitor.relabelings }}
+{{- if $serviceMonitor.relabelings }}
       relabelings:
-{{ toYaml .Values.metrics.prometheus.serviceMonitor.relabelings | indent 6 }}
+{{ toYaml $serviceMonitor.relabelings | indent 6 }}
 {{- end }}
-  {{- if .Values.metrics.prometheus.serviceMonitor.namespaceSelector }}
+  {{- if $serviceMonitor.namespaceSelector }}
   namespaceSelector:
-{{ toYaml .Values.metrics.prometheus.serviceMonitor.namespaceSelector | indent 4 -}}
+{{ toYaml $serviceMonitor.namespaceSelector | indent 4 -}}
   {{ else }}
   namespaceSelector:
     matchNames:
@@ -58,10 +63,5 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      {{- if (and (.Values.metrics.prometheus.service).enabled) }}
-      {{- include "linkurious-enterprise.metricslabelselector" . | nindent 6 }}
-      {{- else }}
       {{- include "linkurious-enterprise.selectorLabels" . | nindent 6 }}
-      {{- end }}
-{{- end }}
 {{- end }}

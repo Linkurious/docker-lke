@@ -314,11 +314,11 @@ backup:
 hostAliases: []
 
 metrics:
-## -- Prometheus is enabled by default.
-## It can be disabled by setting "prometheus: null"
+## -- Legacy metrics configuration (prom-client based, deprecated).
+## Kept for retro-compatibility with existing values files.
   prometheus:
-    # -- Deploy metrics service and service monitor
-    enabled: true
+    # -- Deploy legacy prom-client metrics service and service monitor.
+    enabled: false
     # -- Entry point used to expose metrics.
     entryPoint: metrics
     disableAPICheck: true
@@ -334,12 +334,23 @@ metrics:
 # to avoid startup conflicts (`metrics.enabled` vs `LKE_OTEL_ENABLED=true`).
 openTelemetry:
   # -- Enable OpenTelemetry SDK bootstrap.
-  enabled: false
+  enabled: true
   metrics:
+    # -- Enable OpenTelemetry metrics exposure and related K8s objects.
+    enabled: true
     # -- Metrics exporter used by OpenTelemetry.
     exporter: prometheus
     # -- Port exposed by OpenTelemetry Prometheus exporter.
     prometheusPort: 9400
+    # -- Entry point used to expose metrics.
+    entryPoint: metrics
+    disableAPICheck: true
+    serviceMonitor:
+      additionalLabels:
+        release: kube-prometheus-stack
+      jobLabel: linkurious-enterprise
+      interval: 30s
+      honorLabels: true
   traces:
     # -- Traces sampler strategy.
     sampler: parentbased_traceidratio
