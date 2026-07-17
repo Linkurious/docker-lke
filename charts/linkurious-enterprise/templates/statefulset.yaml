@@ -85,6 +85,12 @@ spec:
             {{- toYaml .Values.env | nindent 12 }}
             {{- end }}
             {{- if .Values.openTelemetry.enabled }}
+            {{- $hasOtlpProtocol := false }}
+            {{- range $env := (default (list) .Values.env) }}
+            {{- if eq (get $env "name") "OTEL_EXPORTER_OTLP_PROTOCOL" }}
+            {{- $hasOtlpProtocol = true }}
+            {{- end }}
+            {{- end }}
             - name: LKE_OTEL_ENABLED
               value: "true"
             - name: OTEL_METRICS_EXPORTER
@@ -95,7 +101,7 @@ spec:
               value: {{ .Values.openTelemetry.traces.sampler | quote }}
             - name: OTEL_TRACES_SAMPLER_ARG
               value: {{ .Values.openTelemetry.traces.samplerArg | quote }}
-            {{- if not (has "OTEL_EXPORTER_OTLP_PROTOCOL" (pluck "name" (default (list) .Values.env))) }}
+            {{- if not $hasOtlpProtocol }}
             - name: OTEL_EXPORTER_OTLP_PROTOCOL
               value: {{ default "http/protobuf" .Values.openTelemetry.otlpProtocol | quote }}
             {{- end }}
