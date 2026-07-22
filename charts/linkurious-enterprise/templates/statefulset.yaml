@@ -65,7 +65,7 @@ spec:
           {{- toYaml .Values.backup.litestream.resources | nindent 12 }}
       {{- end }}
       {{- if .Values.initContainers }}
-        {{- toYaml .Values.initContainers | nindent 8 }}
+        {{- tpl (toYaml .Values.initContainers) $ | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
