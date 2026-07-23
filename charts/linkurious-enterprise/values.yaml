@@ -156,6 +156,9 @@ affinity: {}
 ## Use init containers to configure custom tooling
 ## https://argoproj.github.io/argo-cd/operator-manual/custom_tools/
 ## When using the volumes & volumeMounts section bellow, please comment out those above.
+## initContainers values are processed through the Helm `tpl` function, so Go template
+## expressions (e.g. `{{ .Values.myImage.tag }}`) are evaluated at render time. To include
+## a literal `{{` in a field value, escape it with `{{ "{{" }}`.
 #  volumes:
 #  - name: custom-tools
 #    emptyDir: {}
