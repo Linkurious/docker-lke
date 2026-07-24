@@ -38,34 +38,34 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       initContainers:
-      {{- if .Values.backup.litestream.enabled }}
-      - name: init-litestream
-        image: {{ .Values.backup.litestream.image }}
-        args: ['restore', '-if-db-not-exists', '-if-replica-exists', '/data/server/database.sqlite']
-        securityContext:
-          {{- toYaml .Values.securityContext | nindent 12 }}
-        volumeMounts:
-        - mountPath: /data
-          name: lke-data
-        - name: litestream-config
-          mountPath: /etc/litestream.yml
-          subPath: litestream.yaml
-        env:
-        - name: LITESTREAM_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.backup.litestream.secretRef.name }}
-              key: LITESTREAM_ACCESS_KEY_ID
-        - name: LITESTREAM_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: {{ .Values.backup.litestream.secretRef.name }}
-              key: LITESTREAM_SECRET_ACCESS_KEY
-        resources:
-          {{- toYaml .Values.backup.litestream.resources | nindent 12 }}
-      {{- end }}
+        {{- if .Values.backup.litestream.enabled }}
+        - name: init-litestream
+          image: {{ .Values.backup.litestream.image }}
+          args: ['restore', '-if-db-not-exists', '-if-replica-exists', '/data/server/database.sqlite']
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          volumeMounts:
+          - mountPath: /data
+            name: lke-data
+          - name: litestream-config
+            mountPath: /etc/litestream.yml
+            subPath: litestream.yaml
+          env:
+          - name: LITESTREAM_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.backup.litestream.secretRef.name }}
+                key: LITESTREAM_ACCESS_KEY_ID
+          - name: LITESTREAM_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.backup.litestream.secretRef.name }}
+                key: LITESTREAM_SECRET_ACCESS_KEY
+          resources:
+            {{- toYaml .Values.backup.litestream.resources | nindent 12 }}
+        {{- end }}
       {{- if .Values.initContainers }}
-        {{- toYaml .Values.initContainers | nindent 8 }}
+        {{- tpl (toYaml .Values.initContainers) $ | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -85,6 +85,12 @@ spec:
             {{- toYaml .Values.env | nindent 12 }}
             {{- end }}
             {{- if .Values.openTelemetry.enabled }}
+            {{- $hasOtlpProtocol := false }}
+            {{- range $env := (default (list) .Values.env) }}
+            {{- if eq (get $env "name") "OTEL_EXPORTER_OTLP_PROTOCOL" }}
+            {{- $hasOtlpProtocol = true }}
+            {{- end }}
+            {{- end }}
             - name: LKE_OTEL_ENABLED
               value: "true"
             - name: OTEL_METRICS_EXPORTER
@@ -95,6 +101,10 @@ spec:
               value: {{ .Values.openTelemetry.traces.sampler | quote }}
             - name: OTEL_TRACES_SAMPLER_ARG
               value: {{ .Values.openTelemetry.traces.samplerArg | quote }}
+            {{- if not $hasOtlpProtocol }}
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: {{ default "http/protobuf" .Values.openTelemetry.otlpProtocol | quote }}
+            {{- end }}
             {{- end }}
             {{- if and .Values.ingress.enabled .Values.ingress.hosts }}
             - name: LKE_PUBLIC_PORT_HTTPS
