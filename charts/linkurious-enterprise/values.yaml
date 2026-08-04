@@ -187,10 +187,6 @@ configOverlayEnabled: true
 # Ref: https://doc.linkurio.us/admin-manual/latest/configure/
 config:
   version: '{{ .Chart.AppVersion }}'
-  ## -- Unique key identifying this instance (used in cluster mode and config migration).
-  ## Typically set to "<namespace>.<release-name>".
-  # instanceKey: '{{ printf "%s.%s" .Release.Namespace .Release.Name }}'
-
   server:
     cookieHttpOnly: true
     allowFraming: false
@@ -268,7 +264,7 @@ config:
   #       alternativeEdgeId: uid
   #     index:
   #       vendor: neo4jSearch
-  ## -- Uncomment to enable obfuscation of sensitive data in the UI:
+  ## -- Uncomment to enable obfuscation of sensitive data:
   # advanced:
   #   obfuscation: true
   ## -- Uncomment to add basemap tile layers (Leaflet):
@@ -282,25 +278,6 @@ config:
   #     accessToken: null
   #     minZoom: 2
   #     maxZoom: 19
-  ## -- Uncomment to restrict features for trial / external-facing tiers:
-  # config:
-  #   hide: true
-  # alerts:
-  #   enabled: false
-  # entityResolution:
-  #   enabled: false
-  #   url: "https://er.linkurious.net"
-  # emailNotifications:
-  #   visualizationNotifications: true
-  # embeddedElasticSearch:
-  #   enabled: false
-  # license:
-  #   readOnly: true
-  # troubleshooting:
-  #   enableReport: false
-  #   enableFullErrors: false
-  # webhooks:
-  #   enabled: false
   ## -- Uncomment to configure plugins (csv-importer, data-table, image-export, etc.):
   # plugins:
   #   csv-importer:
