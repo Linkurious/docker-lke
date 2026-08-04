@@ -247,7 +247,7 @@ config:
   #   options:
   #     dialect: mysql
   #     host: "$ENV:LKE_DB_HOST"
-  #     port: "$ENV-NUMBER:LKE_DB_PORT"
+  #     port: "$ENV-NUMBER:LKE_DB_PORT" # numeric variable expansion
   #     storage: "$UNSET"
   #     dialectOptions:
   #       ssl:
