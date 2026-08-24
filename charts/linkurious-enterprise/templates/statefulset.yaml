@@ -5,6 +5,10 @@ metadata:
   name: {{ include "linkurious-enterprise.fullname" . }}
   labels:
     {{- include "linkurious-enterprise.labels" . | nindent 4 }}
+  {{- with .Values.statefulSetAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}

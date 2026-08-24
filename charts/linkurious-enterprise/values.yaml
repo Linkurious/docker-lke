@@ -32,6 +32,9 @@ serviceAccount:
 
 podAnnotations: {}
 
+# -- Annotations to add to the StatefulSet.
+statefulSetAnnotations: {}
+
 podSecurityContext:
   fsGroup: 2000
   runAsNonRoot: true
