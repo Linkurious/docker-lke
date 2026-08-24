@@ -1,6 +1,6 @@
 # linkurious-enterprise
 
-![Version: 0.3.1](https://img.shields.io/badge/Version-0.3.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.3.4](https://img.shields.io/badge/AppVersion-4.3.4-informational?style=flat-square)
+![Version: 0.3.5](https://img.shields.io/badge/Version-0.3.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.3.10](https://img.shields.io/badge/AppVersion-4.3.10-informational?style=flat-square)
 
 A Helm chart for Linkurious Enterprise
 
@@ -31,7 +31,7 @@ To install a very basic version of Linkurious enterprise, please set your privat
  and then run:
 
 ```console
-helm upgrade --install my-release linkurious-enterprise-0.3.1.tgz -f chart-value-examples/basic/values.yaml
+helm upgrade --install my-release linkurious-enterprise-0.3.5.tgz -f chart-value-examples/basic/values.yaml
 ```
 
 ## Values
@@ -90,18 +90,6 @@ helm upgrade --install my-release linkurious-enterprise-0.3.1.tgz -f chart-value
 | configOverlayEnabled | bool | `true` | Manage LKE configmap (Declarative Setup) # Ref: https://doc.linkurio.us/admin-manual/latest/configure/#variable-expansion |
 | env | list | `[]` | Environment variables to pass to Linkurious server |
 | envFrom | list | `[]` | envFrom to pass to Linkurious server |
-| openTelemetry.enabled | bool | `true` | Enable OpenTelemetry SDK bootstrap |
-| openTelemetry.metrics.disableAPICheck | bool | `true` |  |
-| openTelemetry.metrics.enabled | bool | `true` | Enable OpenTelemetry metrics exposure and related K8s objects |
-| openTelemetry.metrics.entryPoint | string | `"metrics"` | Entry point used to expose metrics |
-| openTelemetry.metrics.exporter | string | `"prometheus"` | Metrics exporter used by OpenTelemetry |
-| openTelemetry.metrics.prometheusPort | int | `9400` | Port exposed by OpenTelemetry Prometheus exporter |
-| openTelemetry.metrics.serviceMonitor.additionalLabels.release | string | `"kube-prometheus-stack"` |  |
-| openTelemetry.metrics.serviceMonitor.honorLabels | bool | `true` |  |
-| openTelemetry.metrics.serviceMonitor.interval | string | `"30s"` |  |
-| openTelemetry.metrics.serviceMonitor.jobLabel | string | `"linkurious-enterprise"` |  |
-| openTelemetry.traces.sampler | string | `"parentbased_traceidratio"` | Traces sampler strategy |
-| openTelemetry.traces.samplerArg | string | `"0.1"` | Sampler argument (ratio for parentbased_traceidratio) |
 | fullnameOverride | string | `""` |  |
 | hostAliases | list | `[]` |  |
 | hostPostfix | string | `"example.domain"` |  |
@@ -126,7 +114,7 @@ helm upgrade --install my-release linkurious-enterprise-0.3.1.tgz -f chart-value
 | livenessProbe.successThreshold | int | `1` |  |
 | livenessProbe.timeoutSeconds | int | `1` |  |
 | metrics.prometheus.disableAPICheck | bool | `true` |  |
-| metrics.prometheus.enabled | bool | `false` | Deploy legacy prom-client metrics service and service monitor (deprecated) |
+| metrics.prometheus.enabled | bool | `false` | Deploy legacy prom-client metrics service and service monitor. |
 | metrics.prometheus.entryPoint | string | `"metrics"` | Entry point used to expose metrics. |
 | metrics.prometheus.serviceMonitor.additionalLabels.release | string | `"kube-prometheus-stack"` |  |
 | metrics.prometheus.serviceMonitor.honorLabels | bool | `true` |  |
@@ -135,6 +123,14 @@ helm upgrade --install my-release linkurious-enterprise-0.3.1.tgz -f chart-value
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
 | offlineMaintenanceModeEnabled | bool | `false` | set offlineMaintenanceModeEnabled: true to restart the StatefulSet without the linkurious-enterprise process running this can be used to perform tasks that cannot be performed when Neo4j is running, or in case the configuration is broken |
+| openTelemetry | object | `{"enabled":true,"metrics":{"disableAPICheck":true,"enabled":true,"entryPoint":"metrics","exporter":"prometheus","prometheusPort":9400,"serviceMonitor":{"additionalLabels":{"release":"kube-prometheus-stack"},"honorLabels":true,"interval":"30s","jobLabel":"linkurious-enterprise"}},"traces":{"sampler":"parentbased_traceidratio","samplerArg":"0.1"}}` | OpenTelemetry configuration. OpenTelemetry is configured through environment variables since LKE 4.3.8+. When enabled, chart also disables legacy prom-client metrics in the overlay config to avoid startup conflicts (`metrics.enabled` vs `LKE_OTEL_ENABLED=true`). |
+| openTelemetry.enabled | bool | `true` | Enable OpenTelemetry SDK bootstrap. |
+| openTelemetry.metrics.enabled | bool | `true` | Enable OpenTelemetry metrics exposure and related K8s objects. |
+| openTelemetry.metrics.entryPoint | string | `"metrics"` | Entry point used to expose metrics. |
+| openTelemetry.metrics.exporter | string | `"prometheus"` | Metrics exporter used by OpenTelemetry. |
+| openTelemetry.metrics.prometheusPort | int | `9400` | Port exposed by OpenTelemetry Prometheus exporter. |
+| openTelemetry.traces.sampler | string | `"parentbased_traceidratio"` | Traces sampler strategy. |
+| openTelemetry.traces.samplerArg | string | `"0.1"` | Sampler argument (ratio for parentbased_traceidratio). |
 | persistentVolume.accessModes[0] | string | `"ReadWriteOnce"` |  |
 | persistentVolume.annotations | object | `{}` |  |
 | persistentVolume.enabled | bool | `false` | Enable persistent volume for Linkurious server |
@@ -160,6 +156,7 @@ helm upgrade --install my-release linkurious-enterprise-0.3.1.tgz -f chart-value
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.create | bool | `false` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
+| statefulSetAnnotations | object | `{}` | Annotations to add to the StatefulSet. |
 | tolerations | list | `[]` |  |
 
 ----------------------------------------------
