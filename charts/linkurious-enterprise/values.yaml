@@ -32,6 +32,9 @@ serviceAccount:
 
 podAnnotations: {}
 
+# -- Annotations to add to the StatefulSet.
+statefulSetAnnotations: {}
+
 podSecurityContext:
   fsGroup: 2000
   runAsNonRoot: true
@@ -187,29 +190,134 @@ configOverlayEnabled: true
 # Ref: https://doc.linkurio.us/admin-manual/latest/configure/
 config:
   version: '{{ .Chart.AppVersion }}'
+  ## -- Unique key identifying this instance (used in cluster mode and config migration).
+  ## Typically set to "<namespace>.<release-name>".
+  # instanceKey: '{{ printf "%s.%s" .Release.Namespace .Release.Name }}'
+
+  ## -- Uncomment and configure server domain/origin (required behind ingress):
   server:
     cookieHttpOnly: true
     allowFraming: false
     useHttps: false
     forceHttps: false
-  ## -- Uncomment and configure for SSO / OAuth2:
+    # domain: "lke.example.com"
+    # publicPortHttps: 443
+    # forcePublicHttps: true
+    # cookieSecure: true
+    # allowOrigin:
+    #   - "https://lke.example.com"
+    #   # Wildcard pattern for all subdomains of the release namespace (templated):
+    #   # - '{{ printf "*.%s.example.com" .Release.Namespace }}'
+    # trustedReverseProxies:
+    #   - uniquelocal
+    #   - 100.64.0.0/16
+    # customHTTPHeaders:
+    #   Content-Security-Policy: >-
+    #     default-src 'self' 'unsafe-inline' blob: data:;
+    #     img-src 'self' blob: data:;
+  ## -- Uncomment and configure for SSO / OAuth2 (Azure AD example):
   # access:
   #   authRequired: true
+  #   disableLocalAuth: true
   #   oauth2:
   #     enabled: true
-  #     provider: "azure"
+  #     provider: "azure"                   # or "openidconnect"
   #     authorizationURL: "https://login.microsoftonline.com/<tenant>/oauth2/v2.0/authorize"
   #     tokenURL: "https://login.microsoftonline.com/<tenant>/oauth2/v2.0/token"
-  #     clientID: "<your-client-id>"
-  #     clientSecret: "<your-client-secret>"
+  #     clientID: "$ENV:LKE_OAUTH2_CLIENT_ID"
+  #     clientSecret: "$ENV:LKE_OAUTH2_CLIENT_SECRET"
   #     azure:
-  #       tenantID: "<your-tenant-id>"
-  ## -- Uncomment and configure server domain/origin (required behind ingress):
-  # server:
-  #   domain: "lke.example.com"
-  #   publicPortHttps: 443
-  #   forcePublicHttps: true
-  #   allowOrigin: "https://lke.example.com"
+  #       tenantID: "$ENV:LKE_OAUTH2_AZURE_TENANT_ID"
+  #     ## -- OpenID Connect example (generic provider):
+  #     # openidconnect:
+  #     #   userinfoURL: "https://provider.example.com/oidc/me"
+  #     #   scope: "openid profile email groups"
+  #     #   groupClaim: groups
+  #   ## -- Map external SSO groups to LKE roles (group ID or name → role):
+  #   externalUsersGroupMapping:
+  #     admin: 1
+  #     read: read
+  #     read-write: read and edit
+  #   ## -- Feature flag overrides for restricted tiers:
+  #   # enableCustomGroups: false
+  #   # enablePropertyKeyAccessRights: false
+  #   # guestMode: false
+  ## -- Uncomment to configure the MySQL database connection:
+  # db:
+  #   name: 'linkurious-{{ printf "%s" .Release.Name }}'
+  #   username: "$ENV:LKE_DB_USERNAME"
+  #   password: "$ENV:LKE_DB_PASSWORD"
+  #   options:
+  #     dialect: mysql
+  #     host: "$ENV:LKE_DB_HOST"
+  #     port: "$ENV-NUMBER:LKE_DB_PORT" # numeric variable expansion
+  #     storage: "$UNSET"
+  #     dialectOptions:
+  #       ssl:
+  #         require: true
+  #         rejectUnauthorized: false
+  ## -- Uncomment to declare graph database data sources:
+  # dataSources:
+  #   - name: "My Neo4j Database"
+  #     sourceKey: "neo4j00"
+  #     graphdb:
+  #       vendor: neo4j
+  #       url: "$ENV:LKE_GRAPHDB_URL"
+  #       user: "$ENV:LKE_GRAPHDB_USER"
+  #       password: "$ENV:LKE_GRAPHDB_PASSWORD"
+  #       databaseName: "neo4j"
+  #       alternativeNodeId: uid
+  #       alternativeEdgeId: uid
+  #     index:
+  #       vendor: neo4jSearch
+  ## -- Uncomment to enable obfuscation of sensitive data in the UI:
+  # advanced:
+  #   obfuscation: true
+  ## -- Uncomment to add basemap tile layers (Leaflet):
+  # leaflet:
+  #   - name: OpenStreetMap
+  #     thumbnail: /assets/img/OpenStreetMap.png
+  #     urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+  #     attribution: '© <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
+  #     subdomains: null
+  #     id: null
+  #     accessToken: null
+  #     minZoom: 2
+  #     maxZoom: 19
+  ## -- Uncomment to restrict features for trial / external-facing tiers:
+  # config:
+  #   hide: true
+  # alerts:
+  #   enabled: false
+  # entityResolution:
+  #   enabled: false
+  #   url: "https://er.linkurious.net"
+  # emailNotifications:
+  #   visualizationNotifications: true
+  # embeddedElasticSearch:
+  #   enabled: false
+  # license:
+  #   readOnly: true
+  # troubleshooting:
+  #   enableReport: false
+  #   enableFullErrors: false
+  # webhooks:
+  #   enabled: false
+  ## -- Uncomment to configure plugins (csv-importer, data-table, image-export, etc.):
+  # plugins:
+  #   csv-importer:
+  #     - {}
+  #   data-table:
+  #     - basePath: my-dataset
+  #       entityType: node
+  #       itemType: MY_NODE_TYPE
+  #       properties:
+  #         - id
+  #         - name
+  #   image-export:
+  #     - {}
+  #   plugin-manager:
+  #     - {}
   ## -- Uncomment to set the externally facing base URL (required for SSO):
   # url: https://lke.example.com
 
