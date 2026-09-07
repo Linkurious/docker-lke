@@ -264,6 +264,9 @@ spec:
     kind: PersistentVolumeClaim
     metadata:
       name: lke-data
+      labels:
+        {{- include "linkurious-enterprise.labels" . | nindent 8 }}
+        linkurious-enterprise.io/namespace: {{ .Release.Namespace }}
       annotations:
       {{- range $key, $value := .Values.persistentVolume.annotations }}
         {{ $key }}: {{ $value }}
