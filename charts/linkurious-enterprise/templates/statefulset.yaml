@@ -4,9 +4,7 @@ kind: StatefulSet
 metadata:
   name: {{ include "linkurious-enterprise.fullname" . }}
   labels:
-    {{- $defaultPodsLabels := dict "linkurious-enterprise.io/namespace" $.Release.Namespace }}
-    {{- $chartLabels := include "linkurious-enterprise.labels" . | fromYaml }}
-    {{- toYaml (mergeOverwrite $defaultPodsLabels $chartLabels) | nindent 4 }}
+    {{- include "linkurious-enterprise.labels" . | nindent 4 }}
   {{- with .Values.statefulSetAnnotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -29,7 +27,9 @@ spec:
         backup.velero.io/backup-volumes: lke-data
       {{- end }}
       labels:
-        {{- include "linkurious-enterprise.selectorLabels" . | nindent 8 }}
+        {{- $defaultPodsLabels := include "linkurious-enterprise.selectorLabels" . | fromYaml }}
+        {{- $labelsUsedByVelero := dict "linkurious-enterprise.io/namespace" $.Release.Namespace }}
+        {{- toYaml (mergeOverwrite $defaultPodsLabels $labelsUsedByVelero) | nindent 8 }}
     spec:
       {{- with .Values.hostAliases }}
       hostAliases:
