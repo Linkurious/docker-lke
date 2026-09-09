@@ -4,7 +4,9 @@ kind: StatefulSet
 metadata:
   name: {{ include "linkurious-enterprise.fullname" . }}
   labels:
-    {{- include "linkurious-enterprise.labels" . | nindent 4 }}
+    {{- $defaultPodsLabels := dict "linkurious-enterprise.io/namespace" $.Release.Namespace }}
+    {{- $chartLabels := include "linkurious-enterprise.labels" . | fromYaml }}
+    {{- toYaml (mergeOverwrite $defaultPodsLabels $chartLabels) | nindent 4 }}
   {{- with .Values.statefulSetAnnotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

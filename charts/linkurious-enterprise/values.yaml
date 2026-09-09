@@ -396,11 +396,6 @@ backup:
     name: velero
     instance: velero-preprod
     veleroNamespace: backup
-    includedResources:
-      - pvc
-      - pv
-    #excludedResources:
-    #  - secrets
     labels:
       app.kubernetes.io/name: linkurious-enterprise
     skipImmediately: false
@@ -411,8 +406,11 @@ backup:
       snapshotVolume: true
       snapshotMoveData: false
       defaultVolumesToFsBackup: false
-      schedule: "55 3 * * *"
+      schedule: "55 4 * * *"
       ttl: "168h"
+      includedResources:
+        - pvc
+        - pv
     secondaryBackup:
       enabled: false
       schedule: "55 12 * * *"
@@ -421,6 +419,10 @@ backup:
       defaultVolumesToFsBackup: true
       storageLocation: velero-k8s-nl-ams-backup-storage
       ttl: "168h"
+      includedResources:
+        - pods
+        - pvc
+        - pv
 
 hostAliases: []
 
