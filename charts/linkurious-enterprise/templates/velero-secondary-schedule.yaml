@@ -28,15 +28,15 @@ spec:
     defaultVolumesToFsBackup: {{ .Values.backup.velero.secondaryBackup.defaultVolumesToFsBackup }}
     includedNamespaces:
        - "*"
-{{- $defaultIncludedResources := .Values.backup.velero.includedResources | default list }}
-{{- $specificIncludedResources := .Values.backup.velero.secondaryBackup.includedResources | default list }}
+{{- $defaultIncludedResources := .Values.backup.velero.includedResources | default (list) }}
+{{- $specificIncludedResources := .Values.backup.velero.secondaryBackup.includedResources | default (list) }}
 {{- $includedResources := concat $defaultIncludedResources $specificIncludedResources | uniq }}
 {{- if $includedResources }}
     includedResources:
     {{- toYaml $includedResources | nindent 6 }}
 {{- end }}
-{{- $defaultExcludedResources := .Values.backup.velero.excludedResources | default list }}
-{{- $specificExcludedResources := .Values.backup.velero.secondaryBackup.excludedResources | default list }}
+{{- $defaultExcludedResources := .Values.backup.velero.excludedResources | default (list) }}
+{{- $specificExcludedResources := .Values.backup.velero.secondaryBackup.excludedResources | default (list) }}
 {{- $excludedResources := concat $defaultExcludedResources $specificExcludedResources | uniq }}
 {{- if $excludedResources }}
     excludedResources:
