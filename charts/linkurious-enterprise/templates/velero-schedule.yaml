@@ -28,17 +28,19 @@ spec:
     defaultVolumesToFsBackup: {{ .Values.backup.velero.primaryBackup.defaultVolumesToFsBackup }}
     includedNamespaces:
        - "*"
-{{- if .Values.backup.velero.primaryBackup.includedResources }}
+{{- $defaultIncludedResources := .Values.backup.velero.includedResources | default list }}
+{{- $specificIncludedResources := .Values.backup.velero.primaryBackup.includedResources | default list }}
+{{- $includedResources := concat $defaultIncludedResources $specificIncludedResources | uniq }}
+{{- if $includedResources }}
     includedResources:
-    {{- range .Values.backup.velero.primaryBackup.includedResources }}
-      - {{ . }}
-    {{- end }}
+    {{- toYaml $includedResources | nindent 6 }}
 {{- end }}
-{{- if .Values.backup.velero.primaryBackup.excludedResources }}
+{{- $defaultExcludedResources := .Values.backup.velero.excludedResources | default list }}
+{{- $specificExcludedResources := .Values.backup.velero.primaryBackup.excludedResources | default list }}
+{{- $excludedResources := concat $defaultExcludedResources $specificExcludedResources | uniq }}
+{{- if $excludedResources }}
     excludedResources:
-    {{- range .Values.backup.velero.primaryBackup.excludedResources }}
-      - {{ . }}
-    {{- end }}
+    {{- toYaml $excludedResources | nindent 6 }}
 {{- end }}
     labelSelector:
       matchLabels:

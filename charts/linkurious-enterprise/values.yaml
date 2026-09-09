@@ -402,15 +402,17 @@ backup:
     labelsSelector:
       # backup.velero.io/backup-volumes: lke-data
       app.kubernetes.io/name: linkurious-enterprise
+    includedResources:
+      - pvc
+      - pv
     primaryBackup:
       snapshotVolume: true
       snapshotMoveData: false
       defaultVolumesToFsBackup: false
+      # CSI driver has volume attach limit
+      # be careful of other schedules on the same cluster
       schedule: "55 4 * * *"
       ttl: "168h"
-      includedResources:
-        - pvc
-        - pv
     secondaryBackup:
       enabled: false
       schedule: "55 12 * * *"
@@ -421,8 +423,6 @@ backup:
       ttl: "168h"
       includedResources:
         - pods
-        - pvc
-        - pv
 
 hostAliases: []
 
