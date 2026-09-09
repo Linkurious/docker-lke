@@ -13,7 +13,7 @@ metadata:
   {{- end }}
   labels:
     {{- $defaultLabels := dict "app.kubernetes.io/name" .Values.backup.velero.name "app.kubernetes.io/instance" .Values.backup.velero.instance "app.kubernetes.io/managed-by" $.Release.Service }}
-    {{- toYaml (mergeOverwrite $defaultLabels (.Values.backup.velero.labels | default dict)) | nindent 4 }}
+    {{- toYaml (mergeOverwrite $defaultLabels (.Values.backup.velero.labels | default (dict))) | nindent 4 }}
 
 spec:
 {{- if .Values.backup.velero.paused }}
@@ -45,7 +45,7 @@ spec:
     labelSelector:
       matchLabels:
         {{- $defaultSelectorLabels := dict "linkurious-enterprise.io/namespace" $.Release.Namespace }}
-        {{- toYaml (mergeOverwrite $defaultSelectorLabels (.Values.backup.velero.labelsSelector | default dict)) | nindent 8 }}
+        {{- toYaml (mergeOverwrite $defaultSelectorLabels (.Values.backup.velero.labelsSelector | default (dict))) | nindent 8 }}
 {{- if .Values.backup.velero.primaryBackup.snapshotMoveData }}
     snapshotMoveData: {{ .Values.backup.velero.primaryBackup.snapshotMoveData }}
 {{- end }}
