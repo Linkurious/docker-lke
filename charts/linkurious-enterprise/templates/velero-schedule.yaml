@@ -13,7 +13,7 @@ metadata:
   {{- end }}
   labels:
     {{- $defaultLabels := dict "app.kubernetes.io/name" .Values.backup.velero.name "app.kubernetes.io/instance" .Values.backup.velero.instance "app.kubernetes.io/managed-by" $.Release.Service }}
-    {{- toYaml (mergeOverwrite $defaultLabels (.Values.backup.velero.labels | default dict)) | nindent 4 }}
+    {{- toYaml (mergeOverwrite $defaultLabels (.Values.backup.velero.labels | default (dict))) | nindent 4 }}
 
 spec:
 {{- if .Values.backup.velero.paused }}
@@ -27,24 +27,25 @@ spec:
   template:
     defaultVolumesToFsBackup: {{ .Values.backup.velero.primaryBackup.defaultVolumesToFsBackup }}
     includedNamespaces:
-       - {{ $.Release.Namespace }}
-{{- if .Values.backup.velero.includedResources }}
+       - "*"
+{{- $defaultIncludedResources := .Values.backup.velero.includedResources | default (list) }}
+{{- $specificIncludedResources := .Values.backup.velero.primaryBackup.includedResources | default (list) }}
+{{- $includedResources := concat $defaultIncludedResources $specificIncludedResources | uniq }}
+{{- if $includedResources }}
     includedResources:
-    {{- range .Values.backup.velero.includedResources }}
-      - {{ . }}
-    {{- end }}
+    {{- toYaml $includedResources | nindent 6 }}
 {{- end }}
-{{- if .Values.backup.velero.excludedResources }}
+{{- $defaultExcludedResources := .Values.backup.velero.excludedResources | default (list) }}
+{{- $specificExcludedResources := .Values.backup.velero.primaryBackup.excludedResources | default (list) }}
+{{- $excludedResources := concat $defaultExcludedResources $specificExcludedResources | uniq }}
+{{- if $excludedResources }}
     excludedResources:
-    {{- range .Values.backup.velero.excludedResources }}
-      - {{ . }}
-    {{- end }}
+    {{- toYaml $excludedResources | nindent 6 }}
 {{- end }}
-{{- if .Values.backup.velero.labelsSelector }}
     labelSelector:
       matchLabels:
-        {{- toYaml .Values.backup.velero.labelsSelector | nindent 8 }}
-{{- end }}
+        {{- $defaultSelectorLabels := dict "linkurious-enterprise.io/namespace" $.Release.Namespace }}
+        {{- toYaml (mergeOverwrite $defaultSelectorLabels (.Values.backup.velero.labelsSelector | default (dict))) | nindent 8 }}
 {{- if .Values.backup.velero.primaryBackup.snapshotMoveData }}
     snapshotMoveData: {{ .Values.backup.velero.primaryBackup.snapshotMoveData }}
 {{- end }}
