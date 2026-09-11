@@ -403,6 +403,10 @@ backup:
     includedResources:
       - pvc
       - pv
+    ## -- Whether to include cluster-scoped resources in the backup. Valid values are true, false and
+    ## null (unset). Can be overridden per schedule via primaryBackup/secondaryBackup.includeClusterResources.
+    ## See https://velero.io/docs/main/api-types/schedule/ for full semantics.
+    includeClusterResources: true
     primaryBackup:
       snapshotVolume: true
       snapshotMoveData: false
@@ -411,6 +415,7 @@ backup:
       # be careful of other schedules on the same cluster
       schedule: "55 4 * * *"
       ttl: "168h"
+      # includeClusterResources: true
     secondaryBackup:
       enabled: false
       schedule: "55 12 * * *"
@@ -421,6 +426,7 @@ backup:
       ttl: "168h"
       includedResources:
         - pods
+      # includeClusterResources: true
 
 hostAliases: []
 
