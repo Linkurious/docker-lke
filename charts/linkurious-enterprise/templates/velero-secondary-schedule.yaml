@@ -43,6 +43,8 @@ spec:
     {{- toYaml $excludedResources | nindent 6 }}
 {{- end }}
 {{- if .Values.backup.velero.labelSelector }}
+    # Whether to include cluster-scoped resources
+    includeClusterResources: true
     labelSelector:
       matchLabels:
         {{- toYaml .Values.backup.velero.labelsSelector | nindent 8 }}
