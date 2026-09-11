@@ -44,7 +44,7 @@ spec:
 {{- end }}
     # Whether to include cluster-scoped resources
     includeClusterResources: true
-{{- if .Values.backup.velero.labelSelector }}
+{{- if .Values.backup.velero.labelsSelector }}
     labelSelector:
       matchLabels:
         {{- toYaml .Values.backup.velero.labelsSelector | nindent 8 }}
