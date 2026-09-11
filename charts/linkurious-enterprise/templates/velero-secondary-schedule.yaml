@@ -47,7 +47,7 @@ spec:
     includeClusterResources: true
     labelSelector:
       matchLabels:
-        {{- toYaml .Values.backup.velero.labelsSelector | nindent 8 }}
+        {{- toYaml .Values.backup.velero.labelSelector | nindent 8 }}
 {{- end }}
 {{- if .Values.backup.velero.secondaryBackup.snapshotMoveData }}
     snapshotMoveData: {{ .Values.backup.velero.secondaryBackup.snapshotMoveData }}

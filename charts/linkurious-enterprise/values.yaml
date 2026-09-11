@@ -399,6 +399,7 @@ backup:
     labels:
       app.kubernetes.io/name: linkurious-enterprise
     skipImmediately: false
+    labelSelector: {}
     includedResources:
       - pvc
       - pv

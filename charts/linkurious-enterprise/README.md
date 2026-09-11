@@ -69,6 +69,7 @@ helm upgrade --install my-release linkurious-enterprise-0.3.8.tgz -f chart-value
 | backup.velero.includedResources[0] | string | `"pvc"` |  |
 | backup.velero.includedResources[1] | string | `"pv"` |  |
 | backup.velero.instance | string | `"velero-preprod"` |  |
+| backup.velero.labelSelector | object | `{}` |  |
 | backup.velero.labels."app.kubernetes.io/name" | string | `"linkurious-enterprise"` |  |
 | backup.velero.name | string | `"velero"` |  |
 | backup.velero.primaryBackup.defaultVolumesToFsBackup | bool | `false` |  |
