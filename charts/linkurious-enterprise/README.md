@@ -1,6 +1,6 @@
 # linkurious-enterprise
 
-![Version: 0.3.5](https://img.shields.io/badge/Version-0.3.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.3.10](https://img.shields.io/badge/AppVersion-4.3.10-informational?style=flat-square)
+![Version: 0.3.8](https://img.shields.io/badge/Version-0.3.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.3.11](https://img.shields.io/badge/AppVersion-4.3.11-informational?style=flat-square)
 
 A Helm chart for Linkurious Enterprise
 
@@ -31,7 +31,7 @@ To install a very basic version of Linkurious enterprise, please set your privat
  and then run:
 
 ```console
-helm upgrade --install my-release linkurious-enterprise-0.3.5.tgz -f chart-value-examples/basic/values.yaml
+helm upgrade --install my-release linkurious-enterprise-0.3.8.tgz -f chart-value-examples/basic/values.yaml
 ```
 
 ## Values
@@ -70,15 +70,15 @@ helm upgrade --install my-release linkurious-enterprise-0.3.5.tgz -f chart-value
 | backup.velero.includedResources[1] | string | `"pv"` |  |
 | backup.velero.instance | string | `"velero-preprod"` |  |
 | backup.velero.labels."app.kubernetes.io/name" | string | `"linkurious-enterprise"` |  |
-| backup.velero.labelsSelector."app.kubernetes.io/name" | string | `"linkurious-enterprise"` |  |
 | backup.velero.name | string | `"velero"` |  |
 | backup.velero.primaryBackup.defaultVolumesToFsBackup | bool | `false` |  |
-| backup.velero.primaryBackup.schedule | string | `"55 3 * * *"` |  |
+| backup.velero.primaryBackup.schedule | string | `"55 4 * * *"` |  |
 | backup.velero.primaryBackup.snapshotMoveData | bool | `false` |  |
 | backup.velero.primaryBackup.snapshotVolume | bool | `true` |  |
 | backup.velero.primaryBackup.ttl | string | `"168h"` |  |
 | backup.velero.secondaryBackup.defaultVolumesToFsBackup | bool | `true` |  |
 | backup.velero.secondaryBackup.enabled | bool | `false` |  |
+| backup.velero.secondaryBackup.includedResources[0] | string | `"pods"` |  |
 | backup.velero.secondaryBackup.schedule | string | `"55 12 * * *"` |  |
 | backup.velero.secondaryBackup.snapshotMoveData | bool | `true` |  |
 | backup.velero.secondaryBackup.snapshotVolume | bool | `true` |  |
