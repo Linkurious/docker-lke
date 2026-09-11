@@ -27,7 +27,7 @@ spec:
   template:
     defaultVolumesToFsBackup: {{ .Values.backup.velero.primaryBackup.defaultVolumesToFsBackup }}
     includedNamespaces:
-       - "*"
+      - {{ $.Release.Namespace }}
 {{- $defaultIncludedResources := .Values.backup.velero.includedResources | default (list) }}
 {{- $specificIncludedResources := .Values.backup.velero.primaryBackup.includedResources | default (list) }}
 {{- $includedResources := concat $defaultIncludedResources $specificIncludedResources | uniq }}
@@ -42,10 +42,11 @@ spec:
     excludedResources:
     {{- toYaml $excludedResources | nindent 6 }}
 {{- end }}
+{{- if .Values.backup.velero.labelSelector }}
     labelSelector:
       matchLabels:
-        {{- $defaultSelectorLabels := dict "linkurious-enterprise.io/namespace" $.Release.Namespace }}
-        {{- toYaml (mergeOverwrite $defaultSelectorLabels (.Values.backup.velero.labelsSelector | default (dict))) | nindent 8 }}
+        {{- toYaml .Values.backup.velero.labelsSelector | nindent 8 }}
+{{- end }}
 {{- if .Values.backup.velero.primaryBackup.snapshotMoveData }}
     snapshotMoveData: {{ .Values.backup.velero.primaryBackup.snapshotMoveData }}
 {{- end }}

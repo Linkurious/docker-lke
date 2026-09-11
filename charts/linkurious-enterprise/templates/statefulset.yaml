@@ -27,9 +27,7 @@ spec:
         backup.velero.io/backup-volumes: lke-data
       {{- end }}
       labels:
-        {{- $defaultPodsLabels := include "linkurious-enterprise.selectorLabels" . | fromYaml }}
-        {{- $labelsUsedByVelero := dict "linkurious-enterprise.io/namespace" $.Release.Namespace }}
-        {{- toYaml (mergeOverwrite $defaultPodsLabels $labelsUsedByVelero) | nindent 8 }}
+        {{- include "linkurious-enterprise.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.hostAliases }}
       hostAliases:
