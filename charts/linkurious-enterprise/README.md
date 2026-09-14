@@ -66,11 +66,11 @@ helm upgrade --install my-release linkurious-enterprise-0.3.9.tgz -f chart-value
 | backup.litestream.resources.requests.memory | string | `"100Mi"` |  |
 | backup.litestream.secretRef.name | string | `"litestream-lke-secret"` |  |
 | backup.velero.enabled | bool | `false` |  |
-| backup.velero.includeClusterResources | bool | `false` |  |
+| backup.velero.includeClusterResources | string | `nil` |  |
 | backup.velero.includedResources[0] | string | `"pvc"` |  |
 | backup.velero.includedResources[1] | string | `"pv"` |  |
 | backup.velero.instance | string | `"velero-preprod"` |  |
-| backup.velero.labelSelector[0]."app.kubernetes.io/name" | string | `"linkurious-enterprise"` |  |
+| backup.velero.labelSelector."app.kubernetes.io/name" | string | `"linkurious-enterprise"` |  |
 | backup.velero.labels."app.kubernetes.io/name" | string | `"linkurious-enterprise"` |  |
 | backup.velero.name | string | `"velero"` |  |
 | backup.velero.primaryBackup.defaultVolumesToFsBackup | bool | `false` |  |

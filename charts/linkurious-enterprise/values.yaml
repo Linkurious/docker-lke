@@ -407,7 +407,7 @@ backup:
     ## -- Whether to include cluster-scoped resources in the backup. Valid values are true, false and
     ## null (unset). Can be overridden per schedule via primaryBackup/secondaryBackup.includeClusterResources.
     ## See https://velero.io/docs/main/api-types/schedule/ for full semantics.
-    includeClusterResources: false
+    includeClusterResources:
     primaryBackup:
       snapshotVolume: true
       snapshotMoveData: false
