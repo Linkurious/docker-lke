@@ -400,7 +400,7 @@ backup:
       app.kubernetes.io/name: linkurious-enterprise
     skipImmediately: false
     labelSelector:
-      - app.kubernetes.io/name: linkurious-enterprise
+      app.kubernetes.io/name: linkurious-enterprise
     includedResources:
       - pvc
       - pv
