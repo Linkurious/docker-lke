@@ -1,6 +1,6 @@
 # linkurious-enterprise
 
-![Version: 0.3.8](https://img.shields.io/badge/Version-0.3.8-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.3.11](https://img.shields.io/badge/AppVersion-4.3.11-informational?style=flat-square)
+![Version: 0.3.9](https://img.shields.io/badge/Version-0.3.9-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.3.11](https://img.shields.io/badge/AppVersion-4.3.11-informational?style=flat-square)
 
 A Helm chart for Linkurious Enterprise
 
@@ -31,7 +31,7 @@ To install a very basic version of Linkurious enterprise, please set your privat
  and then run:
 
 ```console
-helm upgrade --install my-release linkurious-enterprise-0.3.8.tgz -f chart-value-examples/basic/values.yaml
+helm upgrade --install my-release linkurious-enterprise-0.3.9.tgz -f chart-value-examples/basic/values.yaml
 ```
 
 ## Values
@@ -66,11 +66,11 @@ helm upgrade --install my-release linkurious-enterprise-0.3.8.tgz -f chart-value
 | backup.litestream.resources.requests.memory | string | `"100Mi"` |  |
 | backup.litestream.secretRef.name | string | `"litestream-lke-secret"` |  |
 | backup.velero.enabled | bool | `false` |  |
-| backup.velero.includeClusterResources | bool | `true` |  |
+| backup.velero.includeClusterResources | string | `nil` |  |
 | backup.velero.includedResources[0] | string | `"pvc"` |  |
 | backup.velero.includedResources[1] | string | `"pv"` |  |
 | backup.velero.instance | string | `"velero-preprod"` |  |
-| backup.velero.labelSelector | object | `{}` |  |
+| backup.velero.labelSelector | string | `nil` |  |
 | backup.velero.labels."app.kubernetes.io/name" | string | `"linkurious-enterprise"` |  |
 | backup.velero.name | string | `"velero"` |  |
 | backup.velero.primaryBackup.defaultVolumesToFsBackup | bool | `false` |  |
