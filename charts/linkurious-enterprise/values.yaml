@@ -399,8 +399,10 @@ backup:
     labels:
       app.kubernetes.io/name: linkurious-enterprise
     skipImmediately: false
+    ## -- Labels used to select which resources to back up. Defaults to the chart's rendered
+    ## app.kubernetes.io/name (see linkurious-enterprise.name helper) so it stays in sync with
+    ## nameOverride/fullnameOverride. Override here only to target a different selector.
     labelSelector:
-      app.kubernetes.io/name: linkurious-enterprise
     includedResources:
       - pvc
       - pv
