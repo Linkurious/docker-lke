@@ -50,11 +50,11 @@ spec:
     # Whether to include cluster-scoped resources
     includeClusterResources: {{ $includeClusterResources }}
 {{- end }}
-{{- $defaultLabelSelector := dict "app.kubernetes.io/name" (include "linkurious-enterprise.name" .) }}
-{{- $labelSelector := mergeOverwrite $defaultLabelSelector (.Values.backup.velero.labelSelector | default (dict)) }}
+{{- if .Values.backup.velero.labelSelector }}
     labelSelector:
       matchLabels:
-        {{- toYaml $labelSelector | nindent 8 }}
+        {{- toYaml .Values.backup.velero.labelSelector | nindent 8 }}
+{{- end }}
 {{- if .Values.backup.velero.secondaryBackup.snapshotMoveData }}
     snapshotMoveData: {{ .Values.backup.velero.secondaryBackup.snapshotMoveData }}
 {{- end }}
