@@ -243,7 +243,7 @@ spec:
               path: license.key
       {{- end }}
       {{- if .Values.volumes }}
-        {{- toYaml .Values.volumes | nindent 8 }}
+      {{- toYaml .Values.volumes | nindent 6 }}
       {{- end }}
       {{- if .Values.configOverlayEnabled }}
       - configMap:
