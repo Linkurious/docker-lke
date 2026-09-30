@@ -46,22 +46,22 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           volumeMounts:
-          - mountPath: /data
-            name: lke-data
-          - name: litestream-config
-            mountPath: /etc/litestream.yml
-            subPath: litestream.yaml
+            - mountPath: /data
+              name: lke-data
+            - name: litestream-config
+              mountPath: /etc/litestream.yml
+              subPath: litestream.yaml
           env:
-          - name: LITESTREAM_ACCESS_KEY_ID
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.backup.litestream.secretRef.name }}
-                key: LITESTREAM_ACCESS_KEY_ID
-          - name: LITESTREAM_SECRET_ACCESS_KEY
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.backup.litestream.secretRef.name }}
-                key: LITESTREAM_SECRET_ACCESS_KEY
+            - name: LITESTREAM_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backup.litestream.secretRef.name }}
+                  key: LITESTREAM_ACCESS_KEY_ID
+            - name: LITESTREAM_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backup.litestream.secretRef.name }}
+                  key: LITESTREAM_SECRET_ACCESS_KEY
           resources:
             {{- toYaml .Values.backup.litestream.resources | nindent 12 }}
         {{- end }}
@@ -144,7 +144,7 @@ spec:
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
-              path:  {{ tpl .Values.livenessProbe.path . }}
+              path: {{ tpl .Values.livenessProbe.path . }}
               port: http
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
@@ -194,22 +194,22 @@ spec:
           image: {{ .Values.backup.litestream.image }}
           args: ['replicate']
           volumeMounts:
-          - mountPath: /data
-            name: lke-data
-          - name: litestream-config
-            mountPath: /etc/litestream.yml
-            subPath: litestream.yaml
+            - mountPath: /data
+              name: lke-data
+            - name: litestream-config
+              mountPath: /etc/litestream.yml
+              subPath: litestream.yaml
           env:
-          - name: LITESTREAM_ACCESS_KEY_ID
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.backup.litestream.secretRef.name }}
-                key: LITESTREAM_ACCESS_KEY_ID
-          - name: LITESTREAM_SECRET_ACCESS_KEY
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.backup.litestream.secretRef.name }}
-                key: LITESTREAM_SECRET_ACCESS_KEY
+            - name: LITESTREAM_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backup.litestream.secretRef.name }}
+                  key: LITESTREAM_ACCESS_KEY_ID
+            - name: LITESTREAM_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.backup.litestream.secretRef.name }}
+                  key: LITESTREAM_SECRET_ACCESS_KEY
           {{- if .Values.offlineMaintenanceModeEnabled }}
           # Deactivate probes in Maintenance mode
           {{- else }}
@@ -234,53 +234,54 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
-      {{- if .Values.licenseFromSecret }}
-      - name: lke-license
-        secret:
-          secretName: {{ tpl .Values.licenseFromSecret . }}
-          items:
-            - key: license.key
-              path: license.key
-      {{- end }}
-      {{- if .Values.volumes }}
+        {{- if not .Values.persistentVolume.enabled }}
+        - name: lke-data
+          emptyDir: {}
+        {{- end }}
+        {{- if .Values.licenseFromSecret }}
+        - name: lke-license
+          secret:
+            secretName: {{ tpl .Values.licenseFromSecret . }}
+            items:
+              - key: license.key
+                path: license.key
+        {{- end }}
+        {{- if .Values.volumes }}
         {{- toYaml .Values.volumes | nindent 8 }}
-      {{- end }}
-      {{- if .Values.configOverlayEnabled }}
-      - configMap:
-          name: {{ include "linkurious-enterprise.fullname" . }}-configmap
-        name: lke-server-config-overlay
-      {{- end }}
-      {{- if .Values.backup.litestream.enabled }}
-      - configMap:
-          name: {{ include "linkurious-enterprise.fullname" . }}-litestream
-        name: litestream-config
-      {{- end }}
+        {{- end }}
+        {{- if .Values.configOverlayEnabled }}
+        - name: lke-server-config-overlay
+          configMap:
+            name: {{ include "linkurious-enterprise.fullname" . }}-configmap
+        {{- end }}
+        {{- if .Values.backup.litestream.enabled }}
+        - name: litestream-config
+          configMap:
+            name: {{ include "linkurious-enterprise.fullname" . }}-litestream
+        {{- end }}
   {{- if .Values.persistentVolume.enabled }}
   volumeClaimTemplates:
-  - apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-      name: lke-data
-      annotations:
-      {{- range $key, $value := .Values.persistentVolume.annotations }}
-        {{ $key }}: {{ $value }}
-      {{- end }}
-    spec:
-      accessModes:
-      {{- range .Values.persistentVolume.accessModes }}
-        - {{ . | quote }}
-      {{- end }}
-      resources:
-        requests:
-          storage: {{ .Values.persistentVolume.size | quote }}
-    {{- if .Values.persistentVolume.storageClass }}
-      {{- if (eq "-" .Values.persistentVolume.storageClass) }}
-      storageClassName: ""
-      {{- else }}
-      storageClassName: "{{ .Values.persistentVolume.storageClass }}"
-      {{- end }}
-    {{- end }}
-  {{- else }}
-      - name: lke-data
-        emptyDir:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: lke-data
+        {{- with .Values.persistentVolume.annotations }}
+        annotations:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      spec:
+        accessModes:
+          {{- range .Values.persistentVolume.accessModes }}
+          - {{ . | quote }}
+          {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistentVolume.size | quote }}
+        {{- if .Values.persistentVolume.storageClass }}
+        {{- if (eq "-" .Values.persistentVolume.storageClass) }}
+        storageClassName: ""
+        {{- else }}
+        storageClassName: "{{ .Values.persistentVolume.storageClass }}"
+        {{- end }}
+        {{- end }}
   {{- end }}
