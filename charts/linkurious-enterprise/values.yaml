@@ -344,6 +344,8 @@ persistentVolume:
     - ReadWriteOnce
   size: 5Gi
   annotations: {}
+  # -- StatefulSet PVC retention policy (whenDeleted / whenScaled: Retain or Delete). Unset keeps the Kubernetes default (Retain for both).
+  retentionPolicy: {}
 
 backup:
 
