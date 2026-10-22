@@ -112,16 +112,21 @@ spec:
             {{- end }}
             {{- end }}
             {{- if or (and .Values.ingress.enabled .Values.ingress.hosts) .Values.gateway.enabled }}
+            {{- if and .Values.ingress.enabled .Values.ingress.hosts }}
             - name: LKE_PUBLIC_PORT_HTTPS
               value: "443"
             - name: LKE_FORCE_PUBLIC_HTTPS
               value: "true"
             - name: LKE_PUBLIC_DOMAIN
-              {{- if and .Values.ingress.enabled .Values.ingress.hosts }}
               value: {{ (first .Values.ingress.hosts).host | default $defaultHostUrl | quote }}
-              {{- else }}
+            {{- else }}
+            - name: LKE_PUBLIC_PORT_HTTPS
+              value: {{ .Values.gateway.public.port | quote }}
+            - name: LKE_FORCE_PUBLIC_HTTPS
+              value: {{ eq (.Values.gateway.public.scheme | lower) "https" | quote }}
+            - name: LKE_PUBLIC_DOMAIN
               value: {{ first (default (list $defaultHostUrl) .Values.gateway.hostnames) | quote }}
-              {{- end }}
+            {{- end }}
             - name: POD_INDEX
               valueFrom:
                 fieldRef:

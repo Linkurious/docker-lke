@@ -99,6 +99,8 @@ helm upgrade --install my-release linkurious-enterprise-0.3.12.tgz -f chart-valu
 | gateway.labels | object | `{}` | Additional HTTPRoute labels |
 | gateway.parentRefs | list | `[]` | Gateway(s) the HTTPRoute attaches to |
 | gateway.paths | list | `[{"path":"/","type":"PathPrefix"}]` | Path matches routed to the Linkurious Enterprise service |
+| gateway.public.port | int | `443` | Public port used by clients to reach the Gateway |
+| gateway.public.scheme | string | `"https"` | Public scheme used by clients to reach the Gateway (`https` or `http`) |
 | gateway.sessionPersistence | object | `{}` | Optional session persistence (needed for sticky sessions when replicaCount > 1) |
 | hostAliases | list | `[]` |  |
 | hostPostfix | string | `"example.domain"` |  |

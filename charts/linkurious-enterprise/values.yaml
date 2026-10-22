@@ -142,6 +142,11 @@ gateway:
   # -- Hostnames matched by the route. Defaults to the generated host (see hostPostfix)
   hostnames: []
     # - chart-example.local
+  public:
+    # -- Public scheme used by clients to reach the Gateway (`https` or `http`)
+    scheme: https
+    # -- Public port used by clients to reach the Gateway
+    port: 443
   # -- Path matches routed to the Linkurious Enterprise service
   paths:
     - path: /
