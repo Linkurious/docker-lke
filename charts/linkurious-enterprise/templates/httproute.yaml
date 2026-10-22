@@ -1,4 +1,7 @@
 {{- if .Values.gateway.enabled -}}
+{{- if .Values.ipAllowList -}}
+{{- fail "ERROR: ipAllowList is not supported by this chart's Gateway route. Configure equivalent access restrictions on the Gateway before clearing ipAllowList, or disable gateway.enabled." -}}
+{{- end -}}
 {{- $fullName := include "linkurious-enterprise.fullname" . -}}
 {{- $defaultHostUrl := include "linkurious-enterprise.defaultHostUrl" . -}}
 apiVersion: gateway.networking.k8s.io/v1
