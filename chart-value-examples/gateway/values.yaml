@@ -12,7 +12,8 @@ gateway:
 
 configOverlayEnabled: true
 config:
-  forcePublicHttps: false
+  server:
+    forcePublicHttps: false
 
 openTelemetry:
   metrics:
