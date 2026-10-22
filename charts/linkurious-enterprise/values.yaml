@@ -125,6 +125,37 @@ ingress:
     #  hosts:
     #    - chart-example.local
 
+# Gateway API configuration (alternative to the ingress above).
+# TLS is configured on the Gateway listener, not on the route.
+gateway:
+  # -- Enable a Gateway API HTTPRoute for the Linkurious Enterprise server
+  enabled: false
+  # -- Additional HTTPRoute labels
+  labels: {}
+  # -- Additional HTTPRoute annotations
+  annotations: {}
+  # -- Gateway(s) the HTTPRoute attaches to
+  parentRefs: []
+    # - name: my-gateway
+    #   namespace: gateway-system
+    #   sectionName: https
+  # -- Hostnames matched by the route. Defaults to the generated host (see hostPostfix)
+  hostnames: []
+    # - chart-example.local
+  public:
+    # -- Public scheme used by clients to reach the Gateway (`https` or `http`)
+    scheme: https
+    # -- Public port used by clients to reach the Gateway
+    port: 443
+  # -- Path matches routed to the Linkurious Enterprise service
+  paths:
+    - path: /
+      type: PathPrefix
+  # -- Optional session persistence (needed for sticky sessions when replicaCount > 1)
+  sessionPersistence: {}
+    # sessionName: lke-sticky-cookie
+    # type: Cookie
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
