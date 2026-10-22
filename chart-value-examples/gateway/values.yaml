@@ -1,0 +1,19 @@
+image:
+  repository: ""
+
+hostPostfix: example.domain
+ingress:
+  enabled: false
+gateway:
+  enabled: true
+  parentRefs:
+    - name: my-gateway
+      namespace: gateway-system
+
+configOverlayEnabled: true
+config:
+  forcePublicHttps: false
+
+openTelemetry:
+  metrics:
+    enabled: false

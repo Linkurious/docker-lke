@@ -84,7 +84,7 @@ spec:
             - "-c"
             - "while true; do echo 'Linkurious-enterprise is not running. Pod is in offline maintenance mode. Remove linkurious-enterprise.offlineMaintenanceModeEnabled setting and run `helm upgrade ...` to resume normal operation.'; sleep 60; done"
           {{- end }}
-          {{- if or .Values.env .Values.ingress.enabled (not .Values.plugins.enabled) .Values.openTelemetry.enabled }}
+          {{- if or .Values.env .Values.ingress.enabled .Values.gateway.enabled (not .Values.plugins.enabled) .Values.openTelemetry.enabled }}
           env:
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 }}
@@ -111,13 +111,17 @@ spec:
               value: {{ default "http/protobuf" .Values.openTelemetry.otlpProtocol | quote }}
             {{- end }}
             {{- end }}
-            {{- if and .Values.ingress.enabled .Values.ingress.hosts }}
+            {{- if or (and .Values.ingress.enabled .Values.ingress.hosts) .Values.gateway.enabled }}
             - name: LKE_PUBLIC_PORT_HTTPS
               value: "443"
             - name: LKE_FORCE_PUBLIC_HTTPS
               value: "true"
             - name: LKE_PUBLIC_DOMAIN
+              {{- if and .Values.ingress.enabled .Values.ingress.hosts }}
               value: {{ (first .Values.ingress.hosts).host | default $defaultHostUrl | quote }}
+              {{- else }}
+              value: {{ first (default (list $defaultHostUrl) .Values.gateway.hostnames) | quote }}
+              {{- end }}
             - name: POD_INDEX
               valueFrom:
                 fieldRef:
