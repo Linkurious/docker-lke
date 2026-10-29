@@ -511,7 +511,16 @@ openTelemetry:
     samplerArg: "0.1"
 
 ## -- Allow only whitelisted ip or cidr
+## Applied through a Traefik Middleware, referenced by the Ingress annotation
+## or by an ExtensionRef filter on the Gateway HTTPRoute (requires Traefik's kubernetesGateway provider).
 ## https://doc.traefik.io/traefik/middlewares/http/ipwhitelist/
+## Caveats
+## - Core Gateway API has no IP-allowlist filter, so this depends on Traefik's kubernetesGateway provider
+## (your values-traefik.yaml enables it). On Envoy Gateway or Cilium you would need a SecurityPolicy or a similar resource instead.
+## - The Middleware must be in the same namespace as the HTTPRoute. It is, because both use the release namespace.
+## - I haven't verified that your Traefik version honours ExtensionRef to a Middleware (I believe it was added in v3.1). Check that before merging.
+## - If clients reach the Gateway through a load balancer, set externalTrafficPolicy: Local or configure ipStrategy.
+## Otherwise the allowlist sees the load balancer's IP, not the client's.
 ipAllowList: {}
 # sourceRange:
 #   - 127.0.0.1/32

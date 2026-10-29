@@ -1,0 +1,13 @@
+{{- if and .Values.ipAllowList (or .Values.ingress.enabled .Values.gateway.enabled) -}}
+{{- $fullName := include "linkurious-enterprise.fullname" . -}}
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: {{ $fullName }}-ipallowlist
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "linkurious-enterprise.labels" . | nindent 4 }}
+spec:
+  ipAllowList:
+    {{- toYaml .Values.ipAllowList | nindent 4 }}
+{{- end }}
