@@ -13,7 +13,9 @@ gateway:
 configOverlayEnabled: true
 config:
   server:
-    forcePublicHttps: false
+    domain: "$ENV:LKE_PUBLIC_DOMAIN"
+    publicPortHttps: "$ENV-NUMBER:LKE_PUBLIC_PORT_HTTPS"
+    forcePublicHttps: "$ENV-JSON:LKE_FORCE_PUBLIC_HTTPS"
 
 openTelemetry:
   metrics:
