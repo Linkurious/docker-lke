@@ -125,6 +125,37 @@ ingress:
     #  hosts:
     #    - chart-example.local
 
+# Gateway API configuration (alternative to the ingress above).
+# TLS is configured on the Gateway listener, not on the route.
+gateway:
+  # -- Enable a Gateway API HTTPRoute for the Linkurious Enterprise server
+  enabled: false
+  # -- Additional HTTPRoute labels
+  labels: {}
+  # -- Additional HTTPRoute annotations
+  annotations: {}
+  # -- Gateway(s) the HTTPRoute attaches to
+  parentRefs: []
+    # - name: my-gateway
+    #   namespace: gateway-system
+    #   sectionName: https
+  # -- Hostnames matched by the route. Defaults to the generated host (see hostPostfix)
+  hostnames: []
+    # - chart-example.local
+  public:
+    # -- Public scheme used by clients to reach the Gateway (`https` or `http`)
+    scheme: https
+    # -- Public port used by clients to reach the Gateway
+    port: 443
+  # -- Path matches routed to the Linkurious Enterprise service
+  paths:
+    - path: /
+      type: PathPrefix
+  # -- Optional session persistence (needed for sticky sessions when replicaCount > 1)
+  sessionPersistence: {}
+    # sessionName: lke-sticky-cookie
+    # type: Cookie
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -480,7 +511,16 @@ openTelemetry:
     samplerArg: "0.1"
 
 ## -- Allow only whitelisted ip or cidr
+## Applied through a Traefik Middleware, referenced by the Ingress annotation
+## or by an ExtensionRef filter on the Gateway HTTPRoute (requires Traefik's kubernetesGateway provider).
 ## https://doc.traefik.io/traefik/middlewares/http/ipwhitelist/
+## Caveats
+## - Core Gateway API has no IP-allowlist filter, so this depends on Traefik's kubernetesGateway provider
+## (your values-traefik.yaml enables it). On Envoy Gateway or Cilium you would need a SecurityPolicy or a similar resource instead.
+## - The Middleware must be in the same namespace as the HTTPRoute. It is, because both use the release namespace.
+## - I haven't verified that your Traefik version honours ExtensionRef to a Middleware (I believe it was added in v3.1). Check that before merging.
+## - If clients reach the Gateway through a load balancer, set externalTrafficPolicy: Local or configure ipStrategy.
+## Otherwise the allowlist sees the load balancer's IP, not the client's.
 ipAllowList: {}
 # sourceRange:
 #   - 127.0.0.1/32

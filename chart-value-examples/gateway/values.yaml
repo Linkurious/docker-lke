@@ -1,0 +1,22 @@
+image:
+  repository: ""
+
+hostPostfix: example.domain
+ingress:
+  enabled: false
+gateway:
+  enabled: true
+  parentRefs:
+    - name: my-gateway
+      namespace: gateway-system
+
+configOverlayEnabled: true
+config:
+  server:
+    domain: "$ENV:LKE_PUBLIC_DOMAIN"
+    publicPortHttps: "$ENV-NUMBER:LKE_PUBLIC_PORT_HTTPS"
+    forcePublicHttps: "$ENV-JSON:LKE_FORCE_PUBLIC_HTTPS"
+
+openTelemetry:
+  metrics:
+    enabled: false
