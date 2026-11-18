@@ -1,6 +1,6 @@
 # linkurious-enterprise
 
-![Version: 0.3.12](https://img.shields.io/badge/Version-0.3.12-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.3.13](https://img.shields.io/badge/AppVersion-4.3.13-informational?style=flat-square)
+![Version: 0.3.13](https://img.shields.io/badge/Version-0.3.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 4.3.13](https://img.shields.io/badge/AppVersion-4.3.13-informational?style=flat-square)
 
 A Helm chart for Linkurious Enterprise
 
@@ -31,7 +31,7 @@ To install a very basic version of Linkurious enterprise, please set your privat
  and then run:
 
 ```console
-helm upgrade --install my-release linkurious-enterprise-0.3.10.tgz -f chart-value-examples/basic/values.yaml
+helm upgrade --install my-release linkurious-enterprise-0.3.13.tgz -f chart-value-examples/basic/values.yaml
 ```
 
 ## Values
@@ -93,6 +93,15 @@ helm upgrade --install my-release linkurious-enterprise-0.3.10.tgz -f chart-valu
 | env | list | `[]` | Environment variables to pass to Linkurious server |
 | envFrom | list | `[]` | envFrom to pass to Linkurious server |
 | fullnameOverride | string | `""` |  |
+| gateway.annotations | object | `{}` | Additional HTTPRoute annotations |
+| gateway.enabled | bool | `false` | Enable a Gateway API HTTPRoute for the Linkurious Enterprise server |
+| gateway.hostnames | list | `[]` | Hostnames matched by the route. Defaults to the generated host (see hostPostfix) |
+| gateway.labels | object | `{}` | Additional HTTPRoute labels |
+| gateway.parentRefs | list | `[]` | Gateway(s) the HTTPRoute attaches to |
+| gateway.paths | list | `[{"path":"/","type":"PathPrefix"}]` | Path matches routed to the Linkurious Enterprise service |
+| gateway.public.port | int | `443` | Public port used by clients to reach the Gateway |
+| gateway.public.scheme | string | `"https"` | Public scheme used by clients to reach the Gateway (`https` or `http`) |
+| gateway.sessionPersistence | object | `{}` | Optional session persistence (needed for sticky sessions when replicaCount > 1) |
 | hostAliases | list | `[]` |  |
 | hostPostfix | string | `"example.domain"` |  |
 | hostPrefixOverride | string | `"linkurious-enterprise"` |  |
