@@ -463,6 +463,11 @@ backup:
       includedResources:
         - pods
       # includeClusterResources: false
+      ## -- Labels used to select which resources the secondary backup includes.
+      ## When unset, defaults to the chart selector labels (app.kubernetes.io/name + app.kubernetes.io/instance),
+      ## so only the LKE pod/PVC (and its PV) are backed up, other volumes in the namespace (e.g. memgraph) are skipped.
+      ## Set to {} to disable label filtering.
+      # labelSelector: {}
 
 hostAliases: []
 
