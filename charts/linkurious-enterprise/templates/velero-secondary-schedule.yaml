@@ -50,10 +50,15 @@ spec:
     # Whether to include cluster-scoped resources
     includeClusterResources: {{ $includeClusterResources }}
 {{- end }}
-{{- if .Values.backup.velero.labelSelector }}
+{{- /* Default: only back up LKE resources (pods/PVCs; PVs follow their PVC), e.g. skip memgraph volumes */}}
+{{- $labelSelector := .Values.backup.velero.labelSelector | default (include "linkurious-enterprise.selectorLabels" . | fromYaml) }}
+{{- if hasKey .Values.backup.velero.secondaryBackup "labelSelector" }}
+  {{- $labelSelector = .Values.backup.velero.secondaryBackup.labelSelector }}
+{{- end }}
+{{- if $labelSelector }}
     labelSelector:
       matchLabels:
-        {{- toYaml .Values.backup.velero.labelSelector | nindent 8 }}
+        {{- toYaml $labelSelector | nindent 8 }}
 {{- end }}
 {{- if .Values.backup.velero.secondaryBackup.snapshotMoveData }}
     snapshotMoveData: {{ .Values.backup.velero.secondaryBackup.snapshotMoveData }}
